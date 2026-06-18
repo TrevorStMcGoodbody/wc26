@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+// set theme before first paint to avoid a light/dark flash
+(function(){try{
+  var s=localStorage.getItem("wc26-theme");
+  var dark=s?s==="dark":(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches);
+  if(dark)document.documentElement.setAttribute("data-theme","dark");
+}catch(e){}})();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>World Cup 2026 — Perth Kickoff Times</title>
+<!-- iOS "Add to Home Screen": run full-screen like a native app -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="WC26">
+<meta name="theme-color" content="#1b1d3a" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#2a2d5e" media="(prefers-color-scheme: light)">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%232a2d5e'/%3E%3Ctext x='90' y='118' font-size='96' text-anchor='middle' fill='%23f8b25c' font-family='sans-serif'%3E%E2%9A%BD%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1b1d3a;          /* pre-dawn indigo */
+  --ink-soft:#4c4f78;
+  --paper:#f7f4ec;        /* warm morning light */
+  --card:#fffdf8;
+  --line:#e4ddcd;
+  --dawn:#e8742c;         /* dawn orange accent */
+  --gold:#e0a31c;
+  --night:#2a2d5e;
+  --aus-green:#0a5c36;
+  --aus-gold:#ffce00;
+  --inkbg:#1b1d3a;        /* fixed dark pill background, independent of --ink so it doesn't flip in dark mode */
+}
+[data-theme="dark"]{
+  --ink:#f1ede2;          /* moonlight text */
+  --ink-soft:#b6b2d6;
+  --paper:#14152a;        /* midnight */
+  --card:#1f2142;
+  --line:#34375f;
+  --inkbg:var(--night);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Noto Sans',system-ui,sans-serif;
+  background:var(--paper);
+  color:var(--ink);
+  line-height:1.35;
+}
+/* ---------- header (compact) ---------- */
+header{
+  background:linear-gradient(160deg,#171936 0%,#2a2d5e 55%,#7a3b6e 82%,#e8742c 120%);
+  color:#fdf8ee;
+  padding:14px 16px 12px;
+}
+.head-inner{max-width:1180px;margin:0 auto;display:flex;flex-wrap:wrap;gap:4px 22px;align-items:baseline}
+.eyebrow{
+  font-family:'Noto Sans',sans-serif;
+  font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;
+  color:#f3c98a;flex-basis:100%;
+}
+h1{
+  font-weight:900;font-stretch:90%;
+  font-size:clamp(18px,3vw,24px);
+  line-height:1.05;letter-spacing:-.01em;
+}
+h1 span{color:#f8b25c}
+.sub{font-size:11px;color:#d8d4ec}
+.sub strong{color:#fff}
+#next-match{
+  flex-basis:100%;margin-top:6px;display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline;
+  font-family:'Noto Sans',sans-serif;font-size:10.5px;color:#e8e4f5;
+}
+#next-match b{font-family:'Noto Sans';font-weight:800;font-size:12px;color:#fff}
+/* ---------- controls ---------- */
+.controls{
+  position:sticky;top:0;z-index:30;
+  background:#f7f4ec;
+  background:color-mix(in srgb,var(--paper) 92%,transparent);
+  -webkit-backdrop-filter:blur(8px);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+  padding:6px 16px;
+}
+.controls-inner{max-width:1180px;margin:0 auto;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.search{
+  flex:1 1 160px;min-width:140px;
+  border:1.5px solid var(--line);border-radius:999px;
+  padding:5px 12px;font:inherit;font-size:12px;background:var(--card);color:var(--ink);
+}
+.search:focus{outline:2px solid var(--dawn);outline-offset:1px;border-color:var(--dawn)}
+.chips{display:flex;flex-wrap:wrap;gap:4px}
+.chip{
+  border:1.5px solid var(--line);background:var(--card);color:var(--ink-soft);
+  border-radius:999px;padding:4px 10px;font:inherit;font-size:11.5px;font-weight:600;
+  cursor:pointer;transition:.15s;
+}
+.chip:hover{border-color:var(--dawn);color:var(--ink)}
+.chip:focus-visible{outline:2px solid var(--dawn);outline-offset:2px}
+.chip.active{background:var(--inkbg);border-color:var(--inkbg);color:#fff}
+.chip.aus.active{background:var(--aus-green);border-color:var(--aus-green);color:var(--aus-gold)}
+/* ---------- schedule ---------- */
+main{max-width:1180px;margin:4px auto 40px;padding:0 16px}
+.daygroup{margin-top:14px}
+.dayhead{
+  display:flex;align-items:baseline;gap:8px;
+  border-bottom:1.5px solid var(--ink);padding-bottom:2px;margin-bottom:5px;
+}
+.dayhead h2{font-weight:900;font-stretch:88%;font-size:13px;letter-spacing:0}
+.dayhead .count{font-family:'Noto Sans',sans-serif;font-size:9.5px;color:var(--ink-soft)}
+.matches{display:grid;grid-template-columns:1fr;gap:4px}
+@media(min-width:700px){.matches{grid-template-columns:1fr 1fr}}
+@media(min-width:1000px){.matches{grid-template-columns:repeat(4,1fr)}}
+.match{
+  display:grid;grid-template-columns:60px 1fr;gap:8px;align-items:start;
+  background:var(--card);border:1px solid var(--line);border-radius:7px;
+  padding:4px 8px;
+}
+.match:hover{border-color:var(--ink-soft)}
+.match.aus{border:2.5px solid var(--aus-green);background:#ffcb35}
+.match.aus:hover{border-color:var(--aus-green)}
+/* very light per-group tints */
+.stbl.g-A{background:hsl(8,70%,96%)}
+.stbl.g-B{background:hsl(28,75%,95%)}
+.stbl.g-C{background:hsl(48,75%,94%)}
+.stbl.g-D{background:hsl(70,55%,94%)}
+.stbl.g-E{background:hsl(120,45%,95%)}
+.stbl.g-F{background:hsl(160,50%,94%)}
+.stbl.g-G{background:hsl(190,55%,95%)}
+.stbl.g-H{background:hsl(210,60%,96%)}
+.stbl.g-I{background:hsl(235,55%,96%)}
+.stbl.g-J{background:hsl(270,50%,96%)}
+.stbl.g-K{background:hsl(300,45%,96%)}
+.stbl.g-L{background:hsl(335,55%,96%)}
+/* time chip — colour encodes how early the Perth kickoff is */
+.time{
+  text-align:center;border-radius:5px;padding:3px 2px;color:#fff;
+  font-family:'Noto Sans',sans-serif;
+}
+.time .t{font-size:11.5px;font-weight:600;display:block;line-height:1.1}
+.time .p{display:none}
+.time.small-hours{background:#2b2b2b}
+.time.dawn{background:#4a4a4a}
+.time.morning{background:#6e6e6e}
+.time.midday{background:#969696}
+.fixture{min-width:0}
+.fixture .team{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.fixture .team .nm{font-size:12px;font-weight:700;font-stretch:92%;letter-spacing:-.005em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-left:10px}
+.fixture .team .sc{font-family:'Noto Sans',sans-serif;font-size:11.5px;font-weight:600;flex-shrink:0}
+.fixture .team .sc.live{color:#1a8a3c}
+.fixture .meta{
+  font-family:'Noto Sans',sans-serif;
+  font-size:9.5px;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px;margin-left:10px;
+}
+.side{display:flex;flex-direction:column;gap:3px;align-items:stretch}
+.badge{
+  font-family:'Noto Sans',sans-serif;font-size:8.5px;font-weight:600;
+  letter-spacing:.06em;text-transform:uppercase;text-align:center;
+  border:1px solid var(--line);border-radius:5px;padding:2px 7px;
+  color:var(--ink-soft);background:var(--paper);white-space:nowrap;
+}
+/* official group colours, sampled from the FIFA group-stage graphic */
+.match.g-A .badge{background:#2ed878;color:#1b1d3a;border-color:#2ed878}
+.match.g-B .badge{background:#e92545;color:#fff;border-color:#e92545}
+.match.g-C .badge{background:#ef9210;color:#1b1d3a;border-color:#ef9210}
+.match.g-D .badge{background:#4056f0;color:#fff;border-color:#4056f0}
+.match.g-E .badge{background:#631fdf;color:#fff;border-color:#631fdf}
+.match.g-F .badge{background:#c8f813;color:#1b1d3a;border-color:#c8f813}
+.match.g-G .badge{background:#df6e94;color:#fff;border-color:#df6e94}
+.match.g-H .badge{background:#71f7d9;color:#1b1d3a;border-color:#71f7d9}
+.match.g-I .badge{background:#a558aa;color:#fff;border-color:#a558aa}
+.match.g-J .badge{background:#356671;color:#fff;border-color:#356671}
+.match.g-K .badge{background:#f23907;color:#fff;border-color:#f23907}
+.match.g-L .badge{background:#5db0d8;color:#1b1d3a;border-color:#5db0d8}
+.hl{
+  font-family:'Noto Sans',sans-serif;font-size:8.5px;font-weight:600;
+  letter-spacing:.06em;text-transform:uppercase;text-align:center;
+  border-radius:999px;padding:2px 7px;white-space:nowrap;
+  background:var(--dawn);color:#fff;text-decoration:none;border:1px solid var(--dawn);
+}
+.hl:hover{background:#c75e1d;border-color:#c75e1d}
+.bk .bh{display:block;margin-top:3px;font-size:7.5px;padding:1px 6px}
+.badge.ko{background:var(--inkbg);color:#f3c98a;border-color:var(--inkbg)}
+/* ---------- live scores ---------- */
+.score{
+  font-family:'Noto Sans',sans-serif;font-weight:600;font-size:11px;
+  background:var(--inkbg);color:#fff;border-radius:4px;padding:0 5px;margin:0 4px;
+}
+.score.live{background:#1a8a3c}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
+.livedot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#1a8a3c;margin-right:4px;animation:pulse 1.6s infinite}
+#live-status{
+  margin-left:auto;font-family:'Noto Sans',sans-serif;font-size:9.5px;color:var(--ink-soft);
+  display:flex;align-items:center;
+}
+.bk .bn b{color:var(--ink);font-size:8.5px}
+.bk .bn b.live{color:#1a8a3c}
+.empty{
+  text-align:center;padding:40px 16px;color:var(--ink-soft);
+  font-family:'Noto Sans',sans-serif;font-size:12px;
+}
+/* ---------- knockout bracket ---------- */
+.bracket-wrap{margin-top:22px}
+.bracket-head{display:flex;align-items:baseline;gap:8px;border-bottom:1.5px solid var(--ink);padding-bottom:2px;margin-bottom:10px}
+.bracket-head h2{font-weight:900;font-stretch:88%;font-size:13px}
+.bracket-head .count{font-family:'Noto Sans',sans-serif;font-size:9.5px;color:var(--ink-soft)}
+.bracket-scroll{overflow-x:auto;padding-bottom:8px}
+.bracket{display:flex;align-items:stretch;min-width:1120px}
+.half{display:flex;flex:1}
+.half.right{flex-direction:row-reverse}
+.bround{display:flex;flex-direction:column;justify-content:space-around}
+.left .bround{margin-right:20px}
+.right .bround{margin-left:20px}
+.bkpair{flex:1;display:flex;flex-direction:column;justify-content:space-around;position:relative}
+.left .bkpair::after{content:"";position:absolute;top:25%;bottom:25%;right:-11px;width:11px;border:1.5px solid #cfc6b2;border-left:none;border-radius:0 6px 6px 0}
+.left .bkpair::before{content:"";position:absolute;top:50%;right:-20px;width:9px;border-top:1.5px solid #cfc6b2}
+.right .bkpair::after{content:"";position:absolute;top:25%;bottom:25%;left:-11px;width:11px;border:1.5px solid #cfc6b2;border-right:none;border-radius:6px 0 0 6px}
+.right .bkpair::before{content:"";position:absolute;top:50%;left:-20px;width:9px;border-top:1.5px solid #cfc6b2}
+.bk{
+  background:var(--card);border:1px solid var(--line);border-left:3px solid var(--ink-soft);
+  border-radius:6px;padding:3px 7px 4px;width:120px;position:relative;z-index:1;margin:2px 0;
+}
+.bk.p0{border-left-color:var(--night)}
+.bk.p1{border-left-color:var(--dawn)}
+.bk.p2{border-left-color:var(--gold)}
+.bk.p3{border-left-color:#3a7bbf}
+.bk .bn{font-family:'Noto Sans',sans-serif;font-size:7.5px;letter-spacing:.1em;color:var(--ink-soft)}
+.bk .bt{font-size:9.5px;font-weight:700;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bk .bf{font-family:'Noto Sans',sans-serif;font-size:8px;color:var(--ink-soft);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bk .bv{font-family:'Noto Sans',sans-serif;font-size:8px;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nj{cursor:none}
+#mamdani{
+  position:fixed;display:none;width:640px;border-radius:14px;
+  border:3px solid #fff;box-shadow:0 16px 48px rgba(0,0,0,.45);
+  z-index:99;pointer-events:none;transform:translate(-50%,-50%);
+}
+.bcenter{display:flex;flex-direction:column;justify-content:center;align-items:center;padding:0 14px}
+.bcenter .trophy{font-size:30px;line-height:1}
+.bcenter .label{font-family:'Noto Sans',sans-serif;font-size:8.5px;font-weight:600;letter-spacing:.22em;color:var(--ink-soft);margin:8px 0 3px}
+.sfrow{display:flex;gap:12px;margin-top:6px}
+.bk.final{width:148px;border:1.5px solid var(--gold);border-left:4px solid var(--gold);box-shadow:0 2px 10px rgba(224,163,28,.25)}
+.bk.final .bt{font-size:10.5px}
+/* ---------- standings ---------- */
+.standings-grid{display:grid;grid-template-columns:1fr;gap:14px;margin-top:14px}
+@media(min-width:620px){.standings-grid{grid-template-columns:1fr 1fr}}
+@media(min-width:980px){.standings-grid{grid-template-columns:1fr 1fr 1fr}}
+.stbl{border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.sthead{font-weight:800;font-size:13px;padding:6px 10px;border-bottom:1.5px solid var(--ink)}
+.stbl table{width:100%;border-collapse:collapse}
+.stbl th,.stbl td{font-size:11px;padding:4px 6px;text-align:center}
+.stbl th{font-weight:600;font-size:9px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft)}
+.stbl th.l,.stbl td.l{text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px}
+.stbl td.pts{font-weight:800}
+.stbl tbody tr{border-top:1px solid var(--line)}
+.stbl tr.adv td{background:rgba(10,92,54,.08)}
+.stbl tr.adv td.l{box-shadow:inset 3px 0 0 var(--aus-green)}
+.stbl tr.ausrow td.l{color:var(--aus-green);font-weight:800}
+.stnote{margin-top:12px;font-size:10px;color:var(--ink-soft);max-width:640px}
+/* ---------- leaderboard ---------- */
+.lead-grid{display:grid;grid-template-columns:1fr;gap:14px;margin-top:14px}
+@media(min-width:760px){.lead-grid{grid-template-columns:1.4fr 1fr 1fr}}
+.lcard{border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.lcard.gb{border:1.5px solid var(--gold)}
+.lhead{font-weight:800;font-size:12px;padding:7px 10px;border-bottom:1.5px solid var(--ink)}
+.lcard.gb .lhead{background:#fff7e0}
+.lcard table{width:100%;border-collapse:collapse}
+.lcard th,.lcard td{font-size:11px;padding:4px 7px;text-align:center}
+.lcard th{font-weight:600;font-size:9px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft)}
+.lcard th.l,.lcard td.l{text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:150px}
+.lcard td.rk{width:22px;color:var(--ink-soft);font-weight:700}
+.lcard td.tm{font-size:10px;color:var(--ink-soft);text-align:left;max-width:90px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lcard td.pts{font-weight:800}
+.lcard tbody tr{border-top:1px solid var(--line)}
+.lcard .emptyrow{color:var(--ink-soft);font-style:italic;padding:14px 8px}
+.lcard.gb tbody tr:first-child td{background:rgba(224,163,28,.12)}
+.lcard.fun td.l{width:140px;font-weight:700;vertical-align:top}
+.lcard.fun td.val{text-align:left;font-weight:600}
+.lcard.fun tr{border-top:1px solid var(--line)}
+.funsub{font-size:9.5px;color:var(--ink-soft);font-weight:400}
+/* ---------- match modal ---------- */
+.clickbanner{
+  max-width:1180px;margin:12px auto 0;padding:9px 16px;
+  background:var(--inkbg);color:#fff;border-radius:8px;
+  font-weight:800;font-size:13px;text-align:center;letter-spacing:.01em;
+}
+.match,.bk{cursor:pointer}
+#overlay{
+  position:fixed;inset:0;background:rgba(20,22,48,.55);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);
+  display:none;align-items:flex-start;justify-content:center;z-index:80;padding:32px 16px;overflow-y:auto;
+}
+#overlay.open{display:flex}
+.modal{
+  background:var(--card);border-radius:14px;max-width:840px;width:100%;
+  box-shadow:0 24px 60px rgba(0,0,0,.4);overflow:hidden;animation:popin .18s ease;
+}
+@keyframes popin{from{transform:translateY(12px);opacity:0}to{transform:none;opacity:1}}
+.mhead{padding:16px 18px;color:#fff;background:linear-gradient(135deg,#2a2d5e,#7a3b6e);position:relative}
+.mhead .mstage{font-size:10px;letter-spacing:.12em;text-transform:uppercase;opacity:.8}
+.mhead .mscore{display:flex;align-items:center;gap:14px;margin-top:8px}
+.mhead .mteam{flex:1;font-size:17px;font-weight:800}
+.mhead .mteam.r{text-align:right}
+.mhead .mvs{font-family:'Noto Sans',sans-serif;font-size:24px;font-weight:800;min-width:74px;text-align:center}
+.mhead .mmeta{margin-top:8px;font-size:11px;opacity:.85;text-align:center}
+.sbs-btn{
+  display:block;margin:12px auto 0;width:fit-content;
+  background:#fff;color:#1b1d3a;font-weight:800;font-size:12px;
+  text-decoration:none;border-radius:999px;padding:7px 16px;
+  transition:.15s;
+}
+.sbs-btn:hover{background:var(--gold);color:#1b1d3a}
+.mclose{position:absolute;top:12px;right:14px;background:rgba(255,255,255,.18);border:none;color:#fff;width:28px;height:28px;border-radius:50%;font-size:16px;cursor:pointer;line-height:1}
+.mclose:hover{background:rgba(255,255,255,.3)}
+.mbody{padding:16px 18px;max-height:60vh;overflow-y:auto}
+.msec{margin-bottom:16px}
+.msec h4{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:7px;border-bottom:1px solid var(--line);padding-bottom:3px}
+.event{display:grid;grid-template-columns:34px 1fr;gap:8px;font-size:12.5px;padding:3px 0;align-items:baseline}
+.event .emin{font-family:'Noto Sans',sans-serif;font-weight:700;color:var(--ink-soft);font-size:11px}
+.event .eico{margin-right:5px}
+.event.away{grid-template-columns:1fr 34px;text-align:right}
+.event.away .emin{order:2}
+.event.goal{font-weight:700}
+.lineups{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.lcol h5{font-size:13px;font-weight:800;margin-bottom:6px;display:flex;align-items:baseline;gap:7px}
+.lcol h5 .form{font-family:'Noto Sans',sans-serif;font-size:10px;font-weight:600;color:#fff;background:var(--inkbg);border-radius:4px;padding:1px 6px;letter-spacing:.04em}
+.lineup-list{list-style:none;font-size:12px;line-height:1.85}
+.lineup-list li .num{display:inline-block;width:22px;color:var(--ink-soft);font-family:'Noto Sans',sans-serif;font-size:10px;font-weight:700}
+.subs-line{font-size:10.5px;color:var(--ink-soft);margin-top:8px;line-height:1.45}
+.subs-line b{color:var(--ink)}
+.pnm{cursor:help;border-bottom:1px dotted var(--ink-soft)}
+.pnm:hover{color:var(--dawn);border-bottom-color:var(--dawn)}
+#biotip{
+  position:fixed;display:none;z-index:120;pointer-events:none;
+  background:var(--inkbg);color:#fff;border-radius:8px;padding:8px 11px;
+  box-shadow:0 8px 24px rgba(0,0,0,.35);min-width:150px;max-width:220px;
+}
+#biotip .bt-name{font-weight:800;font-size:12px;margin-bottom:5px}
+#biotip .bt-row{display:flex;justify-content:space-between;gap:14px;font-size:11px;line-height:1.7;color:#cfcbe6}
+#biotip .bt-row b{color:#fff;font-weight:700;text-align:right}
+.mempty{font-size:12px;color:var(--ink-soft);font-style:italic;padding:8px 0}
+.mloading{text-align:center;padding:30px;color:var(--ink-soft);font-size:13px}
+footer{
+  max-width:1180px;margin:0 auto 30px;padding:0 16px;
+  font-family:'Noto Sans',sans-serif;font-size:9.5px;color:var(--ink-soft);
+}
+@media(max-width:560px){
+  /* header + controls breathe a little less */
+  header{padding:12px 13px 10px}
+  main{padding:0 11px}
+  .clickbanner{margin-top:10px;padding:8px 12px;font-size:12px}
+  /* controls: search on its own row, chips scroll horizontally instead of wrapping into a tall block */
+  .controls{padding:6px 11px}
+  .controls-inner{gap:6px}
+  .search{flex:1 1 100%;font-size:16px;padding:7px 13px} /* 16px stops iOS zoom-on-focus */
+  .chips{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;width:100%;padding-bottom:2px;scrollbar-width:none}
+  .chips::-webkit-scrollbar{display:none}
+  .chip{flex:0 0 auto;padding:6px 12px;font-size:12px}
+  #live-status{flex-basis:100%;margin:2px 0 0}
+  /* match cards: bigger tap target, keep stage badge */
+  .match{grid-template-columns:56px 1fr;padding:6px 9px;gap:9px}
+  .fixture .team .nm{font-size:13px}
+  .fixture .meta{font-size:10px}
+  .badge{font-size:8px;padding:2px 6px}
+  /* bracket: stack the two halves vertically so no sideways scrolling */
+  .bracket{min-width:0;flex-direction:column}
+  .half,.half.right{flex-direction:column}
+  .left .bround,.right .bround{margin:0}
+  .bround{margin-bottom:4px}
+  .bkpair::before,.bkpair::after{display:none} /* connectors don't map to a stacked layout */
+  .bk,.bk.final{width:100%}
+  .bcenter{padding:14px 0}
+  .sfrow{flex-direction:column;gap:8px;width:100%}
+  .bracket-head .count{display:none}
+  /* standings + leaderboard: single column already; let long names wrap a bit wider */
+  .stbl th.l,.stbl td.l{max-width:none}
+  .lcard td.l{max-width:none}
+  .lead-grid,.standings-grid{gap:12px}
+  /* modal fills the screen comfortably */
+  #overlay{padding:0;align-items:stretch}
+  .modal{max-width:100%;border-radius:0;min-height:100%}
+  .mhead{padding:16px 14px}
+  .mhead .mteam{font-size:15px}
+  .mhead .mvs{font-size:20px;min-width:54px}
+  .mclose{width:34px;height:34px;font-size:19px} /* easier to tap */
+  .mbody{max-height:none;padding:14px}
+  .event{font-size:13px} /* keep events legible */
+  /* lineups stack to one column on the narrowest screens */
+  .lineups{grid-template-columns:1fr;gap:16px}
+  /* player bio: tap-friendly, anchored bottom sheet style */
+  .pnm{border-bottom:1px dotted var(--ink-soft)}
+  #biotip{left:8px!important;right:8px;bottom:8px!important;top:auto!important;max-width:none;min-width:0}
+  /* tame the Zohran cursor image so it doesn't fill a phone screen */
+  #mamdani{width:60vw;max-width:280px}
+  footer{padding:0 13px;font-size:9px}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+}
+/* ---------- dark mode: targeted fixes for literal (non-variable) colours ---------- */
+.match.aus,.match.aus .meta{color:#1b1d3a} /* keep dark text on the fixed yellow Socceroos card in both themes */
+[data-theme="dark"] .controls{background:#14152a} /* fallback for browsers without color-mix() support */
+[data-theme="dark"] .stbl.g-A{background:hsl(8,40%,18%)}
+[data-theme="dark"] .stbl.g-B{background:hsl(28,42%,17%)}
+[data-theme="dark"] .stbl.g-C{background:hsl(48,40%,16%)}
+[data-theme="dark"] .stbl.g-D{background:hsl(70,32%,16%)}
+[data-theme="dark"] .stbl.g-E{background:hsl(120,28%,16%)}
+[data-theme="dark"] .stbl.g-F{background:hsl(160,30%,15%)}
+[data-theme="dark"] .stbl.g-G{background:hsl(190,32%,16%)}
+[data-theme="dark"] .stbl.g-H{background:hsl(210,35%,17%)}
+[data-theme="dark"] .stbl.g-I{background:hsl(235,32%,18%)}
+[data-theme="dark"] .stbl.g-J{background:hsl(270,30%,18%)}
+[data-theme="dark"] .stbl.g-K{background:hsl(300,28%,17%)}
+[data-theme="dark"] .stbl.g-L{background:hsl(335,32%,17%)}
+[data-theme="dark"] .lcard.gb .lhead{background:#3a2f10}
+[data-theme="dark"] .stbl tr.ausrow td.l{color:#3ddc84}
+[data-theme="dark"] .stbl tr.adv td{background:rgba(16,140,82,.18)}
+[data-theme="dark"] .fixture .team .sc.live{color:#34d399}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="head-inner">
+    <div class="eyebrow">FIFA World Cup · USA / Canada / Mexico · 11 Jun – 19 Jul</div>
+    <h1>World Cup 2026</h1>
+    <p class="sub">All 104 kickoffs in <strong>AWST (UTC+8)</strong></p>
+    <div id="next-match"></div>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="controls-inner">
+    <input id="search" class="search" type="search" placeholder="Search team or city…" aria-label="Search team or city">
+    <div class="chips" role="group" aria-label="Filter by stage">
+      <button class="chip active" data-stage="all">All</button>
+      <button class="chip" data-stage="group">Group stage</button>
+      <button class="chip" data-stage="ko">Knockouts</button>
+      <button class="chip" data-stage="standings">Standings</button>
+      <button class="chip" data-stage="leaderboard">Leaderboard</button>
+      <button class="chip aus" data-stage="aus">🇦🇺 Socceroos</button>
+      <button class="chip" id="today-btn" type="button">Jump to today</button>
+      <button class="chip" id="refresh-btn" type="button" title="Refresh live scores">↻ Refresh</button>
+      <button class="chip" id="theme-btn" type="button" title="Toggle dark/light mode"></button>
+    </div>
+    <span id="live-status"></span>
+  </div>
+</div>
+
+<div class="clickbanner">Click any match to bring up match centre</div>
+<main id="schedule"></main>
+
+<div id="overlay" role="dialog" aria-modal="true"><div class="modal" id="modal"></div></div>
+
+<footer>
+  Kickoff times sourced from the confirmed FIFA schedule (via Sky Sports, June 2026) and converted from UK time to AWST. Perth has no daylight saving, so times hold for the whole tournament. Live scores and bracket teams are fetched from ESPN's public scoreboard feed when the page is open and refresh every 2 minutes; if the feed is unreachable the fixed schedule is shown.
+</footer>
+
+<script>
+window.onerror=function(msg,src,line,col,err){
+  var b=document.getElementById("errbox")||document.createElement("div");
+  b.id="errbox";
+  b.style.cssText="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#b00020;color:#fff;font:12px/1.4 monospace;padding:10px;white-space:pre-wrap;word-break:break-word;max-height:50vh;overflow:auto";
+  b.textContent="JS ERROR:\n"+msg+"\nline "+line+":"+col+(src?"\n"+src:"");
+  if(!b.parentNode)document.body.appendChild(b);
+  return false;
+};
+const PLAYERDB={"matejkovar":["PSV Eindhoven",26],"jindrichstanek":["Slavia Prague",30],"lukashornicek":["Braga",23],"vladimircoufal":["TSG Hoffenheim",33],"tomasholes":["Slavia Prague",33],"ladislavkrejci":["Wolverhampton Wanderers",27],"davidzima":["Slavia Prague",25],"jaroslavzeleny":["Sparta Prague",33],"davidjurasek":["Slavia Prague",25],"daviddoudera":["Slavia Prague",28],"robinhranac":["TSG Hoffenheim",26],"stepanchaloupek":["Slavia Prague",23],"tomassoucek":["West Ham United",31],"vladimirdarida":["Hradec Králové",35],"lukasprovod":["Slavia Prague",29],"michalsadilek":["Slavia Prague",27],"pavelsulc":["Lyon",25],"lukascerv":["Viktoria Plzeň",25],"hugosochurek":["Sparta Prague",18],"alexandrsojka":["Viktoria Plzeň",23],"denisvisinsky":["Viktoria Plzeň",23],"patrikschick":["Bayer Leverkusen",30],"adamhlozek":["TSG Hoffenheim",23],"jankuchta":["Sparta Prague",29],"mojmirchytil":["Slavia Prague",27],"tomaschory":["Slavia Prague",31],"guillermoochoa":["AEL Limassol",40],"raulrangel":["Guadalajara",26],"carlosacevedo":["Santos Laguna",30],"jesusgallardo":["Toluca",31],"cesarmontes":["Lokomotiv Moscow",29],"jorgesanchez":["PAOK",28],"johanvasquez":["Genoa",27],"israelreyes":["América",26],"mateochavez":["AZ",22],"edsonalvarez":["Fenerbahçe",28],"orbelinpineda":["AEK Athens",30],"robertoalvarado":["Guadalajara",27],"luisromo":["Guadalajara",31],"luischavez":["Dynamo Moscow",30],"eriklira":["Cruz Azul",26],"gilbertomora":["Tijuana",17],"briangutierrez":["Guadalajara",22],"obedvargas":["Atlético Madrid",20],"alvarofidalgo":["Real Betis",29],"rauljimenez":["Fulham",35],"alexisvega":["Toluca",28],"santiagogimenez":["Milan",25],"cesarhuerta":["Anderlecht",25],"julianquinones":["Al-Qadsiah",29],"guillermomartinez":["UNAM",31],"armandogonzalez":["Guadalajara",23],"ronwenwilliams":["Mamelodi Sundowns",34],"ricardogoss":["Siwelele",32],"siphochaine":["Orlando Pirates",29],"aubreymodiba":["Mamelodi Sundowns",30],"khulisomudau":["Mamelodi Sundowns",31],"nkosinathisibisi":["Orlando Pirates",30],"mbekezelimbokazi":["Chicago Fire FC",20],"imeokon":["Hannover 96",22],"samukelekabini":["Molde",22],"khulumanindamane":["Mamelodi Sundowns",22],"thabangmatuludi":["Polokwane City",27],"kamogelosebelebele":["Orlando Pirates",23],"bradleycross":["Kaizer Chiefs",25],"olwethumakhanya":["Philadelphia Union",22],"tebohomokoena":["Mamelodi Sundowns",29],"sphephelosithole":["Tondela",27],"thalentembatha":["Orlando Pirates",26],"jaydenadams":["Mamelodi Sundowns",25],"thembazwane":["Mamelodi Sundowns",36],"lylefoster":["Burnley",26],"evidencemakgopa":["Orlando Pirates",26],"oswinappollis":["Orlando Pirates",24],"iqraamrayners":["Mamelodi Sundowns",30],"relebohilemofokeng":["Orlando Pirates",21],"thapelomaseko":["AEL Limassol",22],"tshepangmoremi":["Orlando Pirates",25],"kimseunggyu":["FC Tokyo",35],"johyeonwoo":["Ulsan HD",34],"songbumkeun":["Jeonbuk Hyundai Motors",28],"kimminjae":["Bayern Munich",29],"kimmoonhwan":["Daejeon Hana Citizen",30],"seolyoungwoo":["Red Star Belgrade",27],"leetaeseok":["Austria Wien",23],"parkjinseob":["Zhejiang",30],"kimtaehyeon":["Kashima Antlers",25],"leehanbeom":["Midtjylland",23],"jenscastrop":["Borussia Mönchengladbach",22],"leekihyuk":["Gangwon FC",25],"chowije":["Jeonbuk Hyundai Motors",24],"leejaesung":["Mainz 05",33],"hwangheechan":["Wolverhampton Wanderers",30],"hwanginbeom":["Feyenoord",29],"leekangin":["Paris Saint-Germain",25],"paikseungho":["Birmingham City",29],"kimjingyu":["Jeonbuk Hyundai Motors",29],"leedonggyeong":["Ulsan HD",28],"baejunho":["Stoke City",22],"eomjisung":["Swansea City",24],"yanghyunjun":["Celtic",24],"sonheungmin":["Los Angeles FC",33],"choguesung":["Midtjylland",28],"ohhyeongyu":["Beşiktaş",25],"nikolavasilj":["FC St. Pauli",30],"martinzlomislic":["Rijeka",27],"osmanhadzikic":["Slaven Belupo",30],"seadkolasinac":["Atalanta",32],"dennishadzikadunic":["Sampdoria",27],"amardedic":["Benfica",23],"nikolakatic":["Schalke 04",29],"tarikmuharemovic":["Sassuolo",23],"nihadmujakic":["Gaziantep",28],"stjepanradeljic":["Rijeka",28],"nidalcelik":["Lens",19],"amirhadziahmetovic":["Hull City",29],"benjamintahirovic":["Brøndby",23],"armingigovic":["Young Boys",24],"dzenisburnic":["Karlsruher SC",28],"ivanbasic":["Astana",24],"esmirbajraktarevic":["PSV Eindhoven",21],"amarmemic":["Viktoria Plzeň",25],"ivansunjic":["Pafos",29],"kerimalajbegovic":["Red Bull Salzburg",18],"erminmahmic":["Slovan Liberec",21],"edindzeko":["Schalke 04",40],"ermedindemirovic":["VfB Stuttgart",28],"samedbazdar":["Jagiellonia Białystok",22],"haristabakovic":["Borussia Mönchengladbach",31],"jovolukic":["Universitatea Cluj",27],"daynestclair":["Inter Miami CF",29],"alistairjohnston":["Celtic",27],"lucdefougerolles":["Dender",20],"alfiejones":["Middlesbrough",28],"joelwaterman":["Chicago Fire FC",30],"mathieuchoiniere":["Los Angeles FC",27],"stepheneustaquio":["Los Angeles FC",29],"ismaelkone":["Sassuolo",23],"cylelarin":["Southampton",31],"jonathandavid":["Juventus",26],"liammillar":["Hull City",26],"tanioluwaseyi":["Villarreal",26],"derekcornelius":["Rangers",28],"jacobshaffelburg":["Los Angeles FC",26],"moisebombito":["Nice",26],"maximecrepeau":["Orlando City SC",32],"tajonbuchanan":["Villarreal",27],"owengoodman":["Barnsley",22],"alphonsodavies":["Bayern Munich",25],"aliahmed":["Norwich City",25],"jonathanosorio":["Toronto FC",33],"richielaryea":["Toronto FC",31],"nikosigur":["Hajduk Split",22],"promisedavid":["Union Saint-Gilloise",24],"nathansaliba":["Anderlecht",22],"mahmudabunada":["Al-Rayyan",26],"pedromiguel":["Al-Sadd",35],"lucasmendes":["Al-Wakrah",35],"issalaye":["Al-Arabi",28],"jassemgaber":["Al-Rayyan",24],"abdulazizhatem":["Al-Rayyan",35],"ahmedalaaeldin":["Al-Rayyan",33],"edmilsonjunior":["Al-Duhail",31],"mohammedmuntari":["Al-Gharafa",32],"hassanalhaydos":["Al-Sadd",35],"akramafif":["Al-Sadd",29],"karimboudiaf":["Al-Duhail",35],"ayoubaloui":["Al-Gharafa",21],"homamahmed":["Cultural Leonesa",26],"yusufabdurisag":["Al-Wakrah",26],"boualemkhoukhi":["Al-Sadd",35],"ahmedalganehi":["Al-Gharafa",25],"sultanalbrake":["Al-Duhail",30],"almoezali":["Al-Duhail",29],"ahmedfathy":["Al-Arabi",33],"salahzakaria":["Al-Duhail",27],"meshaalbarsham":["Al-Sadd",28],"assimmadibo":["Al-Wakrah",29],"tahsinjamshid":["Al-Duhail",19],"alhashmialhussain":["Al-Arabi",22],"mohamedalmannai":["Al-Shamal",22],"gregorkobel":["Borussia Dortmund",28],"miromuheim":["Hamburger SV",28],"silvanwidmer":["Mainz 05",33],"nicoelvedi":["Borussia Mönchengladbach",29],"manuelakanji":["Inter Milan",30],"deniszakaria":["Monaco",29],"breelembolo":["Rennes",29],"remofreuler":["Bologna",34],"johanmanzambi":["SC Freiburg",20],"granitxhaka":["Sunderland",33],"danndoye":["Nottingham Forest",25],"yvonmvogo":["Lorient",32],"ricardorodriguez":["Real Betis",33],"ardonjashari":["Milan",23],"djibrilsow":["Sevilla",29],"christianfassnacht":["Young Boys",32],"rubenvargas":["Sevilla",27],"eraycomert":["Valencia",28],"noahokafor":["Leeds United",26],"michelaebischer":["Pisa",29],"marvinkeller":["Young Boys",23],"fabianrieder":["FC Augsburg",24],"zekiamdouni":["Burnley",25],"aureleamenda":["Eintracht Frankfurt",22],"lucajaquez":["VfB Stuttgart",23],"cedricitten":["Fortuna Düsseldorf",29],"alisson":["Liverpool",33],"wesley":["Roma",22],"gabrielmagalhaes":["Arsenal",28],"marquinhos":["Paris Saint-Germain",32],"casemiro":["Manchester United",34],"alexsandro":["Flamengo",35],"viniciusjunior":["Real Madrid",25],"brunoguimaraes":["Newcastle United",28],"matheuscunha":["Manchester United",27],"neymar":["Santos",34],"raphinha":["Barcelona",29],"weverton":["Grêmio",38],"daniloluiz":["Flamengo",34],"bremer":["Juventus",29],"leopereira":["Flamengo",30],"douglassantos":["Zenit Saint Petersburg",32],"fabinho":["Al-Ittihad",32],"danilosantos":["Botafogo",25],"endrick":["Lyon",19],"lucaspaqueta":["Flamengo",28],"luizhenrique":["Zenit Saint Petersburg",25],"gabrielmartinelli":["Arsenal",24],"ederson":["Fenerbahçe",32],"rogeribanez":["Al-Ahli",27],"igorthiago":["Brentford",24],"rayan":["Bournemouth",19],"johnyplacide":["Bastia",38],"alexandrepierre":["Sochaux",25],"josueduverger":["Cosmos Koblenz",26],"ricardoade":["LDU Quito",36],"carlensarcus":["Angers",29],"martinexperience":["Nancy",27],"jeankevinduverne":["Gent",28],"dukelacroix":["Colorado Springs Switchbacks FC",32],"wilguenspaugain":["Zulte Waregem",24],"hannesdelcroix":["Lugano",27],"keetothermoncy":["Young Boys",20],"levertonpierre":["Vizela",28],"danleyjeanjacques":["Philadelphia Union",26],"carlsainte":["El Paso Locomotive FC",23],"jeanricnerbellegarde":["Wolverhampton Wanderers",27],"woodenskypierre":["Violette",21],"dominiquesimon":["Tatran Prešov",25],"duckensnazon":["Esteghlal",32],"frantzdypierrot":["Çaykur Rizespor",31],"derricketiennejr":["Toronto FC",29],"louiciusdeedson":["FC Dallas",25],"rubenprovidence":["Almere City",24],"josuecasimir":["Auxerre",24],"yassinfortune":["Vizela",27],"wilsonisidor":["Sunderland",25],"lennyjoseph":["Ferencváros",25],"yassinebounou":["Al-Hilal",35],"munirmohamedi":["RS Berkane",37],"ahmedredatagnaouti":["AS FAR",30],"achrafhakimi":["Paris Saint-Germain",27],"nayefaguerd":["Marseille",30],"noussairmazraoui":["Manchester United",28],"youssefbelammari":["Al Ahly",27],"anasssalaheddine":["PSV Eindhoven",24],"chadiriad":["Crystal Palace",22],"issadiop":["Fulham",29],"zakariaelouahdi":["Genk",24],"redouanehalhal":["Mechelen",23],"sofyanamrabat":["Real Betis",29],"azzedineounahi":["Girona",26],"bilalelkhannouss":["VfB Stuttgart",22],"ismaelsaibari":["PSV Eindhoven",25],"neilelaynaoui":["Roma",24],"samirelmourabet":["Strasbourg",19],"ayyoubbouaddi":["Lille",18],"ayoubelkaabi":["Olympiacos",32],"soufianerahimi":["Al-Ain",30],"abdeezzalzouli":["Real Betis",24],"brahimdiaz":["Real Madrid",26],"chemsdinetalbi":["Sunderland",21],"gessimeyassine":["Strasbourg",20],"ayoubeamaimouni":["Eintracht Frankfurt",21],"craiggordon":["Heart of Midlothian",43],"angusgunn":["Nottingham Forest",30],"liamkelly":["Rangers",30],"andyrobertson":["Liverpool",32],"granthanley":["Hibernian",34],"kierantierney":["Celtic",29],"scottmckenna":["Dinamo Zagreb",29],"jackhendry":["Al-Ettifaq",31],"nathanpatterson":["Everton",24],"anthonyralston":["Celtic",27],"johnsouttar":["Rangers",29],"aaronhickey":["Brentford",24],"dominichyam":["Wrexham",30],"johnmcginn":["Aston Villa",31],"scottmctominay":["Napoli",29],"ryanchristie":["Bournemouth",31],"kennymclean":["Norwich City",34],"lewisferguson":["Bologna",26],"bengannondoak":["Bournemouth",20],"findlaycurtis":["Kilmarnock",20],"tylerfletcher":["Manchester United",19],"lyndondykes":["Charlton Athletic",30],"cheadams":["Torino",29],"lawrenceshankland":["Heart of Midlothian",30],"georgehirst":["Ipswich Town",27],"rossstewart":["Southampton",29],"mathewryan":["Levante",34],"milosdegenek":["APOEL",32],"alessandrocircati":["Parma",22],"jacobitaliano":["GAK",24],"jordanbos":["Feyenoord",23],"jasongeria":["Albirex Niigata",33],"mathewleckie":["Melbourne City",35],"connormetcalfe":["FC St. Pauli",26],"mohamedtoure":["Norwich City",22],"ajdinhrustic":["Heracles Almelo",29],"awermabil":["Castellón",30],"paulizzo":["Randers",31],"aidenoneill":["New York City FC",27],"cammydevlin":["Heart of Midlothian",28],"kaitrewin":["New York City FC",25],"azizbehich":["Melbourne City",35],"nestoryirankunda":["Watford",20],"patrickbeach":["Melbourne City",22],"harrysouttar":["Leicester City",27],"cristianvolpato":["Sassuolo",22],"cameronburgess":["Swansea City",30],"jacksonirvine":["FC St. Pauli",33],"nishanvelupillay":["Melbourne Victory",25],"paulokonengstler":["Sydney FC",21],"lucasherrington":["Colorado Rapids",18],"teteyengi":["Machida Zelvia",25],"gatitofernandez":["Cerro Porteño",38],"orlandogill":["San Lorenzo",26],"gastonolveira":["Olimpia",33],"gustavogomez":["Palmeiras",33],"junioralonso":["Atlético Mineiro",33],"fabianbalbuena":["Grêmio",34],"omaralderete":["Sunderland",29],"juanjosecaceres":["Dynamo Moscow",26],"gustavovelazquez":["Cerro Porteño",35],"josecanale":["Lanús",29],"alexandromaidana":["Talleres",20],"miguelalmiron":["Atlanta United FC",32],"kaku":["Al-Ain",31],"andrescubas":["Vancouver Whitecaps FC",30],"ramonsosa":["Palmeiras",26],"diegogomez":["Brighton & Hove Albion",23],"damianbobadilla":["São Paulo",24],"braianojeda":["Orlando City SC",25],"matiasgalarza":["Atlanta United FC",24],"mauricio":["Palmeiras",24],"antoniosanabria":["Cremonese",30],"julioenciso":["Strasbourg",22],"gabrielavalos":["Independiente",34],"alexarce":["Independiente Rivadavia",30],"isidropitta":["Red Bull Bragantino",26],"gustavocaballero":["Portsmouth",24],"ugurcancakr":["Galatasaray",30],"mertgunok":["Fenerbahçe",37],"altaybayndr":["Manchester United",28],"ersindestanoglu":["Beşiktaş",25],"muhammedsengezer":["İstanbul Başakşehir",29],"merihdemiral":["Al-Ahli",28],"zekicelik":["Roma",29],"caglarsoyuncu":["Fenerbahçe",30],"mertmuldur":["Fenerbahçe",27],"ferdikadoglu":["Brighton & Hove Albion",26],"ozankabak":["TSG Hoffenheim",26],"abdulkerimbardakc":["Galatasaray",31],"erenelmal":["Galatasaray",25],"sametakaydin":["Çaykur Rizespor",32],"yusufakcicek":["Al-Hilal",20],"mustafaeskihellac":["Trabzonspor",29],"ahmetcankaplan":["NEC",23],"hakancalhanoglu":["Inter Milan",32],"kaanayhan":["Galatasaray",31],"orkunkokcu":["Beşiktaş",25],"ismailyuksek":["Fenerbahçe",27],"salihozcan":["Borussia Dortmund",28],"atakankarazor":["VfB Stuttgart",29],"demiregetknaz":["Braga",21],"keremakturkoglu":["Fenerbahçe",27],"irfancankahveci":["Kasımpaşa",30],"barsalperylmaz":["Galatasaray",26],"ardaguler":["Real Madrid",21],"kenanyldz":["Juventus",21],"yunusakgun":["Galatasaray",25],"oguzaydn":["Fenerbahçe",25],"denizgul":["Porto",21],"yusufsar":["İstanbul Başakşehir",27],"canuzun":["Eintracht Frankfurt",20],"aralsimsir":["Midtjylland",23],"mattturner":["New England Revolution",31],"serginodest":["PSV Eindhoven",25],"chrisrichards":["Crystal Palace",26],"tyleradams":["Bournemouth",27],"antoneerobinson":["Fulham",28],"austontrusty":["Celtic",27],"giovannireyna":["Borussia Mönchengladbach",23],"westonmckennie":["Juventus",27],"ricardopepi":["PSV Eindhoven",23],"christianpulisic":["Milan",27],"brendenaaronson":["Leeds United",25],"milesrobinson":["FC Cincinnati",29],"timream":["Charlotte FC",38],"sebastianberhalter":["Vancouver Whitecaps FC",25],"cristianroldan":["Seattle Sounders FC",31],"alexfreeman":["Villarreal",21],"maliktillman":["Bayer Leverkusen",24],"maximilianarfsten":["Columbus Crew",25],"hajiwright":["Coventry City",28],"folarinbalogun":["Monaco",24],"timothyweah":["Marseille",26],"markmckenzie":["Toulouse",27],"joescally":["Borussia Mönchengladbach",23],"mattfreese":["New York City FC",27],"chrisbrady":["Chicago Fire FC",22],"alejandrozendejas":["América",28],"eloyroom":["Miami FC",37],"shurandysambo":["Sparta Rotterdam",24],"juriengaari":["Abha",32],"roshonvaneijma":["RKC Waalwijk",28],"sherelfloranus":["PEC Zwolle",27],"godfriedroemeratoe":["RKC Waalwijk",26],"juninhobacuna":["Volendam",28],"livanocomenencia":["Zürich",22],"jurgenlocadia":["Miami FC",32],"leandrobacuna":["Iğdır",34],"jeremyantonisse":["Kifisia",24],"sontjehansen":["Middlesbrough",24],"tyresenoslin":["Telstar",23],"kenjigorre":["Maccabi Haifa",31],"arjanymartha":["Rotherham United",22],"jearlmargaritha":["Beveren",26],"brandleykuwas":["Volendam",33],"armandoobispo":["PSV Eindhoven",27],"gervanekastaneer":["Terengganu",30],"joshuabrenet":["Kayserispor",32],"tahithchong":["Sheffield United",26],"kevinfelida":["Den Bosch",26],"riechedlybazoer":["Konyaspor",29],"deveronfonville":["NEC",23],"tyrickbodak":["Telstar",24],"trevordoornbusch":["VVV-Venlo",26],"hernangalindez":["Huracán",39],"felixtorres":["Internacional",29],"pierohincapie":["Arsenal",24],"joelordonez":["Club Brugge",22],"jordyalcivar":["Independiente del Valle",26],"willianpacho":["Paris Saint-Germain",24],"pervisestupinan":["Milan",28],"denilcastillo":["Midtjylland",22],"johnyeboah":["Venezia",25],"kendrypaez":["River Plate",19],"kevinrodriguez":["Union Saint-Gilloise",26],"moisesramirez":["Kifisia",25],"ennervalencia":["Pachuca",36],"alanminda":["Atlético Mineiro",23],"pedrovite":["UNAM",24],"anthonyvalencia":["Antwerp",22],"angelopreciado":["Atlético Mineiro",28],"jordycaicedo":["Huracán",28],"gonzaloplata":["Flamengo",25],"nilsonangulo":["Sunderland",22],"alanfranco":["Atlético Mineiro",27],"gonzalovalle":["LDU Quito",30],"moisescaicedo":["Chelsea",24],"yaimarmedina":["Genk",21],"jacksonporozo":["Tijuana",25],"jeremyarevalo":["VfB Stuttgart",21],"manuelneuer":["Bayern Munich",40],"antoniorudiger":["Real Madrid",33],"waldemaranton":["Borussia Dortmund",29],"jonathantah":["Bayern Munich",30],"aleksandarpavlovic":["Bayern Munich",22],"joshuakimmich":["Bayern Munich",31],"kaihavertz":["Arsenal",27],"leongoretzka":["Bayern Munich",31],"jamieleweling":["VfB Stuttgart",25],"jamalmusiala":["Bayern Munich",23],"nickwoltemade":["Newcastle United",24],"oliverbaumann":["TSG Hoffenheim",36],"pascalgro":["Brighton & Hove Albion",34],"maximilianbeier":["Borussia Dortmund",23],"nicoschlotterbeck":["Borussia Dortmund",26],"angelostiller":["VfB Stuttgart",25],"florianwirtz":["Liverpool",23],"nathanielbrown":["Eintracht Frankfurt",22],"leroysane":["Galatasaray",30],"nadiemamiri":["Mainz 05",29],"alexandernubel":["VfB Stuttgart",29],"davidraum":["RB Leipzig",28],"felixnmecha":["Borussia Dortmund",25],"malickthiaw":["Newcastle United",24],"lennartkarl":["Bayern Munich",18],"denizundav":["VfB Stuttgart",29],"yahiafofana":["Çaykur Rizespor",25],"albanlafont":["Panathinaikos",27],"mohamedkone":["Charleroi",24],"ghislainkonan":["Gil Vicente",30],"odilonkossounou":["Atalanta",25],"wilfriedsingo":["Galatasaray",25],"evanndicka":["Roma",26],"emmanuelagbadou":["Beşiktaş",29],"gueladoue":["Strasbourg",23],"ousmanediomande":["Sporting CP",22],"christopheroperi":["İstanbul Başakşehir",29],"franckkessie":["Al-Ahli",29],"jeanmichaelseri":["Maribor",34],"ibrahimsangare":["Nottingham Forest",28],"sekofofana":["Porto",31],"christinaooulai":["Trabzonspor",20],"parfaitguiagon":["Charleroi",25],"nicolaspepe":["Villarreal",31],"oumardiakite":["Cercle Brugge",22],"simonadingra":["Monaco",24],"evannguessand":["Crystal Palace",24],"amaddiallo":["Manchester United",23],"yandiomande":["RB Leipzig",19],"bazoumanatoure":["TSG Hoffenheim",20],"elyewahi":["Nice",23],"angeyoanbonny":["Inter Milan",22],"zionsuzuki":["Parma",23],"yukinarisugawara":["Werder Bremen",25],"shogotaniguchi":["Sint-Truiden",34],"koitakura":["Ajax",29],"yutonagatomo":["FC Tokyo",39],"wataruendo":["Liverpool",33],"aotanaka":["Leeds United",27],"takefusakubo":["Real Sociedad",25],"keisukegoto":["Sint-Truiden",21],"ritsudoan":["Eintracht Frankfurt",27],"daizenmaeda":["Celtic",28],"keisukeosako":["Sanfrecce Hiroshima",26],"keitonakamura":["Reims",25],"junyaito":["Genk",33],"daichikamada":["Crystal Palace",29],"tsuyoshiwatanabe":["Feyenoord",29],"yuitosuzuki":["SC Freiburg",24],"ayaseueda":["Feyenoord",27],"kokiogawa":["NEC",28],"ayumuseko":["Le Havre",26],"hirokiito":["Bayern Munich",27],"takehirotomiyasu":["Ajax",27],"tomokihayakawa":["Kashima Antlers",27],"kaishusano":["Mainz 05",25],"junnosukesuzuki":["Copenhagen",22],"kentoshiogai":["VfL Wolfsburg",21],"bartverbruggen":["Brighton & Hove Albion",23],"markflekken":["Bayer Leverkusen",32],"robinroefs":["Sunderland",23],"virgilvandijk":["Liverpool",34],"denzeldumfries":["Inter Milan",30],"nathanake":["Manchester City",31],"jurrientimber":["Arsenal",24],"mickyvandeven":["Tottenham Hotspur",25],"matswieffer":["Brighton & Hove Albion",26],"janpaulvanhecke":["Brighton & Hove Albion",26],"jorrelhato":["Chelsea",20],"frenkiedejong":["Barcelona",29],"martenderoon":["Atalanta",35],"tijjanireijnders":["Manchester City",27],"teunkoopmeiners":["Juventus",28],"ryangravenberch":["Liverpool",24],"justinkluivert":["Bournemouth",27],"quintentimber":["Marseille",24],"guustil":["PSV Eindhoven",28],"memphisdepay":["Corinthians",32],"woutweghorst":["Ajax",33],"donyellmalen":["Roma",27],"codygakpo":["Liverpool",27],"noalang":["Galatasaray",26],"brianbrobbey":["Sunderland",24],"crysenciosummerville":["West Ham United",24],"jacobwidellzetterstrom":["Derby County",27],"gustaflagerbielke":["Braga",26],"victorlindelof":["Aston Villa",31],"isakhien":["Atalanta",27],"gabrielgudmundsson":["Leeds United",27],"hermanjohansson":["FC Dallas",28],"lucasbergvall":["Tottenham Hotspur",20],"danielsvensson":["Borussia Dortmund",24],"alexanderisak":["Liverpool",26],"benjaminnygren":["Celtic",24],"anthonyelanga":["Newcastle United",24],"viktorjohansson":["Stoke City",27],"kensema":["Pafos",32],"hjalmarekdal":["Burnley",27],"carlstarfelt":["Celta Vigo",31],"jesperkarlstrom":["Udinese",30],"viktorgyokeres":["Arsenal",28],"yasinayari":["Brighton & Hove Albion",22],"mattiassvanberg":["VfL Wolfsburg",27],"ericsmith":["FC St. Pauli",29],"alexanderbernhardsson":["Holstein Kiel",27],"besfortzeneli":["Union Saint-Gilloise",23],"kristoffernordfeldt":["AIK",36],"elliotstroud":["Mjällby AIF",23],"gustafnilsson":["Club Brugge",29],"tahaali":["Malmö FF",27],"aymendahmen":["CS Sfaxien",29],"sabribenhessen":["Étoile du Sahel",29],"mouhibchamakh":["Club Africain",24],"montassartalbi":["Lorient",28],"dylanbronn":["Servette",30],"aliabdi":["Nice",32],"yanvalery":["Young Boys",27],"mohamedaminebenhamida":["Espérance de Tunis",30],"moutazneffati":["IFK Norrköping",21],"omarrekik":["Maribor",24],"ademarous":["Kasımpaşa",21],"raedchikhaoui":["US Monastir",22],"ellyesskhiri":["Eintracht Frankfurt",31],"hannibalmejbri":["Burnley",23],"anisbenslimane":["Norwich City",25],"mortadhabenouanes":["Kasımpaşa",31],"ismaelgharbi":["FC Augsburg",22],"hadjmahmoud":["Lugano",26],"ranikhedira":["Union Berlin",32],"eliasachouri":["Copenhagen",27],"firaschaouat":["Club Africain",30],"hazemmastouri":["Dynamo Makhachkala",28],"eliassaad":["Hannover 96",26],"sebastiantounekti":["Celtic",23],"khalilayari":["Paris Saint-Germain",21],"rayanelloumi":["Vancouver Whitecaps FC",18],"thibautcourtois":["Real Madrid",34],"sennelammens":["Manchester United",23],"mikependers":["Strasbourg",20],"thomasmeunier":["Lille",34],"timothycastagne":["Fulham",30],"arthurtheate":["Eintracht Frankfurt",26],"zenodebast":["Sporting CP",22],"maximdecuyper":["Brighton & Hove Albion",25],"brandonmechele":["Club Brugge",33],"konidewinter":["Milan",23],"joaquinseys":["Club Brugge",21],"nathanngoy":["Lille",23],"axelwitsel":["Girona",37],"kevindebruyne":["Napoli",34],"youritielemans":["Aston Villa",29],"hansvanaken":["Club Brugge",33],"amadouonana":["Aston Villa",24],"nicolasraskin":["Rangers",25],"romelulukaku":["Napoli",33],"leandrotrossard":["Arsenal",31],"jeremydoku":["Manchester City",24],"dodilukebakio":["Benfica",28],"charlesdeketelaere":["Atalanta",25],"alexissaelemaekers":["Milan",26],"diegomoreira":["Strasbourg",21],"matiasfernandezpardo":["Lille",21],"mohamedelshenawy":["Al Ahly",37],"mostafashobeir":["Al Ahly",26],"mohamedalaa":["El Gouna",27],"elmahdysoliman":["Zamalek",39],"hamdyfathy":["Al-Wakrah",31],"ramyrabia":["Al-Ain",33],"mohamedhany":["Al Ahly",30],"ahmedfatouh":["Zamalek",28],"mohamedabdelmonem":["Nice",27],"yasseribrahim":["Al Ahly",33],"hossamabdelmaguid":["Zamalek",25],"karimhafez":["Pyramids",30],"tarekalaa":["ZED",24],"marwanattia":["Al Ahly",27],"emamashour":["Al Ahly",28],"mohanadlasheen":["Pyramids",30],"mahmoudsaber":["ZED",24],"nabilemad":["Al-Najma",30],"mostafaziko":["Pyramids",29],"mohamedsalah":["Liverpool",33],"trezeguet":["Al Ahly",31],"zizo":["Al Ahly",30],"omarmarmoush":["Manchester City",27],"ibrahimadel":["Nordsjælland",25],"haissemhassan":["Oviedo",24],"hamzaabdelkarim":["Barcelona",18],"alirezabeiranvand":["Tractor",33],"payamniazmand":["Persepolis",31],"hosseinhosseini":["Sepahan",33],"ehsanhajsafi":["Sepahan",36],"miladmohammadi":["Persepolis",32],"raminrezaeian":["Foolad",36],"hosseinkanaanizadegan":["Persepolis",32],"shojaekhalilzadeh":["Tractor",37],"salehhardani":["Esteghlal",27],"alinemati":["Foolad",30],"danialeiri":["Malavan",22],"alirezajahanbakhsh":["Dender",32],"saeidezatolahi":["Shabab Al-Ahli",29],"samanghoddos":["Kalba",32],"mehditorabi":["Tractor",31],"rouzbehcheshmi":["Esteghlal",32],"mohammadmohebi":["Rostov",27],"mehdighayedi":["Al-Nasr",27],"mohammadghorbani":["Al-Wahda",25],"ariayousefi":["Sepahan",24],"amirmohammadrazzaghinia":["Esteghlal",20],"mehditaremi":["Olympiacos",33],"shahriyarmoghanlou":["Kalba",31],"amirhosseinhosseinzadeh":["Tractor",25],"alialipour":["Persepolis",30],"denniseckert":["Standard Liège",29],"maxcrocombe":["Millwall",32],"timpayne":["Wellington Phoenix",32],"francisdevries":["Auckland FC",31],"tylerbindon":["Sheffield United",21],"michaelboxall":["Minnesota United FC",37],"joebell":["Viking",27],"matthewgarbett":["Peterborough United",24],"markostamenic":["Swansea City",24],"chriswood":["Nottingham Forest",34],"sarpreetsingh":["Wellington Phoenix",27],"elijahjust":["Motherwell",26],"alexpaulsen":["Lechia Gdańsk",23],"liberatocacace":["Wrexham",25],"alexrufer":["Wellington Phoenix",29],"nandopijnaker":["Auckland FC",27],"finnsurman":["Portland Timbers",22],"kostabarbarouses":["Western Sydney Wanderers",36],"benwaine":["Port Vale",25],"benold":["Saint-Étienne",23],"callummccowatt":["Silkeborg",27],"jesserandall":["Auckland FC",23],"michaelwoud":["Auckland FC",27],"ryanthomas":["PEC Zwolle",31],"callanelliot":["Auckland FC",26],"lachlanbayliss":["Newcastle Jets",23],"tommysmith":["Braintree Town",36],"vozinha":["Chaves",40],"marciorosa":["Montana",29],"cjdossantos":["San Diego FC",25],"stopira":["Torreense",38],"robertolopes":["Shamrock Rovers",33],"joaopaulo":["FCSB",28],"diney":["Al-Bataeh",31],"logancosta":["Villarreal",25],"stevenmoreira":["Columbus Crew",31],"wagnerpina":["Trabzonspor",23],"sidnylopescabral":["Benfica",22],"kelvinpires":["SJK",26],"jamiromonteiro":["PEC Zwolle",32],"kevinpina":["Krasnodar",29],"deroyduarte":["Ludogorets Razgrad",26],"telmoarcanjo":["Vitória de Guimarães",24],"larosduarte":["Puskás Akadémia",29],"yannicksemedo":["Farense",30],"ryanmendes":["Iğdır",36],"garryrodrigues":["Apollon Limassol",35],"willysemedo":["Omonia",32],"jovanecabral":["Estrela Amadora",27],"gilsonbenchimol":["Akron Tolyatti",24],"dailonlivramento":["Casa Pia",25],"heliovarela":["Maccabi Tel Aviv",24],"nunodacosta":["İstanbul Başakşehir",35],"mohammedalowais":["Al-Ula",34],"nawafalaqidi":["Al-Nassr",26],"ahmedalkassar":["Al-Qadsiah",35],"saudabdulhamid":["Lens",26],"hassanaltambakti":["Al-Hilal",27],"abdulelahalamri":["Al-Nassr",29],"nawafboushal":["Al-Nassr",26],"alilajami":["Al-Hilal",30],"alimajrashi":["Al-Ahli",26],"hassankadesh":["Al-Ittihad",33],"motebalharbi":["Al-Hilal",26],"jehadthakri":["Al-Qadsiah",24],"mohammedabualshamat":["Al-Qadsiah",23],"salemaldawsari":["Al-Hilal",34],"mohamedkanno":["Al-Hilal",31],"nasseraldawsari":["Al-Hilal",27],"abdullahalkhaibari":["Al-Nassr",29],"musabaljuwayr":["Al-Qadsiah",22],"aymanyahya":["Al-Nassr",25],"ziyadaljohani":["Al-Ahli",24],"sultanmandash":["Al-Hilal",31],"alaaalhejji":["Neom",30],"firasalburaikan":["Al-Ahli",26],"salehalshehri":["Al-Ittihad",32],"abdullahalhamdan":["Al-Nassr",26],"khalidalghannam":["Al-Ettifaq",25],"davidraya":["Arsenal",30],"marcpubill":["Atlético Madrid",22],"alexgrimaldo":["Bayer Leverkusen",30],"ericgarcia":["Barcelona",25],"marcosllorente":["Atlético Madrid",31],"mikelmerino":["Arsenal",29],"ferrantorres":["Barcelona",26],"fabianruiz":["Paris Saint-Germain",30],"gavi":["Barcelona",21],"daniolmo":["Barcelona",28],"yeremypino":["Crystal Palace",23],"pedroporro":["Tottenham Hotspur",26],"joangarcia":["Barcelona",25],"aymericlaporte":["Athletic Bilbao",32],"alexbaena":["Atlético Madrid",24],"rodri":["Manchester City",29],"nicowilliams":["Athletic Bilbao",23],"martinzubimendi":["Arsenal",27],"lamineyamal":["Barcelona",18],"pedri":["Barcelona",23],"mikeloyarzabal":["Real Sociedad",29],"paucubarsi":["Barcelona",19],"unaisimon":["Athletic Bilbao",29],"marccucurella":["Chelsea",27],"victormunoz":["Osasuna",22],"borjaiglesias":["Celta Vigo",33],"fernandomuslera":["Estudiantes",39],"sergiorochet":["Internacional",33],"santiagomele":["Monterrey",28],"josemariagimenez":["Atlético Madrid",31],"matiasvina":["River Plate",28],"mathiasolivera":["Napoli",28],"guillermovarela":["Flamengo",33],"ronaldaraujo":["Barcelona",27],"sebastiancaceres":["América",26],"joaquinpiquerez":["Palmeiras",27],"santiagobueno":["Wolverhampton Wanderers",27],"rodrigobentancur":["Tottenham Hotspur",28],"federicovalverde":["Real Madrid",27],"giorgiandearrascaeta":["Flamengo",32],"facundopellistri":["Panathinaikos",24],"manuelugarte":["Manchester United",25],"nicolasdelacruz":["Flamengo",29],"brianrodriguez":["América",26],"maximilianoaraujo":["Sporting CP",26],"agustincanobbio":["Fluminense",27],"emilianomartinez":["Aston Villa",33],"rodrigozalazar":["Braga",26],"juanmanuelsanabria":["Real Salt Lake",26],"darwinnunez":["Al-Hilal",26],"federicovinas":["Oviedo",27],"rodrigoaguirre":["UANL",31],"bricesamba":["Rennes",32],"malogusto":["Chelsea",23],"lucasdigne":["Aston Villa",32],"dayotupamecano":["Bayern Munich",27],"juleskounde":["Barcelona",27],"manukone":["Roma",25],"ousmanedembele":["Paris Saint-Germain",29],"aurelientchouameni":["Real Madrid",26],"marcusthuram":["Inter Milan",28],"kylianmbappe":["Real Madrid",27],"michaelolise":["Bayern Munich",24],"bradleybarcola":["Paris Saint-Germain",23],"ngolokante":["Fenerbahçe",35],"adrienrabiot":["Milan",31],"ibrahimakonate":["Liverpool",27],"mikemaignan":["Milan",30],"williamsaliba":["Arsenal",25],"warrenzaireemery":["Paris Saint-Germain",20],"theohernandez":["Al-Hilal",28],"desiredoue":["Paris Saint-Germain",21],"lucashernandez":["Paris Saint-Germain",30],"jeanphilippemateta":["Crystal Palace",28],"robinrisser":["Lens",21],"rayancherki":["Manchester City",22],"maghnesakliouche":["Monaco",24],"maxencelacroix":["Crystal Palace",26],"jalalhassan":["Al-Zawraa",35],"fahadtalib":["Al-Talaba",31],"ahmedbasil":["Al-Shorta",29],"rebinsulaka":["Port",34],"manafyounis":["Al-Shorta",29],"merchasdoski":["Viktoria Plzeň",26],"zaidtahseen":["Pakhtakor",25],"fransputros":["Persib",32],"husseinali":["Pogoń Szczecin",24],"ahmedyahya":["Al-Shorta",30],"mustafasaadoon":["Al-Shorta",25],"akamhashim":["Al-Zawraa",27],"ibrahimbayesh":["Al-Dhafra",26],"amiralammari":["Cracovia",28],"alijasim":["Al-Najma",22],"youssefamyn":["AEK Larnaca",22],"zidaneiqbal":["Utrecht",23],"markofarji":["Venezia",22],"kevinyakob":["AGF",25],"aimarsher":["Sarpsborg 08",23],"zaidismail":["Al-Talaba",24],"ahmedqasem":["Nashville SC",22],"aymenhussein":["Al-Karma",30],"mohanadali":["Dibba",25],"alialhamadi":["Luton Town",24],"aliyousif":["Al-Talaba",30],"rjannyland":["Sevilla",35],"mortenthorsby":["Cremonese",30],"kristofferajer":["Brentford",28],"leostigard":["Genoa",26],"davidmllerwolfe":["Wolverhampton Wanderers",24],"patrickberg":["Bodø/Glimt",28],"alexandersrloth":["Atlético Madrid",30],"sanderberge":["Fulham",28],"erlinghaaland":["Manchester City",25],"martindegaard":["Arsenal",27],"jrgenstrandlarsen":["Crystal Palace",26],"sandertangvik":["Hamburger SV",23],"egilselvik":["Watford",28],"fredrikaursnes":["Benfica",30],"fredrikandrebjrkan":["Bodø/Glimt",27],"marcusholmgrenpedersen":["Torino",25],"torbjrnheggem":["Bologna",27],"kristianthorstvedt":["Sassuolo",27],"theloaasgaard":["Rangers",24],"antonionusa":["RB Leipzig",21],"andreasschjelderup":["Benfica",22],"oscarbobb":["Fulham",22],"jenspetterhauge":["Bodø/Glimt",26],"sondrelangas":["Derby County",25],"henrikfalchener":["Viking",23],"julianryerson":["Borussia Dortmund",28],"edouardmendy":["Al-Ahli",34],"morydiaw":["Le Havre",32],"yehvanndiouf":["Nice",26],"kalidoukoulibaly":["Al-Hilal",34],"krepindiatta":["Monaco",27],"moussaniakhate":["Lyon",30],"ismailjakobs":["Galatasaray",26],"abdoulayeseck":["Maccabi Haifa",34],"elhadjimalickdiouf":["West Ham United",21],"mamadousarr":["Chelsea",20],"antoinemendy":["Nice",22],"ilaycamara":["Anderlecht",23],"moustaphambow":["Paris FC",26],"idrissagueye":["Everton",36],"papegueye":["Villarreal",27],"papematarsarr":["Tottenham Hotspur",23],"laminecamara":["Monaco",22],"patheciss":["Rayo Vallecano",32],"habibdiarra":["Sunderland",22],"barasapokondiaye":["Bayern Munich",18],"sadiomane":["Al-Nassr",34],"ismailasarr":["Crystal Palace",28],"ilimanndiaye":["Everton",26],"nicolasjackson":["Bayern Munich",24],"bambadieng":["Lorient",26],"cherifndiaye":["Samsunspor",30],"ibrahimmbaye":["Paris Saint-Germain",18],"assanediao":["Como",20],"lucazidane":["Granada",28],"oussamabenbot":["USM Alger",31],"melvinmastil":["Stade Nyonnais",26],"aissamandi":["Lille",34],"ramybensebaini":["Borussia Dortmund",31],"mohamedaminetougai":["Espérance de Tunis",26],"rayanaitnouri":["Manchester City",25],"jaouenhadjam":["Young Boys",23],"rafikbelghali":["Hellas Verona",24],"zineddinebelaid":["JS Kabylie",27],"achrefabada":["USM Alger",26],"samirchergui":["Paris FC",27],"nabilbentaleb":["Lille",31],"ramizzerrouki":["Twente",28],"hichamboudaoui":["Nice",26],"fareschaibi":["Eintracht Frankfurt",23],"houssemaouar":["Al-Ittihad",27],"ibrahimmaza":["Bayer Leverkusen",20],"yacinetitraoui":["Charleroi",22],"riyadmahrez":["Al-Ahli",35],"mohamedamoura":["VfL Wolfsburg",26],"aminegouiri":["Marseille",26],"anishadjmoussa":["Feyenoord",24],"adilboulbina":["Al-Duhail",23],"nadhirbenbouali":["Győri ETO",26],"faresghedjemis":["Frosinone",23],"juanmusso":["Atlético Madrid",32],"leonardobalerdi":["Marseille",27],"nicolastagliafico":["Lyon",33],"gonzalomontiel":["River Plate",29],"leandroparedes":["Boca Juniors",31],"lisandromartinez":["Manchester United",28],"rodrigodepaul":["Inter Miami CF",32],"valentinbarco":["Strasbourg",21],"julianalvarez":["Atlético Madrid",26],"lionelmessi":["Inter Miami CF",38],"giovanilocelso":["Real Betis",30],"geronimorulli":["Marseille",34],"cristianromero":["Tottenham Hotspur",28],"exequielpalacios":["Bayer Leverkusen",27],"nicolasgonzalez":["Atlético Madrid",28],"thiagoalmada":["Atlético Madrid",25],"giulianosimeone":["Atlético Madrid",23],"nicopaz":["Como",21],"nicolasotamendi":["Benfica",38],"alexismacallister":["Liverpool",27],"josemanuellopez":["Palmeiras",25],"lautaromartinez":["Inter Milan",28],"enzofernandez":["Chelsea",25],"facundomedina":["Marseille",27],"nahuelmolina":["Atlético Madrid",28],"alexanderschlager":["Red Bull Salzburg",30],"davidaffengruber":["Elche",25],"kevindanso":["Tottenham Hotspur",27],"xaverschlager":["RB Leipzig",28],"stefanposch":["Mainz 05",29],"nicolasseiwald":["RB Leipzig",25],"markoarnautovic":["Red Star Belgrade",37],"davidalaba":["Real Madrid",33],"marcelsabitzer":["Borussia Dortmund",32],"floriangrillitsch":["Braga",30],"michaelgregoritsch":["FC Augsburg",32],"florianwiegele":["Viktoria Plzeň",25],"patrickpentz":["Brøndby",29],"sasakalajdzic":["LASK",28],"philipplienhart":["SC Freiburg",29],"phillippmwene":["Mainz 05",32],"carneychukwuemeka":["Borussia Dortmund",22],"romanoschmid":["Werder Bremen",26],"christophbaumgartner":["RB Leipzig",26],"konradlaimer":["Bayern Munich",29],"patrickwimmer":["VfL Wolfsburg",25],"alexanderprass":["TSG Hoffenheim",25],"marcofriedl":["Werder Bremen",28],"paulwanner":["PSV Eindhoven",20],"michaelsvoboda":["Venezia",27],"alessandroschopf":["Wolfsberger AC",32],"yazeedabulaila":["Al-Hussein",33],"abdallahalfakhouri":["Al-Wehdat",26],"nourbaniattiah":["Al-Faisaly",33],"ihsanhaddad":["Al-Hussein",32],"yazanalarab":["FC Seoul",30],"abdallahnasib":["Al-Zawraa",32],"saedalrosan":["Al-Hussein",29],"husamabudahab":["Al-Faisaly",26],"moabualnadi":["Selangor",25],"salimobaid":["Al-Hussein",34],"anasbadawi":["Al-Faisaly",28],"rajaeiayed":["Al-Hussein",32],"nooralrawabdeh":["Selangor",29],"ibrahimsadeh":["Al-Karma",26],"mohammadabuhashish":["Al-Karma",31],"nizaralrashdan":["Qatar SC",27],"mohannadabutaha":["Al-Quwa Al-Jawiya",23],"amerjamous":["Al-Zawraa",23],"mohammadaldawoud":["Al-Wehdat",33],"yousefqashi":["Al-Hussein",21],"mohammadtaha":["Al-Hussein",20],"musaaltaamari":["Rennes",29],"mahmoudalmardi":["Al-Hussein",32],"aliolwan":["Al-Sailiya",26],"mohammadabuzrayq":["Raja Casablanca",28],"odehalfakhouri":["Pyramids",20],"ibrahimsabra":["Lokomotiva Zagreb",20],"aliazaizeh":["Al-Shabab",22],"davidospina":["Atlético Nacional",37],"camilovargas":["Atlas",37],"alvaromontero":["Vélez Sarsfield",31],"davinsonsanchez":["Galatasaray",29],"santiagoarias":["Independiente",34],"yerrymina":["Cagliari",31],"danielmunoz":["Crystal Palace",30],"johanmojica":["Mallorca",33],"jhonlucumi":["Bologna",27],"deivermachado":["Nantes",32],"willerditta":["Cruz Azul",29],"jamesrodriguez":["Minnesota United FC",34],"jeffersonlerma":["Crystal Palace",31],"juanfernandoquintero":["River Plate",33],"jhonarias":["Palmeiras",28],"richardrios":["Benfica",26],"kevincastano":["River Plate",25],"jorgecarrascal":["Flamengo",28],"jamintoncampaz":["Rosario Central",26],"juanportilla":["Athletico Paranaense",27],"gustavopuerta":["Racing Santander",22],"luisdiaz":["Bayern Munich",29],"jhoncordoba":["Krasnodar",33],"luissuarez":["Sporting CP",28],"cuchohernandez":["Real Betis",27],"andresgomez":["Vasco da Gama",23],"lionelmpasi":["Le Havre",31],"timothyfayulu":["Noah",26],"matthieuepolo":["Standard Liège",21],"chancelmbemba":["Lille",31],"arthurmasuaku":["Lens",32],"gedeonkalulu":["Aris Limassol",28],"joriskayembe":["Genk",31],"dylanbatubinsika":["AEL",30],"axeltuanzebe":["Burnley",28],"aaronwanbissaka":["West Ham United",28],"stevekapuadi":["Widzew Łódź",28],"samuelmoutoussamy":["Atromitos",29],"edokayembe":["Watford",28],"charlespickel":["Espanyol",29],"gaelkakuta":["AEL",34],"noahsadiki":["Sunderland",21],"aarontshibola":["Kilmarnock",31],"ngalayelmukau":["Lille",21],"briancipenga":["Castellón",28],"cedricbakambu":["Real Betis",35],"meschakelia":["Alanyaspor",28],"theobongonda":["Spartak Moscow",30],"fistonmayele":["Pyramids",31],"yoanewissa":["Newcastle United",29],"nathanaelmbuku":["Montpellier",24],"simonbanza":["Al-Jazira",29],"diogocosta":["Porto",26],"josesa":["Wolverhampton Wanderers",33],"ruisilva":["Sporting CP",32],"rubendias":["Manchester City",29],"joaocancelo":["Barcelona",32],"nelsonsemedo":["Fenerbahçe",32],"nunomendes":["Paris Saint-Germain",23],"diogodalot":["Manchester United",27],"goncaloinacio":["Sporting CP",24],"matheusnunes":["Manchester City",27],"renatoveiga":["Villarreal",22],"tomasaraujo":["Benfica",24],"bernardosilva":["Manchester City",31],"brunofernandes":["Manchester United",31],"rubenneves":["Al-Hilal",29],"vitinha":["Paris Saint-Germain",26],"joaoneves":["Paris Saint-Germain",21],"samucosta":["Mallorca",25],"cristianoronaldo":["Al-Nassr",41],"joaofelix":["Al-Nassr",26],"rafaelleao":["Milan",27],"goncaloguedes":["Real Sociedad",29],"goncaloramos":["Paris Saint-Germain",24],"pedroneto":["Chelsea",26],"franciscotrincao":["Sporting CP",26],"franciscoconceicao":["Juventus",23],"utkiryusupov":["Navbahor",35],"abduvohidnematov":["Nasaf",25],"botiraliergashev":["Neftchi",30],"rustamashurmatov":["Esteghlal",29],"farrukhsayfiev":["Neftchi",35],"khojiakbaralijonov":["Pakhtakor",29],"sherzodnasrullaev":["Nasaf",27],"umareshmurodov":["Nasaf",33],"abdukodirkhusanov":["Manchester City",22],"abdullaabdullaev":["Dibba",28],"bekhruzkarimov":["Surkhon",18],"jakhongirurozov":["Dinamo Samarqand",22],"avazbekulmasaliev":["AGMK",26],"otabekshukurov":["Baniyas",29],"odiljonhamrobekov":["Tractor",30],"jamshidiskanderov":["Neftchi",32],"akmalmozgovoy":["Pakhtakor",27],"azizjonganiev":["Al-Bataeh",28],"jasurbekjaloliddinov":["Sogdiana",24],"umaralirakhmonaliev":["Sabah",22],"sherzodesanov":["Bukhara",23],"eldorshomurodov":["İstanbul Başakşehir",30],"igorsergeev":["Persepolis",33],"jaloliddinmasharipov":["Esteghlal",32],"ostonurunov":["Persepolis",25],"dostonbekkhamdamov":["Pakhtakor",29],"abbosbekfayzullaev":["İstanbul Başakşehir",22],"azizbekamonov":["Bukhara",28],"ruslanbekjiyanov":["Navbahor",25],"sherzodtemirov":["Erbil",27],"dominiklivakovic":["Dinamo Zagreb",31],"dominikkotarski":["Copenhagen",26],"ivorpandur":["Hull City",26],"joskogvardiol":["Manchester City",24],"dujecaletacar":["Real Sociedad",29],"josipsutalo":["Ajax",26],"josipstanisic":["Bayern Munich",26],"marinpongracic":["Fiorentina",28],"martinerlic":["Midtjylland",28],"lukavuskovic":["Hamburger SV",19],"lukamodric":["Milan",40],"mateokovacic":["Manchester City",32],"mariopasalic":["Atalanta",31],"nikolavlasic":["Torino",28],"lukasucic":["Real Sociedad",23],"martinbaturina":["Como",23],"kristijanjakic":["FC Augsburg",29],"petarsucic":["Inter Milan",22],"nikolamoro":["Bologna",28],"tonifruk":["Rijeka",25],"ivanperisic":["PSV Eindhoven",37],"andrejkramaric":["TSG Hoffenheim",34],"antebudimir":["Osasuna",34],"marcopasalic":["Orlando City SC",25],"petarmusa":["FC Dallas",28],"igormatanovic":["SC Freiburg",23],"jordanpickford":["Everton",32],"deanhenderson":["Crystal Palace",29],"jamestrafford":["Manchester City",23],"johnstones":["Manchester City",32],"marcguehi":["Manchester City",25],"reecejames":["Chelsea",26],"ezrikonsa":["Aston Villa",28],"danburn":["Newcastle United",34],"tinolivramento":["Newcastle United",23],"djedspence":["Tottenham Hotspur",25],"nicooreilly":["Manchester City",21],"jarellquansah":["Bayer Leverkusen",23],"jordanhenderson":["Brentford",35],"declanrice":["Arsenal",27],"judebellingham":["Real Madrid",22],"morganrogers":["Aston Villa",23],"kobbiemainoo":["Manchester United",21],"elliotanderson":["Nottingham Forest",23],"harrykane":["Bayern Munich",32],"marcusrashford":["Barcelona",28],"bukayosaka":["Arsenal",24],"olliewatkins":["Aston Villa",30],"anthonygordon":["Newcastle United",25],"eberechieze":["Arsenal",27],"nonimadueke":["Arsenal",24],"ivantoney":["Al-Ahli",30],"lawrenceatizigi":["St. Gallen",29],"benjaminasare":["Hearts of Oak",33],"josephanang":["St Patrick's Athletic",26],"abdulrahmanbaba":["PAOK",31],"gideonmensah":["Auxerre",27],"aliduseidu":["Rennes",26],"jeromeopoku":["İstanbul Başakşehir",27],"jonasadjetey":["VfL Wolfsburg",22],"abdulmumin":["Rayo Vallecano",28],"kojopeprahoppong":["Nice",22],"derrickluckassen":["Pafos",30],"marvinsenaya":["Auxerre",25],"thomaspartey":["Villarreal",32],"abdulfatawu":["Leicester City",22],"elishaowusu":["Auxerre",28],"calebyirenkyi":["Nordsjælland",20],"kwasisibo":["Oviedo",27],"augustineboakye":["Saint-Étienne",25],"jordanayew":["Leicester City",34],"antoinesemenyo":["Manchester City",26],"kamaldeensulemana":["Atalanta",24],"inakiwilliams":["Athletic Bilbao",31],"ernestnuamah":["Lyon",22],"christopherbonsubaah":["Al-Qadsiah",21],"brandonthomasasante":["Coventry City",27],"princekwabenaadu":["Viktoria Plzeň",22],"luismejia":["Nacional",35],"orlandomosquera":["Al-Fayha",31],"cesarsamudio":["Marathón",32],"ericdavis":["Plaza Amador",35],"fidelescobar":["Saprissa",31],"michaelamirmurillo":["Beşiktaş",30],"roderickmiller":["Turan Tovuz",34],"andresandrade":["LASK",27],"cesarblackman":["Slovan Bratislava",28],"josecordoba":["Norwich City",25],"jiovanyramos":["Puerto Cabello",29],"jorgegutierrez":["Deportivo La Guaira",27],"edgardofarina":["Pari Nizhny Novgorod",24],"anibalgodoy":["San Diego FC",36],"albertoquintero":["Plaza Amador",38],"yoelbarcenas":["Mazatlán",32],"adalbertocarrasquilla":["UNAM",27],"joseluisrodriguez":["Juárez",27],"cristianmartinez":["Ironi Kiryat Shmona",29],"cesaryanis":["Cobresal",30],"carlosharvey":["Minnesota United FC",26],"azariaslondono":["Universidad Católica",24],"josefajardo":["Universidad Católica",32],"ismaeldiaz":["León",29],"ceciliowaterman":["Universidad de Concepción",35],"tomasrodriguez":["Saprissa",27]};
+const F={MEX:"🇲🇽",RSA:"🇿🇦",KOR:"🇰🇷",CZE:"🇨🇿",CAN:"🇨🇦",BIH:"🇧🇦",USA:"🇺🇸",PAR:"🇵🇾",QAT:"🇶🇦",SUI:"🇨🇭",BRA:"🇧🇷",MAR:"🇲🇦",HAI:"🇭🇹",SCO:"🏴󠁧󠁢󠁳󠁣󠁴󠁿",AUS:"🇦🇺",TUR:"🇹🇷",GER:"🇩🇪",CUW:"🇨🇼",NED:"🇳🇱",JPN:"🇯🇵",CIV:"🇨🇮",ECU:"🇪🇨",SWE:"🇸🇪",TUN:"🇹🇳",ESP:"🇪🇸",CPV:"🇨🇻",BEL:"🇧🇪",EGY:"🇪🇬",KSA:"🇸🇦",URU:"🇺🇾",IRN:"🇮🇷",NZL:"🇳🇿",FRA:"🇫🇷",SEN:"🇸🇳",IRQ:"🇮🇶",NOR:"🇳🇴",ARG:"🇦🇷",ALG:"🇩🇿",AUT:"🇦🇹",JOR:"🇯🇴",POR:"🇵🇹",COD:"🇨🇩",ENG:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",CRO:"🇭🇷",GHA:"🇬🇭",PAN:"🇵🇦",UZB:"🇺🇿",COL:"🇨🇴"};
+function t(name,code){return (code&&F[code]?F[code]+" ":"")+name}
+
+// d = Perth date, h = "HH:MM" AWST, s = stage label, ko = knockout flag
+const M=[
+// ---- Matchday 1s ----
+{d:"2026-06-12",h:"03:00",a:t("Mexico","MEX"),b:t("South Africa","RSA"),s:"Group A",c:"Mexico City"},
+{d:"2026-06-12",h:"10:00",a:t("South Korea","KOR"),b:t("Czech Republic","CZE"),s:"Group A",c:"Zapopan"},
+{d:"2026-06-13",h:"03:00",a:t("Canada","CAN"),b:t("Bosnia & Herzegovina","BIH"),s:"Group B",c:"Toronto"},
+{d:"2026-06-13",h:"09:00",a:t("USA","USA"),b:t("Paraguay","PAR"),s:"Group D",c:"Los Angeles"},
+{d:"2026-06-14",h:"03:00",a:t("Qatar","QAT"),b:t("Switzerland","SUI"),s:"Group B",c:"Santa Clara"},
+{d:"2026-06-14",h:"06:00",a:t("Brazil","BRA"),b:t("Morocco","MAR"),s:"Group C",c:"New Jersey"},
+{d:"2026-06-14",h:"09:00",a:t("Haiti","HAI"),b:t("Scotland","SCO"),s:"Group C",c:"Boston (Foxborough)"},
+{d:"2026-06-14",h:"12:00",a:t("Australia","AUS"),b:t("Türkiye","TUR"),s:"Group D",c:"Vancouver",aus:1},
+{d:"2026-06-15",h:"01:00",a:t("Germany","GER"),b:t("Curaçao","CUW"),s:"Group E",c:"Houston"},
+{d:"2026-06-15",h:"04:00",a:t("Netherlands","NED"),b:t("Japan","JPN"),s:"Group F",c:"Arlington (Dallas)"},
+{d:"2026-06-15",h:"07:00",a:t("Ivory Coast","CIV"),b:t("Ecuador","ECU"),s:"Group E",c:"Philadelphia"},
+{d:"2026-06-15",h:"10:00",a:t("Sweden","SWE"),b:t("Tunisia","TUN"),s:"Group F",c:"Guadalupe (Monterrey)"},
+{d:"2026-06-16",h:"00:00",a:t("Spain","ESP"),b:t("Cape Verde","CPV"),s:"Group H",c:"Atlanta"},
+{d:"2026-06-16",h:"03:00",a:t("Belgium","BEL"),b:t("Egypt","EGY"),s:"Group G",c:"Seattle"},
+{d:"2026-06-16",h:"06:00",a:t("Saudi Arabia","KSA"),b:t("Uruguay","URU"),s:"Group H",c:"Miami"},
+{d:"2026-06-16",h:"09:00",a:t("Iran","IRN"),b:t("New Zealand","NZL"),s:"Group G",c:"Los Angeles"},
+{d:"2026-06-17",h:"03:00",a:t("France","FRA"),b:t("Senegal","SEN"),s:"Group I",c:"New Jersey"},
+{d:"2026-06-17",h:"06:00",a:t("Iraq","IRQ"),b:t("Norway","NOR"),s:"Group I",c:"Boston (Foxborough)"},
+{d:"2026-06-17",h:"09:00",a:t("Argentina","ARG"),b:t("Algeria","ALG"),s:"Group J",c:"Kansas City"},
+{d:"2026-06-17",h:"12:00",a:t("Austria","AUT"),b:t("Jordan","JOR"),s:"Group J",c:"Santa Clara"},
+{d:"2026-06-18",h:"01:00",a:t("Portugal","POR"),b:t("DR Congo","COD"),s:"Group K",c:"Houston"},
+{d:"2026-06-18",h:"04:00",a:t("England","ENG"),b:t("Croatia","CRO"),s:"Group L",c:"Arlington (Dallas)"},
+{d:"2026-06-18",h:"07:00",a:t("Ghana","GHA"),b:t("Panama","PAN"),s:"Group L",c:"Toronto"},
+{d:"2026-06-18",h:"10:00",a:t("Uzbekistan","UZB"),b:t("Colombia","COL"),s:"Group K",c:"Mexico City"},
+// ---- Matchday 2s ----
+{d:"2026-06-19",h:"00:00",a:t("Czech Republic","CZE"),b:t("South Africa","RSA"),s:"Group A",c:"Atlanta"},
+{d:"2026-06-19",h:"03:00",a:t("Switzerland","SUI"),b:t("Bosnia & Herzegovina","BIH"),s:"Group B",c:"Los Angeles"},
+{d:"2026-06-19",h:"06:00",a:t("Canada","CAN"),b:t("Qatar","QAT"),s:"Group B",c:"Vancouver"},
+{d:"2026-06-19",h:"09:00",a:t("Mexico","MEX"),b:t("South Korea","KOR"),s:"Group A",c:"Zapopan"},
+{d:"2026-06-20",h:"03:00",a:t("USA","USA"),b:t("Australia","AUS"),s:"Group D",c:"Seattle",aus:1},
+{d:"2026-06-20",h:"06:00",a:t("Scotland","SCO"),b:t("Morocco","MAR"),s:"Group C",c:"Boston (Foxborough)"},
+{d:"2026-06-20",h:"08:30",a:t("Brazil","BRA"),b:t("Haiti","HAI"),s:"Group C",c:"Philadelphia"},
+{d:"2026-06-20",h:"11:00",a:t("Türkiye","TUR"),b:t("Paraguay","PAR"),s:"Group D",c:"Santa Clara"},
+{d:"2026-06-21",h:"01:00",a:t("Netherlands","NED"),b:t("Sweden","SWE"),s:"Group F",c:"Houston"},
+{d:"2026-06-21",h:"04:00",a:t("Germany","GER"),b:t("Ivory Coast","CIV"),s:"Group E",c:"Toronto"},
+{d:"2026-06-21",h:"08:00",a:t("Ecuador","ECU"),b:t("Curaçao","CUW"),s:"Group E",c:"Kansas City"},
+{d:"2026-06-21",h:"12:00",a:t("Tunisia","TUN"),b:t("Japan","JPN"),s:"Group F",c:"Guadalupe (Monterrey)"},
+{d:"2026-06-22",h:"00:00",a:t("Spain","ESP"),b:t("Saudi Arabia","KSA"),s:"Group H",c:"Atlanta"},
+{d:"2026-06-22",h:"03:00",a:t("Belgium","BEL"),b:t("Iran","IRN"),s:"Group G",c:"Los Angeles"},
+{d:"2026-06-22",h:"06:00",a:t("Uruguay","URU"),b:t("Cape Verde","CPV"),s:"Group H",c:"Miami"},
+{d:"2026-06-22",h:"09:00",a:t("New Zealand","NZL"),b:t("Egypt","EGY"),s:"Group G",c:"Vancouver"},
+{d:"2026-06-23",h:"01:00",a:t("Argentina","ARG"),b:t("Austria","AUT"),s:"Group J",c:"Arlington (Dallas)"},
+{d:"2026-06-23",h:"05:00",a:t("France","FRA"),b:t("Iraq","IRQ"),s:"Group I",c:"Philadelphia"},
+{d:"2026-06-23",h:"08:00",a:t("Norway","NOR"),b:t("Senegal","SEN"),s:"Group I",c:"Toronto"},
+{d:"2026-06-23",h:"11:00",a:t("Jordan","JOR"),b:t("Algeria","ALG"),s:"Group J",c:"Santa Clara"},
+{d:"2026-06-24",h:"01:00",a:t("Portugal","POR"),b:t("Uzbekistan","UZB"),s:"Group K",c:"Houston"},
+{d:"2026-06-24",h:"04:00",a:t("England","ENG"),b:t("Ghana","GHA"),s:"Group L",c:"Boston (Foxborough)"},
+{d:"2026-06-24",h:"07:00",a:t("Panama","PAN"),b:t("Croatia","CRO"),s:"Group L",c:"Boston (Foxborough)"},
+{d:"2026-06-24",h:"10:00",a:t("Colombia","COL"),b:t("DR Congo","COD"),s:"Group K",c:"Zapopan"},
+// ---- Matchday 3s (simultaneous) ----
+{d:"2026-06-25",h:"03:00",a:t("Switzerland","SUI"),b:t("Canada","CAN"),s:"Group B",c:"Vancouver"},
+{d:"2026-06-25",h:"03:00",a:t("Bosnia & Herzegovina","BIH"),b:t("Qatar","QAT"),s:"Group B",c:"Seattle"},
+{d:"2026-06-25",h:"06:00",a:t("Morocco","MAR"),b:t("Haiti","HAI"),s:"Group C",c:"Atlanta"},
+{d:"2026-06-25",h:"06:00",a:t("Scotland","SCO"),b:t("Brazil","BRA"),s:"Group C",c:"Miami"},
+{d:"2026-06-25",h:"09:00",a:t("South Africa","RSA"),b:t("South Korea","KOR"),s:"Group A",c:"Guadalupe (Monterrey)"},
+{d:"2026-06-25",h:"09:00",a:t("Czech Republic","CZE"),b:t("Mexico","MEX"),s:"Group A",c:"Mexico City"},
+{d:"2026-06-26",h:"04:00",a:t("Curaçao","CUW"),b:t("Ivory Coast","CIV"),s:"Group E",c:"Philadelphia"},
+{d:"2026-06-26",h:"04:00",a:t("Ecuador","ECU"),b:t("Germany","GER"),s:"Group E",c:"New Jersey"},
+{d:"2026-06-26",h:"07:00",a:t("Tunisia","TUN"),b:t("Netherlands","NED"),s:"Group F",c:"Kansas City"},
+{d:"2026-06-26",h:"07:00",a:t("Japan","JPN"),b:t("Sweden","SWE"),s:"Group F",c:"Arlington (Dallas)"},
+{d:"2026-06-26",h:"10:00",a:t("Türkiye","TUR"),b:t("USA","USA"),s:"Group D",c:"Los Angeles"},
+{d:"2026-06-26",h:"10:00",a:t("Paraguay","PAR"),b:t("Australia","AUS"),s:"Group D",c:"Santa Clara",aus:1},
+{d:"2026-06-27",h:"03:00",a:t("Norway","NOR"),b:t("France","FRA"),s:"Group I",c:"Boston (Foxborough)"},
+{d:"2026-06-27",h:"03:00",a:t("Senegal","SEN"),b:t("Iraq","IRQ"),s:"Group I",c:"Toronto"},
+{d:"2026-06-27",h:"08:00",a:t("Cape Verde","CPV"),b:t("Saudi Arabia","KSA"),s:"Group H",c:"Houston"},
+{d:"2026-06-27",h:"08:00",a:t("Uruguay","URU"),b:t("Spain","ESP"),s:"Group H",c:"Zapopan"},
+{d:"2026-06-27",h:"11:00",a:t("New Zealand","NZL"),b:t("Belgium","BEL"),s:"Group G",c:"Vancouver"},
+{d:"2026-06-27",h:"11:00",a:t("Egypt","EGY"),b:t("Iran","IRN"),s:"Group G",c:"Seattle"},
+{d:"2026-06-28",h:"05:00",a:t("Panama","PAN"),b:t("England","ENG"),s:"Group L",c:"New Jersey"},
+{d:"2026-06-28",h:"05:00",a:t("Croatia","CRO"),b:t("Ghana","GHA"),s:"Group L",c:"Philadelphia"},
+{d:"2026-06-28",h:"07:30",a:t("Colombia","COL"),b:t("Portugal","POR"),s:"Group K",c:"Miami"},
+{d:"2026-06-28",h:"07:30",a:t("DR Congo","COD"),b:t("Uzbekistan","UZB"),s:"Group K",c:"Atlanta"},
+{d:"2026-06-28",h:"10:00",a:t("Algeria","ALG"),b:t("Austria","AUT"),s:"Group J",c:"Kansas City"},
+{d:"2026-06-28",h:"10:00",a:t("Jordan","JOR"),b:t("Argentina","ARG"),s:"Group J",c:"Arlington (Dallas)"},
+];
+
+// ---- Knockout bracket data (FIFA match numbers, Perth dates/times) ----
+const KOM={
+ 73:{a:"2nd Group A",b:"2nd Group B",d:"2026-06-29",h:"03:00",c:"LA"},
+ 74:{a:"1st Group E",b:"3rd A/B/C/D/F",d:"2026-06-30",h:"04:30",c:"Boston"},
+ 75:{a:"1st Group F",b:"2nd Group C",d:"2026-06-30",h:"09:00",c:"Monterrey"},
+ 76:{a:"1st Group C",b:"2nd Group F",d:"2026-06-30",h:"01:00",c:"Houston"},
+ 77:{a:"1st Group I",b:"3rd C/D/F/G/H",d:"2026-07-01",h:"05:00",c:"New Jersey"},
+ 78:{a:"2nd Group E",b:"2nd Group I",d:"2026-07-01",h:"01:00",c:"Dallas"},
+ 79:{a:"1st Group A",b:"3rd C/E/F/H/I",d:"2026-07-01",h:"09:00",c:"Mexico City"},
+ 80:{a:"1st Group L",b:"3rd E/H/I/J/K",d:"2026-07-02",h:"00:00",c:"Atlanta"},
+ 81:{a:"1st Group D",b:"3rd B/E/F/I/J",d:"2026-07-02",h:"08:00",c:"Santa Clara"},
+ 82:{a:"1st Group G",b:"3rd A/E/H/I/J",d:"2026-07-02",h:"04:00",c:"Seattle"},
+ 83:{a:"2nd Group K",b:"2nd Group L",d:"2026-07-03",h:"07:00",c:"Toronto"},
+ 84:{a:"1st Group H",b:"2nd Group J",d:"2026-07-03",h:"03:00",c:"LA"},
+ 85:{a:"1st Group B",b:"3rd E/F/G/I/J",d:"2026-07-03",h:"11:00",c:"Vancouver"},
+ 86:{a:"1st Group J",b:"2nd Group H",d:"2026-07-04",h:"06:00",c:"Miami"},
+ 87:{a:"1st Group K",b:"3rd D/E/I/J/L",d:"2026-07-04",h:"09:30",c:"Kansas City"},
+ 88:{a:"2nd Group D",b:"2nd Group G",d:"2026-07-04",h:"02:00",c:"Dallas"},
+ 89:{a:"Winner M74",b:"Winner M77",d:"2026-07-05",h:"05:00",c:"Philadelphia"},
+ 90:{a:"Winner M73",b:"Winner M75",d:"2026-07-05",h:"01:00",c:"Houston"},
+ 91:{a:"Winner M76",b:"Winner M78",d:"2026-07-06",h:"04:00",c:"New Jersey"},
+ 92:{a:"Winner M79",b:"Winner M80",d:"2026-07-06",h:"08:00",c:"Mexico City"},
+ 93:{a:"Winner M83",b:"Winner M84",d:"2026-07-07",h:"03:00",c:"Dallas"},
+ 94:{a:"Winner M81",b:"Winner M82",d:"2026-07-07",h:"08:00",c:"Seattle"},
+ 95:{a:"Winner M86",b:"Winner M88",d:"2026-07-08",h:"00:00",c:"Atlanta"},
+ 96:{a:"Winner M85",b:"Winner M87",d:"2026-07-08",h:"04:00",c:"Vancouver"},
+ 97:{a:"Winner M89",b:"Winner M90",d:"2026-07-10",h:"04:00",c:"Boston"},
+ 98:{a:"Winner M93",b:"Winner M94",d:"2026-07-11",h:"03:00",c:"LA"},
+ 99:{a:"Winner M91",b:"Winner M92",d:"2026-07-12",h:"05:00",c:"Miami"},
+ 100:{a:"Winner M95",b:"Winner M96",d:"2026-07-12",h:"09:00",c:"Kansas City"},
+ 101:{a:"Winner M97",b:"Winner M98",d:"2026-07-15",h:"03:00",c:"Dallas"},
+ 102:{a:"Winner M99",b:"Winner M100",d:"2026-07-16",h:"03:00",c:"Atlanta"},
+ 103:{a:"Loser SF1",b:"Loser SF2",d:"2026-07-19",h:"05:00",c:"Miami"},
+ 104:{a:"Winner SF1",b:"Winner SF2",d:"2026-07-20",h:"03:00",c:"New Jersey"}
+};
+const KO={
+ left:{r32:[[74,77],[73,75],[83,84],[81,82]],r16:[[89,90],[93,94]],qf:[[97,98]],sf:101},
+ right:{r32:[[76,78],[79,80],[86,88],[85,87]],r16:[[91,92],[95,96]],qf:[[99,100]],sf:102}
+};
+const KOSTAGE=n=>n<=88?"R32":n<=96?"R16":n<=100?"QF":n<=102?"SF":n===103?"3RD":"FINAL";
+
+// ---- live results layer ----
+// Uses ESPN's public scoreboard feed (no key, CORS-open). If unreachable, the
+// page silently falls back to the fixed schedule.
+const FLAGGED={};
+M.forEach(m=>[m.a,m.b].forEach(s=>{const p=s.replace(/^[^A-Za-zÀ-ÿ]+/,"").trim();FLAGGED[p]=s;}));
+const ALIAS={"United States":"USA","Turkey":"Türkiye","Turkiye":"Türkiye","Côte d'Ivoire":"Ivory Coast","Cote d'Ivoire":"Ivory Coast","Czechia":"Czech Republic","Bosnia and Herzegovina":"Bosnia & Herzegovina","Democratic Republic of the Congo":"DR Congo","Congo DR":"DR Congo","Cabo Verde":"Cape Verde","Korea Republic":"South Korea","IR Iran":"Iran"};
+const plainName=s=>String(s||"").replace(/^[^A-Za-zÀ-ÿ]+/,"").trim();
+const normName=s=>{s=plainName(s);s=ALIAS[s]||s;return s.toLowerCase().replace(/[^a-zà-ÿ]/g,"")};
+const sameName=(x,y)=>normName(x)===normName(y)&&normName(x)!=="";
+const flagName=en=>{const p=ALIAS[plainName(en)]||plainName(en);return FLAGGED[p]||p};
+const tsOf=m=>new Date(m.d+"T"+m.h+":00+08:00").getTime();
+const LIVE={ok:null,updated:null};
+
+function applyLive(events){
+  const byTs={};
+  events.forEach(e=>{(byTs[e.ts]=byTs[e.ts]||[]).push(e)});
+  M.forEach(m=>{
+    const cand=byTs[tsOf(m)]||[];
+    const e=cand.length===1?cand[0]:cand.find(x=>sameName(x.hn,m.a)||sameName(x.hn,m.b)||sameName(x.an,m.a)||sameName(x.an,m.b));
+    if(e&&e.state!=="pre"){
+      const flip=sameName(e.hn,m.b)||sameName(e.an,m.a);
+      m.live={sa:flip?e.as:e.hs,sb:flip?e.hs:e.as,state:e.state,clock:e.clock};
+      m.eid=e.id;m.flip=flip;
+    }
+  });
+  Object.keys(KOM).forEach(n=>{
+    const km=KOM[n];
+    const e=(byTs[tsOf(km)]||[])[0];
+    if(!e)return;
+    if(e.hn&&!/tbd|winner|loser|tba/i.test(e.hn)){km.a=flagName(e.hn);km.b=flagName(e.an);}
+    if(e.state!=="pre"){km.live={sa:e.hs,sb:e.as,state:e.state,clock:e.clock};km.eid=e.id;km.flip=false;}
+  });
+}
+
+async function fetchLive(){
+  try{
+    const r=await fetch("https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard?dates=20260611-20260720&limit=400");
+    if(!r.ok)throw new Error(r.status);
+    const j=await r.json();
+    const events=(j.events||[]).map(e=>{
+      const c=e.competitions&&e.competitions[0];if(!c||!c.competitors)return null;
+      const home=c.competitors.find(x=>x.homeAway==="home")||c.competitors[0];
+      const away=c.competitors.find(x=>x.homeAway==="away")||c.competitors[1];
+      return{id:e.id,ts:new Date(e.date).getTime(),
+        hn:home&&home.team?home.team.displayName:"",an:away&&away.team?away.team.displayName:"",
+        hs:home?home.score:"",as:away?away.score:"",
+        state:(e.status&&e.status.type&&e.status.type.state)||"pre",
+        clock:(e.status&&e.status.type&&e.status.type.shortDetail)||""};
+    }).filter(Boolean);
+    applyLive(events);
+    LIVE.ok=true;
+    fetchScorers(events);
+  }catch(err){LIVE.ok=false}
+  LIVE.updated=new Date();
+  liveStatus();render();
+}
+
+function liveStatus(){
+  const el=document.getElementById("live-status");
+  if(LIVE.ok===null){el.textContent="";return}
+  if(!LIVE.ok){el.textContent="live scores unavailable — fixed schedule";return}
+  const anyLive=M.some(m=>m.live&&m.live.state==="in")||Object.values(KOM).some(m=>m.live&&m.live.state==="in");
+  const pn=new Date(LIVE.updated.getTime()+(LIVE.updated.getTimezoneOffset()*60000)+(8*3600000));
+  let H=pn.getHours(),Mn=pn.getMinutes();const ap=H<12?"am":"pm";H=H%12||12;
+  const t=H+":"+String(Mn).padStart(2,"0")+ap;
+  el.innerHTML=(anyLive?'<span class="livedot"></span>LIVE · ':"")+"scores updated "+t;
+}
+
+const WD=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+const MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const MONL=["January","February","March","April","May","June","July","August","September","October","November","December"];
+// d is a Perth-local calendar date "YYYY-MM-DD"; format without Intl/timezone so it can't throw on any browser
+function fmtParts(d){
+  const p=String(d).split("-");
+  const y=+p[0],mo=+p[1]-1,da=+p[2];
+  // weekday via UTC to avoid local-tz drift
+  const wd=new Date(Date.UTC(y,mo,da)).getUTCDay();
+  return{wd,da,mo};
+}
+const fmtDay=d=>{const{wd,da,mo}=fmtParts(d);return `${WD[wd]}, ${da} ${MONL[mo]}`;};
+function phase(h){
+  const hr=parseInt(h,10);
+  if(hr<5)return["small-hours","late"];
+  if(hr<8)return["dawn","dawn"];
+  if(hr<11)return["morning","morning"];
+  return["midday","midday"];
+}
+const fmt12=h=>{let[H,Mn]=h.split(":").map(Number);const ap=H<12?"am":"pm";H=H%12||12;return H+":"+String(Mn).padStart(2,"0")+ap};
+
+let stageFilter="all",query="";
+const main=document.getElementById("schedule");
+
+function visible(m){
+  if(stageFilter==="aus"&&!m.aus)return false;
+  if(query){
+    const hay=(m.a+" "+m.b+" "+m.c+" "+m.s).toLowerCase();
+    if(!hay.includes(query))return false;
+  }
+  return true;
+}
+
+// ---- bracket builder ----
+const PCLS={"small-hours":"p0","dawn":"p1","morning":"p2","midday":"p3"};
+const fmtDM=d=>{const{da,mo}=fmtParts(d);return `${da} ${MON[mo]}`;};
+// ---- group standings (computed live from finished/in-play scores) ----
+const GROUPS={};
+M.forEach(m=>{if(/^Group /.test(m.s)){const g=m.s.replace("Group ","");(GROUPS[g]=GROUPS[g]||new Set()).add(m.a);GROUPS[g].add(m.b);}});
+
+function bkCard(n,extra=""){
+  const m=KOM[n];
+  const sc=m.live?` <b class="${m.live.state==="in"?"live":""}">${m.live.sa}–${m.live.sb}${m.live.state==="in"?" ⏱":""}</b>`:"";
+  return `<div class="bk ${PCLS[phase(m.h)[0]]} ${extra}" data-ko="${n}">
+    <div class="bn">M${n} · ${KOSTAGE(n)}${sc}</div>
+    <div class="bt">${m.a}</div><div class="bt">${m.b}</div>
+    <div class="bf">${fmtDM(m.d)} · ${fmt12(m.h)}</div>
+    <div class="bv">${NJ(m.c)}</div>
+  </div>`;
+}
+function bkHalf(side){
+  const s=KO[side];
+  const col=pairs=>pairs.map(p=>`<div class="bkpair">${bkCard(p[0])}${bkCard(p[1])}</div>`).join("");
+  return `<div class="half ${side}">
+    <div class="bround">${col(s.r32)}</div>
+    <div class="bround">${col(s.r16)}</div>
+    <div class="bround">${col(s.qf)}</div>
+  </div>`;
+}
+// ---- easter egg: hover "New Jersey" ----
+const NJ=s=>String(s).replace(/New Jersey/g,'<span class="nj">New Jersey</span>');
+const MAMDANI=[
+ "https://commons.wikimedia.org/wiki/Special:FilePath/Zohran_Mamdani_05.25.25_%28b%29_%28cropped%29.jpg?width=800",
+ "https://commons.wikimedia.org/wiki/Special:FilePath/New_York_State_Assemblymember_Zohran_Mamdani_%28cropped%29.jpg?width=800",
+ "https://live.staticflickr.com/65535/55248869679_4fd2808843_b.jpg",
+ "https://live.staticflickr.com/65535/55303793946_35d4de6039_o.jpg",
+ "https://live.staticflickr.com/65535/55310753950_4831acc56a_b.jpg",
+ "https://live.staticflickr.com/65535/55263569052_691711013c_b.jpg",
+ "https://live.staticflickr.com/65535/55196349612_5794ce3a8f_b.jpg",
+ "https://live.staticflickr.com/65535/55194038186_fdbbf47540_b.jpg"
+];
+const njImg=document.createElement("img");
+njImg.id="mamdani";njImg.alt="";document.body.appendChild(njImg);
+document.addEventListener("mousemove",e=>{
+  if(njImg.style.display==="block"){
+    njImg.style.left=e.clientX+"px";
+    njImg.style.top=e.clientY+"px";
+  }
+});
+document.addEventListener("mouseover",e=>{
+  if(e.target.closest&&e.target.closest(".nj")){
+    njImg.src=MAMDANI[Math.floor(Math.random()*MAMDANI.length)];
+    njImg.style.left=e.clientX+"px";
+    njImg.style.top=e.clientY+"px";
+    njImg.style.display="block";
+  }
+});
+document.addEventListener("mouseout",e=>{
+  if(e.target.closest&&e.target.closest(".nj"))njImg.style.display="none";
+});
+
+function buildBracket(){return `<section class="bracket-wrap" id="bracket">
+  <div class="bracket-head"><h2>Knockout bracket</h2><span class="count">Round of 32 → Final · 29 Jun – 20 Jul (Perth dates) · scroll sideways on small screens</span></div>
+  <div class="bracket-scroll"><div class="bracket">
+    ${bkHalf("left")}
+    <div class="bcenter">
+      <div class="trophy">🏆</div>
+      <div class="label">FINAL</div>${bkCard(104,"final")}
+      <div class="label">SEMI-FINALS</div>
+      <div class="sfrow">${bkCard(KO.left.sf)}${bkCard(KO.right.sf)}</div>
+      <div class="label">THIRD PLACE</div>${bkCard(103)}
+    </div>
+    ${bkHalf("right")}
+  </div></div>
+</section>`;}
+
+// ---- tournament leaderboard + golden boot ----
+const SCORERS={};      // playerName -> {name, team, goals, pens}
+const ASSISTS={};      // playerName -> {name, team, assists}
+const CARDS={};        // playerName -> {name, team, yellow, red}
+const SCORED_EVENTS={}; // event id -> true once its summary is processed
+let FASTEST_GOAL=null;  // {sortMin, min, name, team, vs}
+
+async function fetchScorers(events){
+  const finished=events.filter(e=>e.state==="post"&&e.id&&!SCORED_EVENTS[e.id]);
+  for(const e of finished){
+    try{
+      const r=await fetch("https://site.web.api.espn.com/apis/site/v2/sports/soccer/fifa.world/summary?event="+e.id);
+      if(!r.ok)throw 0;
+      const j=await r.json();
+      (j.keyEvents||[]).forEach(p=>{
+        if(!p||!p.type)return;
+        const kind=p.type.type||"";
+        const txt=(p.type.text||"")+" "+(p.text||"")+" "+(p.shortText||"");
+        const team=(p.team&&p.team.displayName)||"";
+        if(kind==="goal"){
+          if(/own goal/i.test(txt))return; // own goals don't count toward Golden Boot
+          const ath=p.participants&&p.participants[0]&&p.participants[0].athlete;
+          const isPen=/penalt/i.test(txt);
+          if(ath&&ath.displayName){
+            const key=ath.id||ath.displayName;
+            const rec=SCORERS[key]||(SCORERS[key]={name:ath.displayName,team:flagName(team),goals:0,pens:0});
+            rec.goals++;if(isPen)rec.pens++;
+            // fastest goal of the tournament (penalties excluded — about open-play speed)
+            const cd=(p.clock&&p.clock.displayValue)||"";
+            const baseMin=parseInt((cd.match(/\d+/)||[])[0],10);
+            if(!isPen&&!Number.isNaN(baseMin)){
+              const extra=(cd.match(/\+(\d+)/)||[])[1];
+              const sortMin=baseMin+(extra?+extra*0.5:0);
+              if(!FASTEST_GOAL||sortMin<FASTEST_GOAL.sortMin){
+                FASTEST_GOAL={sortMin,min:cd||(baseMin+"'"),name:ath.displayName,team:flagName(team),vs:`${flagName(e.hn)} v ${flagName(e.an)}`};
+              }
+            }
+          }
+          // assist — ESPN's exact field for this varies by feed, so try a few known shapes before giving up
+          let assistAth=null;
+          if(p.participants&&p.participants[1]&&p.participants[1].athlete&&/assist/i.test(p.participants[1].type||"")){
+            assistAth=p.participants[1].athlete;
+          }else if(p.assist&&p.assist.athlete){
+            assistAth=p.assist.athlete;
+          }else{
+            const am=txt.match(/assist(?:ed)?\s*(?:by)?:?\s*([A-Za-zÀ-ÿ' .-]{3,40})/i);
+            if(am)assistAth={displayName:am[1].trim()};
+          }
+          if(assistAth&&assistAth.displayName){
+            const akey=assistAth.id||assistAth.displayName;
+            const arec=ASSISTS[akey]||(ASSISTS[akey]={name:assistAth.displayName,team:flagName(team),assists:0});
+            arec.assists++;
+          }
+        }else if(/yellow|red/i.test(kind)){
+          const ath=p.participants&&p.participants[0]&&p.participants[0].athlete;
+          if(ath&&ath.displayName){
+            const key=ath.id||ath.displayName;
+            const crec=CARDS[key]||(CARDS[key]={name:ath.displayName,team:flagName(team),yellow:0,red:0});
+            if(/yellow/i.test(kind))crec.yellow++;
+            if(/red/i.test(kind))crec.red++;
+          }
+        }
+      });
+      SCORED_EVENTS[e.id]=true;
+    }catch(err){/* skip this match; will retry next refresh */}
+  }
+  if(finished.length&&stageFilter==="leaderboard")render();
+}
+
+function buildLeaderboard(){
+  // team aggregates from standings math (all matches, group + KO)
+  const team={};
+  const add=(name,gf,ga,res)=>{const t=team[name]||(team[name]={name,p:0,gf:0,ga:0,w:0,d:0,l:0,cs:0});t.p++;t.gf+=gf;t.ga+=ga;if(ga===0)t.cs++;if(res>0)t.w++;else if(res<0)t.l++;else t.d++;};
+  const allplayed=[...M,...Object.values(KOM)].filter(m=>m.live&&m.live.state!=="pre"&&m.a&&m.b);
+  let biggestWin=null,highestScore=null;
+  allplayed.forEach(m=>{
+    const sa=+m.live.sa,sb=+m.live.sb;if(Number.isNaN(sa)||Number.isNaN(sb))return;
+    if(/winner|loser|tbd|1st|2nd|3rd place|group/i.test(m.a)||/winner|loser|tbd|1st|2nd|3rd place|group/i.test(m.b))return;
+    add(m.a,sa,sb,sa-sb);add(m.b,sb,sa,sb-sa);
+    const margin=Math.abs(sa-sb),total=sa+sb;
+    if(margin>0&&(!biggestWin||margin>biggestWin.margin))biggestWin={margin,a:sa>=sb?m.a:m.b,b:sa>=sb?m.b:m.a,sw:Math.max(sa,sb),sl:Math.min(sa,sb)};
+    if(!highestScore||total>highestScore.total)highestScore={total,a:m.a,b:m.b,sa,sb};
+  });
+  const teams=Object.values(team);
+  const mostGoals=[...teams].sort((a,b)=>b.gf-a.gf||a.ga-b.ga).slice(0,5);
+  const bestDef=[...teams].filter(t=>t.p>0).sort((a,b)=>a.ga/a.p-b.ga/b.p||b.p-a.p).slice(0,5);
+  const cleanSheets=[...teams].filter(t=>t.p>0).sort((a,b)=>b.cs-a.cs||a.ga-b.ga||b.p-a.p).slice(0,5);
+  const goalDiff=[...teams].sort((a,b)=>(b.gf-b.ga)-(a.gf-a.ga)||b.gf-a.gf).slice(0,5);
+  const scorers=Object.values(SCORERS).sort((a,b)=>b.goals-a.goals||a.pens-b.pens||a.name.localeCompare(b.name)).slice(0,15);
+  const assisters=Object.values(ASSISTS).sort((a,b)=>b.assists-a.assists||a.name.localeCompare(b.name)).slice(0,15);
+  const carded=Object.values(CARDS).sort((a,b)=>b.red-a.red||b.yellow-a.yellow||a.name.localeCompare(b.name)).slice(0,15);
+
+  // cross-reference Golden Boot scorers against the baked-in squad ages for a youngest/oldest scorer fun stat
+  const agedScorers=Object.values(SCORERS).map(s=>{const rec=PLAYERDB[normPlayer(s.name)];return rec?{name:s.name,team:s.team,age:rec[1]}:null;}).filter(Boolean);
+  const youngest=agedScorers.length?agedScorers.reduce((a,b)=>b.age<a.age?b:a):null;
+  const oldest=agedScorers.length?agedScorers.reduce((a,b)=>b.age>a.age?b:a):null;
+
+  const teamRows=(arr,val)=>arr.map((t,i)=>`<tr><td class="rk">${i+1}</td><td class="l">${t.name}</td><td class="pts">${val(t)}</td></tr>`).join("")||'<tr><td colspan="3" class="emptyrow">No matches played yet</td></tr>';
+
+  let html='<div class="lead-grid">';
+  // Golden Boot
+  html+=`<div class="lcard gb"><div class="lhead">🥇 Golden Boot — Top Scorers</div><table><thead><tr><th class="rk">#</th><th class="l">Player</th><th>Team</th><th>Pens</th><th>Goals</th></tr></thead><tbody>`;
+  html+=scorers.map((s,i)=>`<tr><td class="rk">${i+1}</td><td class="l">${s.name}</td><td class="tm">${s.team}</td><td>${s.pens||""}</td><td class="pts">${s.goals}</td></tr>`).join("")
+    ||'<tr><td colspan="5" class="emptyrow">Goalscorer data appears once matches finish</td></tr>';
+  html+="</tbody></table></div>";
+  // Top Assists
+  html+=`<div class="lcard"><div class="lhead">🎯 Top Assists</div><table><thead><tr><th class="rk">#</th><th class="l">Player</th><th>Team</th><th>Assists</th></tr></thead><tbody>`;
+  html+=assisters.map((s,i)=>`<tr><td class="rk">${i+1}</td><td class="l">${s.name}</td><td class="tm">${s.team}</td><td class="pts">${s.assists}</td></tr>`).join("")
+    ||'<tr><td colspan="4" class="emptyrow">Assist detection depends on what ESPN\'s feed publishes — may lag or miss some games</td></tr>';
+  html+="</tbody></table></div>";
+  // Cards
+  html+=`<div class="lcard"><div class="lhead">🟨 Disciplinary</div><table><thead><tr><th class="rk">#</th><th class="l">Player</th><th>Team</th><th>🟨</th><th>🟥</th></tr></thead><tbody>`;
+  html+=carded.map((s,i)=>`<tr><td class="rk">${i+1}</td><td class="l">${s.name}</td><td class="tm">${s.team}</td><td>${s.yellow||""}</td><td>${s.red||""}</td></tr>`).join("")
+    ||'<tr><td colspan="5" class="emptyrow">No cards shown yet</td></tr>';
+  html+="</tbody></table></div>";
+  // Most goals
+  html+=`<div class="lcard"><div class="lhead">⚽ Most Goals Scored</div><table><tbody>${teamRows(mostGoals,t=>t.gf)}</tbody></table></div>`;
+  // Best defence
+  html+=`<div class="lcard"><div class="lhead">🛡️ Best Defence (goals against)</div><table><tbody>${teamRows(bestDef,t=>t.ga)}</tbody></table></div>`;
+  // Clean sheets
+  html+=`<div class="lcard"><div class="lhead">🧤 Clean Sheets</div><table><tbody>${teamRows(cleanSheets,t=>t.cs)}</tbody></table></div>`;
+  // Goal difference
+  html+=`<div class="lcard"><div class="lhead">📈 Best Goal Difference</div><table><tbody>${teamRows(goalDiff,t=>{const gd=t.gf-t.ga;return(gd>0?"+":"")+gd})}</tbody></table></div>`;
+  // Fun stats
+  html+=`<div class="lcard fun"><div class="lhead">🎉 Tournament Highlights</div><table><tbody>`;
+  html+=FASTEST_GOAL?`<tr><td class="l">Fastest goal</td><td class="val">${FASTEST_GOAL.min} — ${FASTEST_GOAL.name} (${FASTEST_GOAL.team})<br><span class="funsub">${FASTEST_GOAL.vs}</span></td></tr>`:"";
+  html+=youngest?`<tr><td class="l">Youngest scorer</td><td class="val">${youngest.name} (${youngest.team}) — ${youngest.age}</td></tr>`:"";
+  html+=oldest?`<tr><td class="l">Oldest scorer</td><td class="val">${oldest.name} (${oldest.team}) — ${oldest.age}</td></tr>`:"";
+  html+=biggestWin?`<tr><td class="l">Biggest win</td><td class="val">${biggestWin.a} ${biggestWin.sw}–${biggestWin.sl} ${biggestWin.b}</td></tr>`:"";
+  html+=highestScore?`<tr><td class="l">Highest-scoring match</td><td class="val">${highestScore.a} ${highestScore.sa}–${highestScore.sb} ${highestScore.b} (${highestScore.total})</td></tr>`:"";
+  if(!FASTEST_GOAL&&!youngest&&!oldest&&!biggestWin&&!highestScore)html+='<tr><td class="emptyrow">Highlights appear once matches are played</td></tr>';
+  html+="</tbody></table></div>";
+  html+="</div><div class=\"stnote\">Team tables span all matches played. Golden Boot counts goals from match feeds (own goals excluded; penalties flagged). Assist and card detection rely on what ESPN's feed publishes for each match and may occasionally miss an event or lag the score by a few minutes. Youngest/oldest scorer only considers players found in the baked-in squad list.</div>";
+  return html;
+}
+
+function render(){
+  const showGroups=stageFilter!=="ko"&&stageFilter!=="standings"&&stageFilter!=="leaderboard";
+  const showBracket=(stageFilter==="all"||stageFilter==="ko")&&!query;
+  let html="";
+  if(showGroups){
+    const list=M.filter(visible);
+    const byDay={};
+    list.forEach(m=>{(byDay[m.d]=byDay[m.d]||[]).push(m)});
+    Object.keys(byDay).sort().forEach(d=>{
+      const day=byDay[d];
+      html+=`<section class="daygroup" data-date="${d}"><div class="dayhead"><h2>${fmtDay(d)}</h2></div><div class="matches">`;
+      day.sort((x,y)=>x.h.localeCompare(y.h)).forEach(m=>{
+        const[cls]=phase(m.h);
+        const liveCls=m.live&&m.live.state==="in"?" live":"";
+        const scA=m.live?`<span class="sc${liveCls}">${m.live.sa}</span>`:"";
+        const scB=m.live?`<span class="sc${liveCls}">${m.live.sb}</span>`:"";
+        const gcls=" g-"+m.s.replace("Group ","");
+        const meta=NJ(m.c)+(m.live?` · ${m.live.state==="in"?m.live.clock:"FT"}`:"");
+        const mi=M.indexOf(m);
+        html+=`<article class="match${m.aus?" aus":""}${gcls}" data-mi="${mi}">
+          <div class="side">
+            <div class="time ${cls}"><span class="t">${fmt12(m.h)}</span></div>
+            <span class="badge">${m.s}</span>
+          </div>
+          <div class="fixture">
+            <div class="team"><span class="nm">${m.a}</span>${scA}</div>
+            <div class="team"><span class="nm">${m.b}</span>${scB}</div>
+            <div class="meta" data-stage="${m.s}">${meta}</div>
+          </div>
+        </article>`;
+      });
+      html+="</div></section>";
+    });
+  }
+  if(showBracket)html+=buildBracket();
+  if(stageFilter==="standings")html+=buildStandings();
+  if(stageFilter==="leaderboard")html+=buildLeaderboard();
+  if(!html)html='<div class="empty">No matches found — try clearing the search or filters.</div>';
+  main.innerHTML=html;
+}
+
+// ---- standings: computed from live/finished scores ----
+function computeStandings(){
+  const tbl={};
+  Object.keys(GROUPS).forEach(g=>{
+    tbl[g]={};
+    GROUPS[g].forEach(t=>tbl[g][t]={t,p:0,w:0,d:0,l:0,gf:0,ga:0,pts:0});
+  });
+  M.forEach(m=>{
+    if(!/^Group /.test(m.s)||!m.live||m.live.state==="pre")return;
+    const g=m.s.replace("Group ","");
+    const A=tbl[g]&&tbl[g][m.a],B=tbl[g]&&tbl[g][m.b];
+    if(!A||!B)return;
+    const sa=+m.live.sa,sb=+m.live.sb;
+    if(Number.isNaN(sa)||Number.isNaN(sb))return;
+    A.p++;B.p++;A.gf+=sa;A.ga+=sb;B.gf+=sb;B.ga+=sa;
+    if(sa>sb){A.w++;B.l++;A.pts+=3;}
+    else if(sa<sb){B.w++;A.l++;B.pts+=3;}
+    else{A.d++;B.d++;A.pts++;B.pts++;}
+  });
+  return tbl;
+}
+function buildStandings(){
+  const tbl=computeStandings();
+  let html='<div class="standings-grid">';
+  Object.keys(tbl).sort().forEach(g=>{
+    const rows=Object.values(tbl[g]).sort((x,y)=>y.pts-x.pts||(y.gf-y.ga)-(x.gf-x.ga)||y.gf-x.gf||x.t.localeCompare(y.t));
+    html+=`<div class="stbl g-${g}"><div class="sthead">Group ${g}</div>
+      <table><thead><tr><th class="l">Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GD</th><th>Pts</th></tr></thead><tbody>`;
+    rows.forEach((r,i)=>{
+      const gd=r.gf-r.ga;
+      html+=`<tr class="${i<2?"adv":""}${/Australia/.test(r.t)?" ausrow":""}">
+        <td class="l">${r.t}</td><td>${r.p}</td><td>${r.w}</td><td>${r.d}</td><td>${r.l}</td><td>${gd>0?"+":""}${gd}</td><td class="pts">${r.pts}</td></tr>`;
+    });
+    html+="</tbody></table></div>";
+  });
+  html+="</div><div class=\"stnote\">Top two of each group (highlighted) advance, along with the eight best third-placed teams. Tiebreak shown: points, then goal difference, then goals for. Tables update live as scores come in.</div>";
+  return html;
+}
+
+// next match banner (uses real Perth time; includes knockout matches)
+const ALLM=[...M,...Object.values(KOM)];
+function nextMatch(){
+  const now=new Date();
+  const upcoming=ALLM.map(m=>({m,ts:new Date(m.d+"T"+m.h+":00+08:00")})).filter(x=>x.ts>now).sort((a,b)=>a.ts-b.ts)[0];
+  const el=document.getElementById("next-match");
+  if(!upcoming){el.innerHTML="<b>Tournament complete</b>";return}
+  const diff=upcoming.ts-now,dd=Math.floor(diff/864e5),hh=Math.floor(diff%864e5/36e5),mm=Math.floor(diff%36e5/6e4);
+  el.innerHTML=`NEXT KICKOFF&nbsp; <b>${upcoming.m.a} vs ${upcoming.m.b}</b> · ${fmtDay(upcoming.m.d)}, ${fmt12(upcoming.m.h)} AWST · in ${dd?dd+"d ":""}${hh}h ${mm}m`;
+}
+try{nextMatch();}catch(err){console.error("nextMatch failed:",err);}
+setInterval(()=>{try{nextMatch();}catch(err){}},60000);
+
+// paint the schedule NOW, before any optional listener wiring can fail
+try{ render(); }catch(err){ window.onerror("RENDER THREW: "+err.message,"",0,0,err); }
+
+document.getElementById("search").addEventListener("input",e=>{query=e.target.value.trim().toLowerCase();render()});
+document.querySelectorAll(".chip[data-stage]").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll(".chip[data-stage]").forEach(x=>x.classList.remove("active"));
+  b.classList.add("active");stageFilter=b.dataset.stage;render();
+}));
+document.getElementById("today-btn").addEventListener("click",()=>{
+  const pn=new Date(Date.now()+(new Date().getTimezoneOffset()*60000)+(8*3600000));
+  const today=pn.getUTCFullYear()+"-"+String(pn.getUTCMonth()+1).padStart(2,"0")+"-"+String(pn.getUTCDate()).padStart(2,"0");
+  const secs=[...document.querySelectorAll(".daygroup")];
+  const target=secs.find(s=>s.dataset.date>=today)||document.getElementById("bracket")||secs[secs.length-1];
+  if(target)target.scrollIntoView({behavior:"smooth",block:"start"});
+});
+
+document.getElementById("refresh-btn").addEventListener("click",fetchLive);
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)fetchLive()});
+setInterval(fetchLive,120000); // refresh every 2 minutes
+
+// ---- dark mode toggle ----
+const themeBtn=document.getElementById("theme-btn");
+function syncThemeBtn(){
+  const dark=document.documentElement.getAttribute("data-theme")==="dark";
+  themeBtn.textContent=dark?"☀️ Light":"🌙 Dark";
+}
+syncThemeBtn();
+themeBtn.addEventListener("click",()=>{
+  const goingDark=document.documentElement.getAttribute("data-theme")!=="dark";
+  if(goingDark)document.documentElement.setAttribute("data-theme","dark");
+  else document.documentElement.removeAttribute("data-theme");
+  try{localStorage.setItem("wc26-theme",goingDark?"dark":"light");}catch(e){}
+  syncThemeBtn();
+});
+
+// ---- match detail modal ----
+const SUMCACHE={};
+const overlay=document.getElementById("overlay"),modalEl=document.getElementById("modal");
+function openModal(m){
+  if(!m)return;
+  const hasLive=m.live&&m.live.state!=="pre";
+  const status=!hasLive?`${fmtDay(m.d)} · ${fmt12(m.h)} AWST`:(m.live.state==="in"?`LIVE · ${m.live.clock}`:"Full time");
+  const finished=m.live&&m.live.state==="post";
+  const sbs=finished?`<a class="sbs-btn" target="_blank" rel="noopener" href="https://www.youtube.com/channel/UCpcTrCXblq78GZrTUTLWeBw/search?query=${encodeURIComponent(plainName(m.a)+" "+plainName(m.b)+" highlights")}">▶ Highlights on SBS</a>`:"";
+  modalEl.innerHTML=`<div class="mhead">
+      <button class="mclose" aria-label="Close">×</button>
+      <div class="mstage">${m.s} · ${NJ(m.c)}</div>
+      <div class="mscore"><div class="mteam">${m.a}</div><div class="mvs">${hasLive?`${m.live.sa}–${m.live.sb}`:"v"}</div><div class="mteam r">${m.b}</div></div>
+      <div class="mmeta">${status}</div>
+      ${sbs}
+    </div>
+    <div class="mbody">${m.eid?'<div class="mloading">Loading match details…</div>':'<div class="mempty">Match details will appear here once the game is under way.</div>'}</div>`;
+  overlay.classList.add("open");
+  modalEl.querySelector(".mclose").onclick=closeModal;
+  if(m.eid)loadDetails(m);
+}
+function closeModal(){overlay.classList.remove("open");}
+overlay.addEventListener("click",e=>{if(e.target===overlay)closeModal()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+
+async function loadDetails(m){
+  const body=modalEl.querySelector(".mbody");
+  try{
+    let j=SUMCACHE[m.eid];
+    if(!j){
+      const r=await fetch("https://site.web.api.espn.com/apis/site/v2/sports/soccer/fifa.world/summary?event="+m.eid);
+      if(!r.ok)throw 0;j=await r.json();SUMCACHE[m.eid]=j;
+    }
+    body.innerHTML=renderDetails(j,m);
+  }catch(err){
+    body.innerHTML='<div class="mempty">Couldn\'t load detail for this match right now. The scoreline above is current — try reopening in a moment.</div>';
+  }
+}
+function evIcon(t){const k=t&&t.type||"";if(/own/i.test(k))return"🥅";if(/penalty/i.test(k))return"⚽";if(/red/i.test(k)&&/yellow/i.test(k))return"🟨🟥";if(/red/i.test(k))return"🟥";if(/yellow/i.test(k))return"🟨";if(/goal/i.test(k))return"⚽";if(/sub/i.test(k))return"🔁";return"•"}
+function renderDetails(j,m){
+  const ke=j.keyEvents||[];
+  const homeName=plainName(m.flip?m.b:m.a);
+  let out="";
+  const tl=ke.filter(e=>e.type&&/goal|card|sub/i.test(e.type.type||""));
+  if(tl.length){
+    out+='<div class="msec"><h4>Match events</h4>';
+    tl.forEach(e=>{
+      const isGoal=/goal/i.test(e.type.type||"");
+      const min=e.clock&&e.clock.displayValue?e.clock.displayValue:"";
+      const who=e.participants&&e.participants[0]&&e.participants[0].athlete?e.participants[0].athlete.displayName:(e.shortText||e.text||"");
+      const isHome=e.team&&sameName(e.team.displayName,homeName);
+      const detail=/sub/i.test(e.type.type||"")&&e.participants&&e.participants[1]&&e.participants[1].athlete?` (for ${e.participants[1].athlete.displayName})`:"";
+      out+=`<div class="event${isHome?"":" away"}${isGoal?" goal":""}"><span class="emin">${min}</span><span><span class="eico">${evIcon(e.type)}</span>${who}${detail}</span></div>`;
+    });
+    out+="</div>";
+  }
+  const ros=j.rosters||(j.boxscore&&j.boxscore.players)||[];
+  const haveLineups=ros.length&&ros.some(s=>(s.roster||s.athletes||[]).length);
+  if(haveLineups){
+    out+='<div class="msec"><h4>Line-ups</h4><div class="lineups">';
+    ros.slice(0,2).forEach(side=>{out+=pitchHTML(side);});
+    out+="</div></div>";
+  }
+  if(!out)out='<div class="mempty">No event detail published for this match yet.</div>';
+  return out;
+}
+function pitchHTML(side){
+  const tname=side.team?(side.team.displayName||side.team.abbreviation):"";
+  const players=side.roster||side.athletes||[];
+  const nm=p=>{const a=p.athlete||p;return a.displayName||a.shortName||a.fullName||a.lastName||""};
+  const jn=p=>{const a=p.athlete||p;return p.jersey||a.jersey||""};
+  const formation=side.formation||(side.team&&side.team.formation)||"";
+
+  let starters=players.filter(p=>p.starter===true);
+  if(!starters.length)starters=players.slice(0,11);
+  starters=starters.slice().sort((a,b)=>(+a.formationPlace||99)-(+b.formationPlace||99));
+  const subs=players.filter(p=>p.starter===false);
+
+  let html=`<div class="lcol"><h5>${flagName(tname)}${formation?` <span class="form">${formation}</span>`:""}</h5><ul class="lineup-list">`;
+  starters.forEach(p=>{html+=`<li><span class="num">${jn(p)}</span><span class="pnm" data-pl="${normPlayer(nm(p))}">${nm(p)}</span></li>`;});
+  html+="</ul>";
+  if(subs.length){
+    html+='<div class="subs-line"><b>Subs:</b> '+subs.map(p=>`<span class="pnm" data-pl="${normPlayer(nm(p))}">${nm(p)}</span>`).filter(Boolean).join(", ")+'</div>';
+  }
+  html+="</div>";
+  return html;
+}
+
+// open match modal on click
+document.getElementById("schedule").addEventListener("click",e=>{
+  const card=e.target.closest("[data-mi],[data-ko]");if(!card)return;
+  const m=card.hasAttribute("data-mi")?M[+card.dataset.mi]:KOM[+card.dataset.ko];
+  if(m)openModal(m);
+});
+
+// ---- player bio (club + age) from baked-in World Cup squad data ----
+function normPlayer(s){
+  return String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z]/g,"");
+}
+const bioTip=document.createElement("div");
+bioTip.id="biotip";document.body.appendChild(bioTip);
+function showBio(el){
+  const rec=PLAYERDB[el.dataset.pl];
+  if(!rec)return;
+  const[club,age]=rec;
+  bioTip.innerHTML=`<div class="bt-name">${el.textContent}</div><div class="bt-row"><span>Club</span><b>${club}</b></div><div class="bt-row"><span>Age</span><b>${age}</b></div>`;
+  bioTip.style.display="block";
+  const r=el.getBoundingClientRect();
+  let left=r.left, top=r.bottom+6;
+  const tw=bioTip.offsetWidth, th=bioTip.offsetHeight;
+  if(left+tw>window.innerWidth-8)left=window.innerWidth-tw-8;
+  if(top+th>window.innerHeight-8)top=r.top-th-6;
+  bioTip.style.left=Math.max(8,left)+"px";
+  bioTip.style.top=Math.max(8,top)+"px";
+}
+function hideBio(){bioTip.style.display="none";}
+document.addEventListener("mouseover",e=>{
+  const el=e.target.closest&&e.target.closest(".pnm");
+  if(el&&el.dataset.pl&&PLAYERDB[el.dataset.pl])showBio(el);
+});
+document.addEventListener("mouseout",e=>{
+  if(e.target.closest&&e.target.closest(".pnm"))hideBio();
+});
+// touch devices: tap a name to toggle its bio, tap elsewhere to dismiss
+document.addEventListener("click",e=>{
+  const el=e.target.closest&&e.target.closest(".pnm");
+  if(el&&el.dataset.pl&&PLAYERDB[el.dataset.pl]){
+    if(bioTip.style.display==="block"&&bioTip.dataset.for===el.dataset.pl){hideBio();}
+    else{showBio(el);bioTip.dataset.for=el.dataset.pl;}
+    e.stopPropagation();
+  }else if(bioTip.style.display==="block"){hideBio();}
+});
+
+// ---- startup: render the schedule FIRST so nothing optional can blank it ----
+try{ render(); }catch(err){ console.error("render failed:",err); }
+try{ fetchLive(); }catch(err){ console.error("fetchLive failed:",err); }
+</script>
+</body>
+</html>
