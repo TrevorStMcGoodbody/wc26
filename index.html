@@ -222,13 +222,9 @@ main{max-width:1180px;margin:4px auto 40px;padding:0 16px}
 .right .bkpair::after{content:"";position:absolute;top:25%;bottom:25%;left:-11px;width:11px;border:1.5px solid #cfc6b2;border-right:none;border-radius:6px 0 0 6px}
 .right .bkpair::before{content:"";position:absolute;top:50%;left:-20px;width:9px;border-top:1.5px solid #cfc6b2}
 .bk{
-  background:var(--card);border:1px solid var(--line);border-left:3px solid var(--ink-soft);
+  background:var(--card);border:1px solid var(--line);
   border-radius:6px;padding:3px 7px 4px;width:120px;position:relative;z-index:1;margin:2px 0;
 }
-.bk.p0{border-left-color:var(--night)}
-.bk.p1{border-left-color:var(--dawn)}
-.bk.p2{border-left-color:var(--gold)}
-.bk.p3{border-left-color:#3a7bbf}
 .bk .bn{font-family:'Noto Sans',sans-serif;font-size:7.5px;letter-spacing:.1em;color:var(--ink-soft)}
 .bk .bt{font-size:9.5px;font-weight:700;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .bk .bf{font-family:'Noto Sans',sans-serif;font-size:8px;color:var(--ink-soft);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -400,6 +396,21 @@ footer{
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
 }
+/* ---------- phone landscape: present the knockout bracket as one fitted graphic ---------- */
+@media(orientation:landscape) and (max-height:540px){
+  body.bfit header,
+  body.bfit .clickbanner,
+  body.bfit .search,
+  body.bfit #live-status{display:none}
+  body.bfit .controls{padding:4px 11px}
+  body.bfit .chips{flex-wrap:nowrap;overflow-x:auto;width:100%;-webkit-overflow-scrolling:touch}
+  body.bfit .chips::-webkit-scrollbar{display:none}
+  body.bfit .chip{flex:0 0 auto}
+  body.bfit main{margin-top:2px}
+  body.bfit .bracket-head{margin-bottom:3px}
+  body.bfit .bracket-head .count{display:none}
+  body.bfit .bracket-scroll{padding-bottom:0}
+}
 /* ---------- dark mode: targeted fixes for literal (non-variable) colours ---------- */
 .match.aus,.match.aus .meta{color:#1b1d3a} /* keep dark text on the fixed yellow Socceroos card in both themes */
 [data-theme="dark"] .controls{background:#14152a} /* fallback for browsers without color-mix() support */
@@ -480,7 +491,7 @@ const M=[
 {d:"2026-06-13",h:"03:00",a:t("Canada","CAN"),b:t("Bosnia & Herzegovina","BIH"),s:"Group B",c:"Toronto"},
 {d:"2026-06-13",h:"09:00",a:t("USA","USA"),b:t("Paraguay","PAR"),s:"Group D",c:"Los Angeles"},
 {d:"2026-06-14",h:"03:00",a:t("Qatar","QAT"),b:t("Switzerland","SUI"),s:"Group B",c:"Santa Clara"},
-{d:"2026-06-14",h:"06:00",a:t("Brazil","BRA"),b:t("Morocco","MAR"),s:"Group C",c:"New Jersey"},
+{d:"2026-06-14",h:"06:00",a:t("Brazil","BRA"),b:t("Morocco","MAR"),s:"Group C",c:"New York/New Jersey"},
 {d:"2026-06-14",h:"09:00",a:t("Haiti","HAI"),b:t("Scotland","SCO"),s:"Group C",c:"Boston (Foxborough)"},
 {d:"2026-06-14",h:"12:00",a:t("Australia","AUS"),b:t("Türkiye","TUR"),s:"Group D",c:"Vancouver",aus:1},
 {d:"2026-06-15",h:"01:00",a:t("Germany","GER"),b:t("Curaçao","CUW"),s:"Group E",c:"Houston"},
@@ -491,7 +502,7 @@ const M=[
 {d:"2026-06-16",h:"03:00",a:t("Belgium","BEL"),b:t("Egypt","EGY"),s:"Group G",c:"Seattle"},
 {d:"2026-06-16",h:"06:00",a:t("Saudi Arabia","KSA"),b:t("Uruguay","URU"),s:"Group H",c:"Miami"},
 {d:"2026-06-16",h:"09:00",a:t("Iran","IRN"),b:t("New Zealand","NZL"),s:"Group G",c:"Los Angeles"},
-{d:"2026-06-17",h:"03:00",a:t("France","FRA"),b:t("Senegal","SEN"),s:"Group I",c:"New Jersey"},
+{d:"2026-06-17",h:"03:00",a:t("France","FRA"),b:t("Senegal","SEN"),s:"Group I",c:"New York/New Jersey"},
 {d:"2026-06-17",h:"06:00",a:t("Iraq","IRQ"),b:t("Norway","NOR"),s:"Group I",c:"Boston (Foxborough)"},
 {d:"2026-06-17",h:"09:00",a:t("Argentina","ARG"),b:t("Algeria","ALG"),s:"Group J",c:"Kansas City"},
 {d:"2026-06-17",h:"12:00",a:t("Austria","AUT"),b:t("Jordan","JOR"),s:"Group J",c:"Santa Clara"},
@@ -532,7 +543,7 @@ const M=[
 {d:"2026-06-25",h:"09:00",a:t("South Africa","RSA"),b:t("South Korea","KOR"),s:"Group A",c:"Guadalupe (Monterrey)"},
 {d:"2026-06-25",h:"09:00",a:t("Czech Republic","CZE"),b:t("Mexico","MEX"),s:"Group A",c:"Mexico City"},
 {d:"2026-06-26",h:"04:00",a:t("Curaçao","CUW"),b:t("Ivory Coast","CIV"),s:"Group E",c:"Philadelphia"},
-{d:"2026-06-26",h:"04:00",a:t("Ecuador","ECU"),b:t("Germany","GER"),s:"Group E",c:"New Jersey"},
+{d:"2026-06-26",h:"04:00",a:t("Ecuador","ECU"),b:t("Germany","GER"),s:"Group E",c:"New York/New Jersey"},
 {d:"2026-06-26",h:"07:00",a:t("Tunisia","TUN"),b:t("Netherlands","NED"),s:"Group F",c:"Kansas City"},
 {d:"2026-06-26",h:"07:00",a:t("Japan","JPN"),b:t("Sweden","SWE"),s:"Group F",c:"Arlington (Dallas)"},
 {d:"2026-06-26",h:"10:00",a:t("Türkiye","TUR"),b:t("USA","USA"),s:"Group D",c:"Los Angeles"},
@@ -543,7 +554,7 @@ const M=[
 {d:"2026-06-27",h:"08:00",a:t("Uruguay","URU"),b:t("Spain","ESP"),s:"Group H",c:"Zapopan"},
 {d:"2026-06-27",h:"11:00",a:t("New Zealand","NZL"),b:t("Belgium","BEL"),s:"Group G",c:"Vancouver"},
 {d:"2026-06-27",h:"11:00",a:t("Egypt","EGY"),b:t("Iran","IRN"),s:"Group G",c:"Seattle"},
-{d:"2026-06-28",h:"05:00",a:t("Panama","PAN"),b:t("England","ENG"),s:"Group L",c:"New Jersey"},
+{d:"2026-06-28",h:"05:00",a:t("Panama","PAN"),b:t("England","ENG"),s:"Group L",c:"New York/New Jersey"},
 {d:"2026-06-28",h:"05:00",a:t("Croatia","CRO"),b:t("Ghana","GHA"),s:"Group L",c:"Philadelphia"},
 {d:"2026-06-28",h:"07:30",a:t("Colombia","COL"),b:t("Portugal","POR"),s:"Group K",c:"Miami"},
 {d:"2026-06-28",h:"07:30",a:t("DR Congo","COD"),b:t("Uzbekistan","UZB"),s:"Group K",c:"Atlanta"},
@@ -557,7 +568,7 @@ const KOM={
  74:{a:"1st Group E",b:"3rd A/B/C/D/F",d:"2026-06-30",h:"04:30",c:"Boston"},
  75:{a:"1st Group F",b:"2nd Group C",d:"2026-06-30",h:"09:00",c:"Monterrey"},
  76:{a:"1st Group C",b:"2nd Group F",d:"2026-06-30",h:"01:00",c:"Houston"},
- 77:{a:"1st Group I",b:"3rd C/D/F/G/H",d:"2026-07-01",h:"05:00",c:"New Jersey"},
+ 77:{a:"1st Group I",b:"3rd C/D/F/G/H",d:"2026-07-01",h:"05:00",c:"New York/New Jersey"},
  78:{a:"2nd Group E",b:"2nd Group I",d:"2026-07-01",h:"01:00",c:"Dallas"},
  79:{a:"1st Group A",b:"3rd C/E/F/H/I",d:"2026-07-01",h:"09:00",c:"Mexico City"},
  80:{a:"1st Group L",b:"3rd E/H/I/J/K",d:"2026-07-02",h:"00:00",c:"Atlanta"},
@@ -571,7 +582,7 @@ const KOM={
  88:{a:"2nd Group D",b:"2nd Group G",d:"2026-07-04",h:"02:00",c:"Dallas"},
  89:{a:"Winner M74",b:"Winner M77",d:"2026-07-05",h:"05:00",c:"Philadelphia"},
  90:{a:"Winner M73",b:"Winner M75",d:"2026-07-05",h:"01:00",c:"Houston"},
- 91:{a:"Winner M76",b:"Winner M78",d:"2026-07-06",h:"04:00",c:"New Jersey"},
+ 91:{a:"Winner M76",b:"Winner M78",d:"2026-07-06",h:"04:00",c:"New York/New Jersey"},
  92:{a:"Winner M79",b:"Winner M80",d:"2026-07-06",h:"08:00",c:"Mexico City"},
  93:{a:"Winner M83",b:"Winner M84",d:"2026-07-07",h:"03:00",c:"Dallas"},
  94:{a:"Winner M81",b:"Winner M82",d:"2026-07-07",h:"08:00",c:"Seattle"},
@@ -584,13 +595,15 @@ const KOM={
  101:{a:"Winner M97",b:"Winner M98",d:"2026-07-15",h:"03:00",c:"Dallas"},
  102:{a:"Winner M99",b:"Winner M100",d:"2026-07-16",h:"03:00",c:"Atlanta"},
  103:{a:"Loser SF1",b:"Loser SF2",d:"2026-07-19",h:"05:00",c:"Miami"},
- 104:{a:"Winner SF1",b:"Winner SF2",d:"2026-07-20",h:"03:00",c:"New Jersey"}
+ 104:{a:"Winner SF1",b:"Winner SF2",d:"2026-07-20",h:"03:00",c:"New York/New Jersey"}
 };
 const KO={
  left:{r32:[[74,77],[73,75],[83,84],[81,82]],r16:[[89,90],[93,94]],qf:[[97,98]],sf:101},
  right:{r32:[[76,78],[79,80],[86,88],[85,87]],r16:[[91,92],[95,96]],qf:[[99,100]],sf:102}
 };
 const KOSTAGE=n=>n<=88?"R32":n<=96?"R16":n<=100?"QF":n<=102?"SF":n===103?"3RD":"FINAL";
+const KOLABELS={R32:"Round of 32",R16:"Round of 16",QF:"Quarter-final",SF:"Semi-final","3RD":"Third place",FINAL:"Final"};
+const KOLABEL=n=>KOLABELS[KOSTAGE(n)]||"Knockout";
 
 // ---- live results layer ----
 // Uses ESPN's public scoreboard feed (no key, CORS-open). If unreachable, the
@@ -719,8 +732,8 @@ function bkHalf(side){
     <div class="bround">${col(s.qf)}</div>
   </div>`;
 }
-// ---- easter egg: hover "New Jersey" ----
-const NJ=s=>String(s).replace(/New Jersey/g,'<span class="nj">New Jersey</span>');
+// ---- easter egg: hover "New York/New Jersey" ----
+const NJ=s=>String(s).replace(/New York\/New Jersey/g,'<span class="nj">New York/New Jersey</span>');
 const MAMDANI=[
  "https://commons.wikimedia.org/wiki/Special:FilePath/Zohran_Mamdani_05.25.25_%28b%29_%28cropped%29.jpg?width=800",
  "https://commons.wikimedia.org/wiki/Special:FilePath/New_York_State_Assemblymember_Zohran_Mamdani_%28cropped%29.jpg?width=800",
@@ -902,37 +915,47 @@ function buildLeaderboard(){
   return html;
 }
 
-function render(){
-  const showGroups=stageFilter!=="ko"&&stageFilter!=="standings"&&stageFilter!=="leaderboard";
-  const showBracket=(stageFilter==="all"||stageFilter==="ko")&&!query;
-  let html="";
-  if(showGroups){
-    const list=M.filter(visible);
-    const byDay={};
-    list.forEach(m=>{(byDay[m.d]=byDay[m.d]||[]).push(m)});
-    Object.keys(byDay).sort().forEach(d=>{
-      const day=byDay[d];
-      html+=`<section class="daygroup" data-date="${d}"><div class="dayhead"><h2>${fmtDay(d)}</h2></div><div class="matches">`;
-      day.sort((x,y)=>x.h.localeCompare(y.h)).forEach(m=>{
-        const[cls]=phase(m.h);
-        const liveCls=m.live&&m.live.state==="in"?" live":"";
-        const scA=m.live?`<span class="sc${liveCls}">${m.live.sa}</span>`:"";
-        const scB=m.live?`<span class="sc${liveCls}">${m.live.sb}</span>`:"";
-        const gcls=" g-"+m.s.replace("Group ","");
-        const meta=NJ(m.c)+(m.live?` · ${m.live.state==="in"?m.live.clock:"FT"}`:"");
-        const mi=M.indexOf(m);
-        html+=`<article class="match${m.aus?" aus":""}${gcls}" data-mi="${mi}">
+// portrait-phone check (drives the All-page knockout list)
+const isNarrow=()=>window.matchMedia("(max-width:560px)").matches;
+
+// one schedule card — works for both group matches (from M) and knockout matches (from KOM)
+function matchCard(m,key,ko){
+  const[cls]=phase(m.h);
+  const liveCls=m.live&&m.live.state==="in"?" live":"";
+  const scA=m.live?`<span class="sc${liveCls}">${m.live.sa}</span>`:"";
+  const scB=m.live?`<span class="sc${liveCls}">${m.live.sb}</span>`:"";
+  const stage=ko?KOLABEL(key):m.s;
+  const gcls=ko?"":" g-"+m.s.replace("Group ","");
+  const meta=NJ(m.c)+(m.live?` · ${m.live.state==="in"?m.live.clock:"FT"}`:"");
+  const attr=ko?`data-ko="${key}"`:`data-mi="${key}"`;
+  return `<article class="match${m.aus?" aus":""}${gcls}" ${attr}>
           <div class="side">
             <div class="time ${cls}"><span class="t">${fmt12(m.h)}</span></div>
-            <span class="badge">${m.s}</span>
+            <span class="badge">${stage}</span>
           </div>
           <div class="fixture">
             <div class="team"><span class="nm">${m.a}</span>${scA}</div>
             <div class="team"><span class="nm">${m.b}</span>${scB}</div>
-            <div class="meta" data-stage="${m.s}">${meta}</div>
+            <div class="meta" data-stage="${stage}">${meta}</div>
           </div>
         </article>`;
-      });
+}
+
+function render(){
+  // On the All page on a phone, list the knockout games chronologically rather than drawing the bracket
+  const koInList=isNarrow()&&stageFilter==="all"&&!query;
+  const showGroups=stageFilter!=="ko"&&stageFilter!=="standings"&&stageFilter!=="leaderboard";
+  const showBracket=(stageFilter==="all"||stageFilter==="ko")&&!query&&!koInList;
+  let html="";
+  if(showGroups){
+    const items=M.filter(visible).map(m=>({m,key:M.indexOf(m),ko:false}));
+    if(koInList)Object.keys(KOM).forEach(n=>items.push({m:KOM[n],key:+n,ko:true}));
+    const byDay={};
+    items.forEach(it=>{(byDay[it.m.d]=byDay[it.m.d]||[]).push(it)});
+    Object.keys(byDay).sort().forEach(d=>{
+      const day=byDay[d];
+      html+=`<section class="daygroup" data-date="${d}"><div class="dayhead"><h2>${fmtDay(d)}</h2></div><div class="matches">`;
+      day.sort((x,y)=>x.m.h.localeCompare(y.m.h)).forEach(it=>{html+=matchCard(it.m,it.key,it.ko);});
       html+="</div></section>";
     });
   }
@@ -941,7 +964,39 @@ function render(){
   if(stageFilter==="leaderboard")html+=buildLeaderboard();
   if(!html)html='<div class="empty">No matches found — try clearing the search or filters.</div>';
   main.innerHTML=html;
+  requestAnimationFrame(fitBracket);
 }
+
+// On a phone in landscape, scale the whole bracket down so it fits on screen as one graphic.
+// Adds body.bfit, which collapses the header/banner (see CSS) to free up the short landscape height.
+function fitBracket(){
+  const wrap=document.querySelector(".bracket-scroll");
+  const br=wrap&&wrap.querySelector(".bracket");
+  const landscapeFit=window.matchMedia("(orientation:landscape) and (max-height:540px)").matches;
+  if(!br||!landscapeFit){
+    document.body.classList.remove("bfit");
+    if(br){br.style.transform="";br.style.marginLeft="";wrap.style.height="";wrap.style.overflowX="";}
+    return;
+  }
+  document.body.classList.add("bfit"); // collapse chrome, then measure against the reclaimed space
+  br.style.transform="none";br.style.marginLeft="0";wrap.style.height="";
+  const naturalW=br.scrollWidth,naturalH=br.scrollHeight;
+  if(!naturalW||!naturalH)return;
+  // available height = viewport minus the bracket's absolute offset (scroll-independent: rect + scrollY)
+  const docTop=wrap.getBoundingClientRect().top+window.scrollY;
+  const availW=wrap.clientWidth,availH=window.innerHeight-docTop-6;
+  const scale=Math.min(availW/naturalW,availH/naturalH,1);
+  br.style.transformOrigin="top left";
+  br.style.transform="scale("+scale+")";
+  br.style.marginLeft=Math.max(0,(availW-naturalW*scale)/2)+"px"; // centre horizontally
+  wrap.style.overflowX="hidden";
+  wrap.style.height=(naturalH*scale)+"px";
+  window.scrollTo({top:0,behavior:"instant"}); // bring the fitted bracket fully into view (instant: page uses smooth scroll)
+}
+// re-render on rotate / resize so the All page swaps list↔bracket and the bracket re-fits
+let _rszT;
+window.addEventListener("resize",()=>{clearTimeout(_rszT);_rszT=setTimeout(render,150);});
+window.addEventListener("orientationchange",()=>{setTimeout(render,250);});
 
 // ---- standings: computed from live/finished scores ----
 function computeStandings(){
