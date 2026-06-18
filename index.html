@@ -399,16 +399,11 @@ footer{
 /* ---------- phone landscape: present the knockout bracket as one fitted graphic ---------- */
 @media(orientation:landscape) and (max-height:540px){
   body.bfit header,
+  body.bfit .controls,
   body.bfit .clickbanner,
-  body.bfit .search,
-  body.bfit #live-status{display:none}
-  body.bfit .controls{padding:4px 11px}
-  body.bfit .chips{flex-wrap:nowrap;overflow-x:auto;width:100%;-webkit-overflow-scrolling:touch}
-  body.bfit .chips::-webkit-scrollbar{display:none}
-  body.bfit .chip{flex:0 0 auto}
+  body.bfit .bracket-head{display:none} /* rotate back to portrait to reach these again */
   body.bfit main{margin-top:2px}
-  body.bfit .bracket-head{margin-bottom:3px}
-  body.bfit .bracket-head .count{display:none}
+  body.bfit .bracket-wrap{margin-top:4px}
   body.bfit .bracket-scroll{padding-bottom:0}
 }
 /* ---------- dark mode: targeted fixes for literal (non-variable) colours ---------- */
@@ -436,7 +431,7 @@ footer{
 
 <header>
   <div class="head-inner">
-    <div class="eyebrow">FIFA World Cup · USA / Canada / Mexico · 11 Jun – 19 Jul</div>
+    <div class="eyebrow">USA / Canada / Mexico · 11 Jun – 19 Jul</div>
     <h1>World Cup 2026</h1>
     <p class="sub">All 104 kickoffs in <strong>AWST (UTC+8)</strong></p>
     <div id="next-match"></div>
@@ -602,7 +597,7 @@ const KO={
  right:{r32:[[76,78],[79,80],[86,88],[85,87]],r16:[[91,92],[95,96]],qf:[[99,100]],sf:102}
 };
 const KOSTAGE=n=>n<=88?"R32":n<=96?"R16":n<=100?"QF":n<=102?"SF":n===103?"3RD":"FINAL";
-const KOLABELS={R32:"Round of 32",R16:"Round of 16",QF:"Quarter-final",SF:"Semi-final","3RD":"Third place",FINAL:"Final"};
+const KOLABELS={R32:"RND of 32",R16:"RND of 16",QF:"Qtr FNLS",SF:"SEMI FNLS","3RD":"3rd PLACE",FINAL:"Final"};
 const KOLABEL=n=>KOLABELS[KOSTAGE(n)]||"Knockout";
 
 // ---- live results layer ----
@@ -915,7 +910,7 @@ function buildLeaderboard(){
   return html;
 }
 
-// portrait-phone check (drives the All-page knockout list)
+// portrait-phone check (drives the chronological knockout lists on the All / Knockouts pages)
 const isNarrow=()=>window.matchMedia("(max-width:560px)").matches;
 
 // one schedule card — works for both group matches (from M) and knockout matches (from KOM)
@@ -942,14 +937,17 @@ function matchCard(m,key,ko){
 }
 
 function render(){
-  // On the All page on a phone, list the knockout games chronologically rather than drawing the bracket
-  const koInList=isNarrow()&&stageFilter==="all"&&!query;
+  // On a phone (portrait), list matches chronologically instead of drawing the bracket:
+  //   All -> group matches + knockouts ; Knockouts -> knockouts only. Landscape still shows the bracket.
+  const narrow=isNarrow();
+  const koList=narrow&&(stageFilter==="all"||stageFilter==="ko")&&!query;
   const showGroups=stageFilter!=="ko"&&stageFilter!=="standings"&&stageFilter!=="leaderboard";
-  const showBracket=(stageFilter==="all"||stageFilter==="ko")&&!query&&!koInList;
+  const showList=showGroups||(koList&&stageFilter==="ko");
+  const showBracket=(stageFilter==="all"||stageFilter==="ko")&&!query&&!koList;
   let html="";
-  if(showGroups){
-    const items=M.filter(visible).map(m=>({m,key:M.indexOf(m),ko:false}));
-    if(koInList)Object.keys(KOM).forEach(n=>items.push({m:KOM[n],key:+n,ko:true}));
+  if(showList){
+    const items=showGroups?M.filter(visible).map(m=>({m,key:M.indexOf(m),ko:false})):[];
+    if(koList)Object.keys(KOM).forEach(n=>items.push({m:KOM[n],key:+n,ko:true}));
     const byDay={};
     items.forEach(it=>{(byDay[it.m.d]=byDay[it.m.d]||[]).push(it)});
     Object.keys(byDay).sort().forEach(d=>{
