@@ -125,20 +125,34 @@ main{max-width:1180px;margin:4px auto 40px;padding:0 16px}
 @media(min-width:700px){.matches{grid-template-columns:1fr 1fr}}
 @media(min-width:1000px){.matches{grid-template-columns:repeat(4,1fr)}}
 /* Today's Matches zone (All page) — scoreboard cards, two per row */
-.today-zone{margin-top:12px}
-.today-grid{display:grid;grid-template-columns:1fr 1fr;column-gap:8px;row-gap:18px}
-.tcard{position:relative;display:flex;align-items:center;height:56px;overflow:visible;cursor:pointer;border:4px solid transparent;border-radius:24px;background:linear-gradient(#000,#000) padding-box,conic-gradient(from var(--lba,0deg),#3fb24a 0deg 60deg,#3a5fd9 60deg 150deg,#b7cc3d 150deg 215deg,#e2531f 215deg 275deg,#8264bd 275deg 330deg,#3fb24a 330deg 360deg) border-box}
+.today-zone{margin-top:12px;padding-bottom:50px}
+/* padding-top + row-gap account for the score box overflowing the card by 15px (10px on phones):
+   gives a 10px gap from the divider line to the box top, and 6px between the two rows' boxes */
+.today-grid{display:grid;grid-template-columns:1fr 1fr;column-gap:8px;row-gap:46px;padding-top:30px}
+@media(max-width:620px){.today-grid{grid-template-columns:1fr;row-gap:36px;padding-top:25px}}
+.tcard{position:relative;min-width:0;display:flex;align-items:center;height:62px;overflow:visible;cursor:pointer;border:5px solid transparent;border-radius:28px;background:linear-gradient(#000,#000) padding-box,conic-gradient(from var(--lba,0deg),#3fb24a 0deg 60deg,#3a5fd9 60deg 150deg,#b7cc3d 150deg 215deg,#e2531f 215deg 275deg,#8264bd 275deg 330deg,#3fb24a 330deg 360deg) border-box}
 .tcard:nth-child(4n+2){--lba:90deg}
 .tcard:nth-child(4n+3){--lba:180deg}
 .tcard:nth-child(4n){--lba:270deg}
-.t-side{flex:1;min-width:0;display:flex;align-items:center;gap:7px;padding:0 8px}
+.t-side{flex:1;min-width:0;display:flex;align-items:center;gap:10px;padding:0 11px}
 .t-away{justify-content:flex-end}
-.tcard .flag{flex:none;margin-right:0}
-.t-name{flex:1;min-width:0;font-family:'Anton',sans-serif;text-transform:uppercase;color:#fff;font-size:15px;line-height:1;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.t-centre{flex:none;width:106px;height:72px;margin:0 4px;z-index:1;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--inkbg);color:#fff}
-.t-time{font-size:10px;font-weight:700}
-.t-score{display:flex;gap:16px;font-family:'Anton',sans-serif;font-size:24px;line-height:1;margin:2px 0}
-.t-grp{font-size:8.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+.tcard .flag{flex:none;margin-right:0;width:35px;height:24px;border-radius:0 8px 0 8px}
+.t-name{flex:1;min-width:0;font-family:'Anton',sans-serif;text-transform:uppercase;color:#fff;font-size:24px;line-height:1;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.t-centre{flex:none;width:132px;height:92px;margin:0 6px;z-index:1;border-radius:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--inkbg);color:#fff}
+.t-time{font-size:13px;font-weight:700;transform:translateY(-6px)}
+.t-score{display:flex;gap:24px;font-family:'Anton',sans-serif;font-size:44px;line-height:1;margin:0}
+.t-grp{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;transform:translateY(6px)}
+/* phone: scale the big cards down so they fit one-up without overflowing (placed after the base rules so it wins) */
+@media(max-width:620px){
+  .tcard{height:48px;border-width:4px;border-radius:20px}
+  .t-side{gap:5px;padding:0 7px}
+  .tcard .flag{width:24px;height:17px;border-radius:0 6px 0 6px}
+  .t-name{font-size:14px}
+  .t-centre{width:88px;height:68px;border-radius:9px}
+  .t-time{font-size:10px;transform:translateY(-4px)}
+  .t-score{font-size:30px;gap:14px}
+  .t-grp{font-size:9px;transform:translateY(4px)}
+}
 .tcard.g-A .t-centre{background:#2ed878;color:#1b1d3a}
 .tcard.g-B .t-centre{background:#e92545;color:#fff}
 .tcard.g-C .t-centre{background:#ef9210;color:#1b1d3a}
@@ -371,11 +385,6 @@ main{max-width:1180px;margin:4px auto 40px;padding:0 16px}
 .lcard.fun tr{border-top:1px solid var(--line)}
 .funsub{font-size:9.5px;color:var(--ink-soft);font-weight:400}
 /* ---------- match modal ---------- */
-.clickbanner{
-  max-width:1180px;margin:12px auto 0;padding:9px 16px;
-  background:var(--inkbg);color:#fff;border-radius:8px;
-  font-weight:800;font-size:13px;text-align:center;letter-spacing:.01em;
-}
 .match,.bk{cursor:pointer}
 #overlay{
   position:fixed;inset:0;background:rgba(20,22,48,.55);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);
@@ -439,7 +448,6 @@ footer{
   /* header + controls breathe a little less */
   header{padding:12px 13px 10px}
   main{padding:0 11px}
-  .clickbanner{margin-top:10px;padding:8px 12px;font-size:12px}
   /* controls: search on its own row, chips scroll horizontally instead of wrapping into a tall block */
   .controls{padding:6px 11px}
   .controls-inner{gap:6px}
@@ -492,7 +500,6 @@ footer{
 @media(orientation:landscape) and (max-height:540px){
   body.bfit header,
   body.bfit .controls,
-  body.bfit .clickbanner,
   body.bfit .bracket-head{display:none} /* rotate back to portrait to reach these again */
   body.bfit main{margin-top:2px}
   body.bfit .bracket-wrap{margin-top:4px}
@@ -536,7 +543,6 @@ footer{
   </div>
 </div>
 
-<div class="clickbanner">Click any match to bring up match centre</div>
 <main id="schedule"></main>
 
 <div id="overlay" role="dialog" aria-modal="true"><div class="modal" id="modal"></div></div>
@@ -1093,6 +1099,9 @@ function matchCard(m,key,ko){
 }
 
 // scoreboard-style card for the Today's Matches zone: flag + name | centre group medallion (time/score/group) | name + flag
+// short labels for the big "Today's Matches" cards, where long names don't fit
+const TCARD_SHORT={"Bosnia & Herzegovina":"B & H"};
+const tcardName=s=>{const p=plainName(s);return TCARD_SHORT[p]||p;};
 function todayCard(m,key,ko){
   const gcls=ko?"":" g-"+m.s.replace("Group ","");
   const grp=ko?KOLABEL(key):m.s;
@@ -1100,13 +1109,13 @@ function todayCard(m,key,ko){
   const sa=live?m.live.sa:"–",sb=live?m.live.sb:"–";
   const attr=ko?`data-ko="${key}"`:`data-mi="${key}"`;
   return `<article class="tcard${gcls}" ${attr}>
-    <div class="t-side t-home">${flagOf(m.a)}<span class="t-name">${plainName(m.a)}</span></div>
+    <div class="t-side t-home">${flagOf(m.a)}<span class="t-name">${tcardName(m.a)}</span></div>
     <div class="t-centre">
       <div class="t-time">${fmt12(m.h)}</div>
       <div class="t-score"><span>${sa}</span><span>${sb}</span></div>
       <div class="t-grp">${grp}</div>
     </div>
-    <div class="t-side t-away"><span class="t-name">${plainName(m.b)}</span>${flagOf(m.b)}</div>
+    <div class="t-side t-away"><span class="t-name">${tcardName(m.b)}</span>${flagOf(m.b)}</div>
   </article>`;
 }
 
@@ -1123,8 +1132,6 @@ function render(){
   const showGroups=stageFilter!=="ko"&&stageFilter!=="standings"&&stageFilter!=="leaderboard";
   const showList=showGroups||(koList&&stageFilter==="ko");
   const showBracket=(stageFilter==="all"||stageFilter==="ko")&&!query&&!koList;
-  // the "click any match" hint only makes sense where matches are shown
-  document.querySelector(".clickbanner").style.display=(stageFilter==="standings"||stageFilter==="leaderboard")?"none":"";
   let html="";
   // "Today's Matches" zone at the top of the All page — today's fixtures/scores, two per row
   if(stageFilter==="all"&&!query){
