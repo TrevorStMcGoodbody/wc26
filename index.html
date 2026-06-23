@@ -128,30 +128,30 @@ main{max-width:1180px;margin:4px auto 40px;padding:0 16px}
 .today-zone{margin-top:12px;padding-bottom:50px}
 /* padding-top + row-gap account for the score box overflowing the card by 15px (10px on phones):
    gives a 10px gap from the divider line to the box top, and 6px between the two rows' boxes */
-.today-grid{display:grid;grid-template-columns:1fr 1fr;column-gap:8px;row-gap:46px;padding-top:30px}
+.today-grid{display:grid;grid-template-columns:1fr 1fr;column-gap:20px;row-gap:46px;padding-top:30px}
 @media(max-width:620px){.today-grid{grid-template-columns:1fr;row-gap:36px;padding-top:25px}}
-.tcard{position:relative;min-width:0;display:flex;align-items:center;height:62px;overflow:visible;cursor:pointer;border:5px solid transparent;border-radius:28px;background:linear-gradient(#000,#000) padding-box,conic-gradient(from var(--lba,0deg),#3fb24a 0deg 60deg,#3a5fd9 60deg 150deg,#b7cc3d 150deg 215deg,#e2531f 215deg 275deg,#8264bd 275deg 330deg,#3fb24a 330deg 360deg) border-box}
+.tcard{position:relative;min-width:0;display:flex;align-items:center;height:62px;overflow:visible;cursor:pointer;border:5px solid transparent;border-radius:14px;background:linear-gradient(#000,#000) padding-box,conic-gradient(from var(--lba,0deg),#3fb24a 0deg 60deg,#3a5fd9 60deg 150deg,#b7cc3d 150deg 215deg,#e2531f 215deg 275deg,#8264bd 275deg 330deg,#3fb24a 330deg 360deg) border-box}
 .tcard:nth-child(4n+2){--lba:90deg}
 .tcard:nth-child(4n+3){--lba:180deg}
 .tcard:nth-child(4n){--lba:270deg}
 .t-side{flex:1;min-width:0;display:flex;align-items:center;gap:10px;padding:0 11px}
 .t-away{justify-content:flex-end}
-.tcard .flag{flex:none;margin-right:0;width:35px;height:24px;border-radius:0 8px 0 8px}
+.tcard .flag{flex:none;margin-right:0;width:28px;height:19px;border-radius:0 6px 0 6px}
 .t-name{flex:1;min-width:0;font-family:'Anton',sans-serif;text-transform:uppercase;color:#fff;font-size:24px;line-height:1;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .t-centre{flex:none;width:132px;height:92px;margin:0 6px;z-index:1;border-radius:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--inkbg);color:#fff}
-.t-time{font-size:13px;font-weight:700;transform:translateY(-6px)}
+.t-time{font-size:10px;font-weight:700;transform:translateY(-6px)}
 .t-score{display:flex;gap:24px;font-family:'Anton',sans-serif;font-size:44px;line-height:1;margin:0}
-.t-grp{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;transform:translateY(6px)}
+.t-grp{font-size:9px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;transform:translateY(6px)}
 /* phone: scale the big cards down so they fit one-up without overflowing (placed after the base rules so it wins) */
 @media(max-width:620px){
-  .tcard{height:48px;border-width:4px;border-radius:20px}
+  .tcard{height:48px;border-width:4px;border-radius:10px}
   .t-side{gap:5px;padding:0 7px}
-  .tcard .flag{width:24px;height:17px;border-radius:0 6px 0 6px}
+  .tcard .flag{width:19px;height:14px;border-radius:0 5px 0 5px}
   .t-name{font-size:14px}
   .t-centre{width:88px;height:68px;border-radius:9px}
-  .t-time{font-size:10px;transform:translateY(-4px)}
+  .t-time{font-size:8px;transform:translateY(-4px)}
   .t-score{font-size:30px;gap:14px}
-  .t-grp{font-size:9px;transform:translateY(4px)}
+  .t-grp{font-size:7px;transform:translateY(4px)}
 }
 .tcard.g-A .t-centre{background:#2ed878;color:#1b1d3a}
 .tcard.g-B .t-centre{background:#e92545;color:#fff}
@@ -396,22 +396,31 @@ main{max-width:1180px;margin:4px auto 40px;padding:0 16px}
   box-shadow:0 24px 60px rgba(0,0,0,.4);overflow:hidden;animation:popin .18s ease;
 }
 @keyframes popin{from{transform:translateY(12px);opacity:0}to{transform:none;opacity:1}}
-.mhead{padding:16px 18px;color:#fff;background:linear-gradient(135deg,#2a2d5e,#7a3b6e);position:relative}
-.mhead .mstage{font-size:10px;letter-spacing:.12em;text-transform:uppercase;opacity:.8}
-.mhead .mscore{display:flex;align-items:center;gap:14px;margin-top:8px}
-.mhead .mteam{flex:1;font-size:17px;font-weight:800}
-.mhead .mteam.r{text-align:right}
-.mhead .mvs{font-family:'Noto Sans',sans-serif;font-size:24px;font-weight:800;min-width:74px;text-align:center}
-.mhead .mmeta{margin-top:8px;font-size:11px;opacity:.85;text-align:center}
+/* match centre header — reuses the Today's Matches card (.tcard) for a consistent look */
+.mhead{padding:14px 18px 18px;color:var(--ink);background:var(--paper);position:relative}
+.mhead .mstage{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);text-align:center;margin-bottom:12px;padding:0 30px}
+.mhead .tcard{cursor:default}
+.mhead .mmeta{margin-top:12px;font-size:11px;color:var(--ink-soft);text-align:center}
+@media(min-width:621px){
+  /* enlarge the card to a hero size inside the roomy desktop modal */
+  .mhead .tcard{height:84px;border-radius:30px}
+  .mhead .t-side{padding:0 16px;gap:13px}
+  .mhead .tcard .flag{width:50px;height:34px;border-radius:0 11px 0 11px}
+  .mhead .t-name{font-size:30px}
+  .mhead .t-centre{width:156px;height:108px;border-radius:13px}
+  .mhead .t-time{font-size:15px}
+  .mhead .t-score{font-size:50px;gap:26px}
+  .mhead .t-grp{font-size:12px}
+}
 .sbs-btn{
   display:block;margin:12px auto 0;width:fit-content;
-  background:#fff;color:#1b1d3a;font-weight:800;font-size:12px;
+  background:var(--inkbg);color:#fff;font-weight:800;font-size:12px;
   text-decoration:none;border-radius:4px;padding:7px 16px;
   transition:.15s;
 }
 .sbs-btn:hover{background:var(--gold);color:#1b1d3a}
-.mclose{position:absolute;top:12px;right:14px;background:rgba(255,255,255,.18);border:none;color:#fff;width:28px;height:28px;border-radius:50%;font-size:16px;cursor:pointer;line-height:1}
-.mclose:hover{background:rgba(255,255,255,.3)}
+.mclose{position:absolute;top:12px;right:14px;background:rgba(127,127,127,.22);border:none;color:var(--ink);width:28px;height:28px;border-radius:50%;font-size:16px;cursor:pointer;line-height:1}
+.mclose:hover{background:rgba(127,127,127,.38)}
 .mbody{padding:16px 18px;max-height:60vh;overflow-y:auto}
 .msec{margin-bottom:16px}
 .msec h4{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:7px;border-bottom:1px solid var(--line);padding-bottom:3px}
@@ -478,9 +487,12 @@ footer{
   /* modal fills the screen comfortably */
   #overlay{padding:0;align-items:stretch}
   .modal{max-width:100%;border-radius:0;min-height:100%}
-  .mhead{padding:16px 14px}
-  .mhead .mteam{font-size:15px}
-  .mhead .mvs{font-size:20px;min-width:54px}
+  .mhead{padding:14px 14px 16px}
+  /* keep the match-centre card independent of the Today's Matches shrink/radius edits */
+  .mhead .tcard{border-radius:20px}
+  .mhead .tcard .flag{width:24px;height:17px;border-radius:0 6px 0 6px}
+  .mhead .t-time{font-size:10px}
+  .mhead .t-grp{font-size:9px}
   .mclose{width:34px;height:34px;font-size:19px} /* easier to tap */
   .mbody{max-height:none;padding:14px}
   .event{font-size:13px} /* keep events legible */
@@ -1371,10 +1383,22 @@ function openModal(m){
   const status=!hasLive?`${fmtDay(m.d)} · ${fmt12(m.h)} AWST`:(m.live.state==="in"?`LIVE · ${m.live.clock}`:"Full time");
   const finished=m.live&&m.live.state==="post";
   const sbs=finished?`<a class="sbs-btn" target="_blank" rel="noopener" href="https://www.youtube.com/channel/UCpcTrCXblq78GZrTUTLWeBw/search?query=${encodeURIComponent(plainName(m.a)+" "+plainName(m.b)+" highlights")}">▶ Highlights on SBS</a>`:"";
+  const koNum=Object.keys(KOM).find(n=>KOM[n]===m);
+  const stage=koNum?KOLABEL(+koNum):(m.s||"");
+  const gcls=(!koNum&&/^Group /.test(m.s||""))?" g-"+m.s.replace("Group ",""):"";
+  const sa=hasLive?m.live.sa:"–", sb=hasLive?m.live.sb:"–";
   modalEl.innerHTML=`<div class="mhead">
       <button class="mclose" aria-label="Close">×</button>
-      <div class="mstage">${m.s} · ${NJ(m.c)}</div>
-      <div class="mscore"><div class="mteam">${withFlag(m.a)}</div><div class="mvs">${hasLive?`${m.live.sa}–${m.live.sb}`:"v"}</div><div class="mteam r">${withFlag(m.b)}</div></div>
+      <div class="mstage">${NJ(m.c)}</div>
+      <article class="tcard${gcls}">
+        <div class="t-side t-home">${flagOf(m.a)}<span class="t-name">${tcardName(m.a)}</span></div>
+        <div class="t-centre">
+          <div class="t-time">${fmt12(m.h)}</div>
+          <div class="t-score"><span>${sa}</span><span>${sb}</span></div>
+          <div class="t-grp">${stage}</div>
+        </div>
+        <div class="t-side t-away"><span class="t-name">${tcardName(m.b)}</span>${flagOf(m.b)}</div>
+      </article>
       <div class="mmeta">${status}</div>
       ${sbs}
     </div>
