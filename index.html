@@ -47,7 +47,7 @@
   --inkbg:var(--night);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;scrollbar-gutter:stable}
 body{
   font-family:'Noto Sans',system-ui,sans-serif;
   background:var(--paper);
@@ -102,16 +102,24 @@ h1 span{color:#f8b25c}
   padding:5px 12px;font:inherit;font-size:12px;background:var(--card);color:var(--ink);
 }
 .search:focus{outline:2px solid var(--dawn);outline-offset:1px;border-color:var(--dawn)}
-.chips{display:flex;flex-wrap:wrap;gap:4px}
+.chips{display:flex;flex-wrap:wrap;gap:4px;position:relative}
 .chip{
   border:1.5px solid var(--edge);background:var(--card);color:var(--ink-soft);
   border-radius:4px;padding:4px 10px;font:inherit;font-size:11.5px;font-weight:600;
-  cursor:pointer;transition:.15s;
+  cursor:pointer;transition:color .15s,border-color .15s;
 }
 .chip:hover{border-color:var(--dawn);color:var(--ink)}
 .chip:focus-visible{outline:2px solid var(--dawn);outline-offset:2px}
-.chip.active{background:var(--inkbg);border-color:var(--inkbg);color:#fff}
-.chip.aus.active{background:var(--aus-green);border-color:var(--aus-green);color:var(--aus-gold)}
+/* filter chips sit transparent over a single sliding pill (the dark active indicator) */
+.chip[data-stage]{background:transparent;position:relative;z-index:1}
+.chip[data-stage].active{background:transparent;border-color:transparent;color:#fff}
+.chip[data-stage].active:hover{color:#fff}
+.chip-pill{
+  position:absolute;left:0;top:0;z-index:0;border-radius:4px;background:var(--inkbg);
+  transition:transform .3s cubic-bezier(.34,1.1,.4,1),width .3s cubic-bezier(.34,1.1,.4,1),height .3s ease;
+  pointer-events:none;
+}
+@media(prefers-reduced-motion:reduce){.chip-pill{transition:none}}
 /* ---------- schedule ---------- */
 main{max-width:1180px;margin:4px auto 40px;padding:0 16px}
 .daygroup{margin-top:14px}
@@ -153,6 +161,9 @@ main{max-width:1180px;margin:4px auto 40px;padding:0 16px}
   .t-score{font-size:30px;gap:14px}
   .t-grp{font-size:7px;transform:translateY(4px)}
 }
+/* transient colour blocks for the match-centre entrance (added/removed by JS), sit behind the centre box */
+.sweep-blocks{position:absolute;inset:0;z-index:1;border-radius:inherit;pointer-events:none}
+.sweep-block{position:absolute;inset:0;border-radius:inherit;transform-origin:center}
 .tcard.g-A .t-centre{background:#2ed878;color:#1b1d3a}
 .tcard.g-B .t-centre{background:#e92545;color:#fff}
 .tcard.g-C .t-centre{background:#ef9210;color:#1b1d3a}
@@ -317,6 +328,7 @@ main{max-width:1180px;margin:4px auto 40px;padding:0 16px}
 .stbl tr.adv td.l{box-shadow:inset 3px 0 0 var(--aus-green)}
 .stbl tr.ausrow td.l{color:var(--aus-green);font-weight:800}
 .stbl tr.out td{color:var(--edge)} /* mathematically out of the knockouts — faded */
+.stbl tr.out .flag{opacity:.4} /* fade eliminated teams' flags too */
 .stnote{margin-top:12px;font-size:10px;color:var(--ink-soft);max-width:640px}
 /* ---------- leaderboard ---------- */
 /* ---------- leaderboard: bold leaders strip ---------- */
@@ -393,14 +405,17 @@ main{max-width:1180px;margin:4px auto 40px;padding:0 16px}
 #overlay.open{display:flex}
 .modal{
   background:var(--card);border-radius:8px;max-width:840px;width:100%;
-  box-shadow:0 24px 60px rgba(0,0,0,.4);overflow:hidden;animation:popin .18s ease;
+  box-shadow:0 24px 60px rgba(0,0,0,.4);overflow:hidden;will-change:transform,opacity;
 }
 @keyframes popin{from{transform:translateY(12px);opacity:0}to{transform:none;opacity:1}}
-/* match centre header — reuses the Today's Matches card (.tcard) for a consistent look */
-.mhead{padding:14px 18px 18px;color:var(--ink);background:var(--paper);position:relative}
-.mhead .mstage{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);text-align:center;margin-bottom:12px;padding:0 30px}
+/* match centre header — reuses the Today's Matches card (.tcard) over a blurred stadium photo */
+.mhead{padding:24px 18px 28px;color:#fff;background:#10122b;position:relative;overflow:hidden}
+.mhead::before{content:"";position:absolute;inset:0;z-index:0;background:var(--stadium,none) center/cover no-repeat;filter:blur(3px) saturate(1.2);transform:scale(1.08)}
+.mhead::after{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(180deg,rgba(8,10,26,.28),rgba(8,10,26,.58))}
+.mhead>*{position:relative;z-index:1}
+.mhead .mstage{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#fff;text-align:center;margin-bottom:22px;padding:0 30px;text-shadow:0 1px 4px rgba(0,0,0,.7)}
 .mhead .tcard{cursor:default}
-.mhead .mmeta{margin-top:12px;font-size:11px;color:var(--ink-soft);text-align:center}
+.mhead .mmeta{margin-top:22px;font-size:11px;color:#fff;text-align:center;text-shadow:0 1px 4px rgba(0,0,0,.7)}
 @media(min-width:621px){
   /* enlarge the card to a hero size inside the roomy desktop modal */
   .mhead .tcard{height:84px;border-radius:30px}
@@ -414,13 +429,13 @@ main{max-width:1180px;margin:4px auto 40px;padding:0 16px}
 }
 .sbs-btn{
   display:block;margin:12px auto 0;width:fit-content;
-  background:var(--inkbg);color:#fff;font-weight:800;font-size:12px;
+  background:#fff;color:#1b1d3a;font-weight:800;font-size:12px;
   text-decoration:none;border-radius:4px;padding:7px 16px;
   transition:.15s;
 }
 .sbs-btn:hover{background:var(--gold);color:#1b1d3a}
-.mclose{position:absolute;top:12px;right:14px;background:rgba(127,127,127,.22);border:none;color:var(--ink);width:28px;height:28px;border-radius:50%;font-size:16px;cursor:pointer;line-height:1}
-.mclose:hover{background:rgba(127,127,127,.38)}
+.mclose{position:absolute;top:12px;right:14px;z-index:2;background:rgba(255,255,255,.22);border:none;color:#fff;width:28px;height:28px;border-radius:50%;font-size:16px;cursor:pointer;line-height:1}
+.mclose:hover{background:rgba(255,255,255,.36)}
 .mbody{padding:16px 18px;max-height:60vh;overflow-y:auto}
 .msec{margin-bottom:16px}
 .msec h4{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:7px;border-bottom:1px solid var(--line);padding-bottom:3px}
@@ -431,12 +446,15 @@ main{max-width:1180px;margin:4px auto 40px;padding:0 16px}
 .event.away .emin{order:2}
 .event.goal{font-weight:700}
 .lineups{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.lcol h5{font-size:13px;font-weight:800;margin-bottom:6px;display:flex;align-items:baseline;gap:7px}
+.lcol h5{font-size:13px;font-weight:800;margin-bottom:6px;display:flex;align-items:baseline;gap:7px;min-height:18px}
+.lcol.r{text-align:right}
+.lcol.r h5{justify-content:flex-end}
+.lcol.r .lineup-list li .num{margin-left:6px}
 .lcol h5 .form{font-family:'Noto Sans',sans-serif;font-size:10px;font-weight:600;color:#fff;background:var(--inkbg);border-radius:4px;padding:1px 6px;letter-spacing:.04em}
 .lineup-list{list-style:none;font-size:12px;line-height:1.85}
 .lineup-list li .num{display:inline-block;width:22px;color:var(--ink-soft);font-family:'Noto Sans',sans-serif;font-size:10px;font-weight:700}
 .subs-line{font-size:10.5px;color:var(--ink-soft);margin-top:8px;line-height:1.45}
-.subs-line b{color:var(--ink)}
+.subs-line b{color:var(--ink);display:block;margin-bottom:2px}
 .pnm{cursor:help;border-bottom:1px dotted var(--ink-soft)}
 .pnm:hover{color:var(--dawn);border-bottom-color:var(--dawn)}
 #biotip{
@@ -546,7 +564,6 @@ footer{
       <button class="chip" data-stage="ko">Knockouts</button>
       <button class="chip" data-stage="standings">Standings</button>
       <button class="chip" data-stage="leaderboard">Leaderboard</button>
-      <button class="chip aus" data-stage="aus">🇦🇺 Socceroos</button>
       <button class="chip" id="today-btn" type="button">Jump to today</button>
       <button class="chip" id="refresh-btn" type="button" title="Refresh live scores">↻ Refresh</button>
       <button class="chip" id="theme-btn" type="button" title="Toggle dark/light mode"></button>
@@ -815,7 +832,6 @@ let stageFilter="all",query="";
 const main=document.getElementById("schedule");
 
 function visible(m){
-  if(stageFilter==="aus"&&!m.aus)return false;
   if(query){
     const hay=(m.a+" "+m.b+" "+m.c+" "+m.s).toLowerCase();
     if(!hay.includes(query))return false;
@@ -1034,8 +1050,8 @@ function buildLeaderboard(){
   let strip=`<div class="leaders"><div class="leaders-row">`;
   strip+=lcell('Golden Boot',g0,g0&&g0.name,g0&&g0.team,g0&&numStat(g0.goals,'goals'));
   strip+=lcell('Top Service',a0,a0&&a0.name,a0&&a0.team,a0&&numStat(a0.assists,'assists'));
-  strip+=lcell('Naughtiest Boy',naughty,naughty&&naughty.name,naughty&&naughty.team,naughty&&`<span class="lnum">${naughty.yellow}</span> 🟨 <span class="lnum">${naughty.red}</span> 🟥`);
   strip+=lcell('Safest Hands',gk0,gk0&&gk0.name,gk0&&gk0.team,gk0&&numStat(gk0.clean,'clean sheets'));
+  strip+=lcell('Naughtiest Boy',naughty,naughty&&naughty.name,naughty&&naughty.team,naughty&&`<span class="lnum">${naughty.yellow}</span> 🟨 <span class="lnum">${naughty.red}</span> 🟥`);
   strip+=`</div></div>`;
 
   let html=strip+'<div class="lead-grid">';
@@ -1133,7 +1149,9 @@ function todayCard(m,key,ko){
 
 // today's date as a Perth-local "YYYY-MM-DD" string (matches the schedule's d values)
 function perthToday(){
-  const pn=new Date(Date.now()+(new Date().getTimezoneOffset()*60000)+(8*3600000));
+  // Perth is UTC+8 with no DST, so shifting the UTC epoch by +8h and reading UTC fields
+  // gives the Perth calendar date regardless of the viewer's own timezone.
+  const pn=new Date(Date.now()+(8*3600000));
   return pn.getUTCFullYear()+"-"+String(pn.getUTCMonth()+1).padStart(2,"0")+"-"+String(pn.getUTCDate()).padStart(2,"0");
 }
 function render(){
@@ -1346,8 +1364,26 @@ try{ render(); }catch(err){ window.onerror("RENDER THREW: "+err.message,"",0,0,e
 document.getElementById("search").addEventListener("input",e=>{query=e.target.value.trim().toLowerCase();render()});
 document.querySelectorAll(".chip[data-stage]").forEach(b=>b.addEventListener("click",()=>{
   document.querySelectorAll(".chip[data-stage]").forEach(x=>x.classList.remove("active"));
-  b.classList.add("active");stageFilter=b.dataset.stage;render();
+  b.classList.add("active");stageFilter=b.dataset.stage;movePill();render();
 }));
+// sliding active-pill indicator that animates between the filter chips
+const chipsWrap=document.querySelector(".chips");
+const chipPill=document.createElement("span");
+chipPill.className="chip-pill";chipPill.setAttribute("aria-hidden","true");
+chipsWrap.appendChild(chipPill);
+function movePill(instant){
+  const act=chipsWrap.querySelector(".chip[data-stage].active");
+  if(!act){chipPill.style.opacity="0";return;}
+  if(instant)chipPill.style.transition="none";
+  chipPill.style.opacity="1";
+  chipPill.style.transform=`translate(${act.offsetLeft}px,${act.offsetTop}px)`;
+  chipPill.style.width=act.offsetWidth+"px";
+  chipPill.style.height=act.offsetHeight+"px";
+  if(instant){chipPill.getBoundingClientRect();chipPill.style.transition="";}
+}
+movePill(true);
+addEventListener("resize",()=>movePill(true));
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>movePill(true));
 document.getElementById("today-btn").addEventListener("click",()=>{
   const today=perthToday();
   const secs=[...document.querySelectorAll(".daygroup")];
@@ -1377,7 +1413,34 @@ themeBtn.addEventListener("click",()=>{
 // ---- match detail modal ----
 const SUMCACHE={};
 const overlay=document.getElementById("overlay"),modalEl=document.getElementById("modal");
-function openModal(m){
+let _mOrigin=null,_mClosing=false;
+const _prm=window.matchMedia("(prefers-reduced-motion: reduce)");
+// host-venue lead photos (Wikimedia Commons) matched on the match's city string
+const STADIUMS=[
+  [/dallas|arlington/,"Arlington_June_2020_4_(AT&T_Stadium).jpg"],
+  [/los angeles|^la$/,"SoFi_Stadium_2023.jpg"],
+  [/new york|new jersey/,"Metlife_stadium_(Aerial_view).jpg"],
+  [/atlanta/,"Mercedes_Benz_Stadium_time_lapse_capture_2017-08-13.jpg"],
+  [/boston|foxborough/,"Gillette_Stadium_(Top_View).jpg"],
+  [/houston/,"Nrg_stadium.jpg"],
+  [/kansas/,"Aerial_view_of_Arrowhead_Stadium_08-31-2013.jpg"],
+  [/miami/,"Hard_Rock_Stadium_for_Super_Bowl_LIV_(49606710103).jpg"],
+  [/philadelphia/,"Lincoln_Financial_Field_(Aerial_view).jpg"],
+  [/santa clara|san francisco|bay area/,"Levi's_Stadium_in_February_2016_prior_to_Super_Bowl_50_(24398261729).jpg"],
+  [/seattle/,"2026_FIFA_World_Cup_-_Belgium_v._Egypt_in_Seattle_-_04.jpg"],
+  [/zapopan|guadalajara/,"Estadio_Akron_02-07-2022_cabecera_sur_lado_derecho_(3).jpg"],
+  [/mexico city/,"Vista_aérea_del_Estadio_Azteca_-_2026_-_02.jpg"],
+  [/monterrey|guadalupe/,"Mexico_Guadalupe_Monterrey_Estadio_BBVA_Bancomer_fifa_world_cup_2026_6.JPG"],
+  [/toronto/,"Toronto_BMO_Field_in_2024.jpg"],
+  [/vancouver/,"BC_Place_2015_Women's_FIFA_World_Cup.jpg"],
+];
+const _encFile=s=>encodeURIComponent(s).replace(/[!'()*]/g,c=>"%"+c.charCodeAt(0).toString(16).toUpperCase());
+function stadiumBg(city){
+  const c=String(city||"").toLowerCase().trim();
+  for(const [re,fn] of STADIUMS){if(re.test(c))return "https://commons.wikimedia.org/wiki/Special:FilePath/"+_encFile(fn)+"?width=1024";}
+  return "";
+}
+function openModal(m,originEl){
   if(!m)return;
   const hasLive=m.live&&m.live.state!=="pre";
   const status=!hasLive?`${fmtDay(m.d)} · ${fmt12(m.h)} AWST`:(m.live.state==="in"?`LIVE · ${m.live.clock}`:"Full time");
@@ -1387,7 +1450,8 @@ function openModal(m){
   const stage=koNum?KOLABEL(+koNum):(m.s||"");
   const gcls=(!koNum&&/^Group /.test(m.s||""))?" g-"+m.s.replace("Group ",""):"";
   const sa=hasLive?m.live.sa:"–", sb=hasLive?m.live.sb:"–";
-  modalEl.innerHTML=`<div class="mhead">
+  const bg=stadiumBg(m.c);
+  modalEl.innerHTML=`<div class="mhead"${bg?` style="--stadium:url('${bg}')"`:""}>
       <button class="mclose" aria-label="Close">×</button>
       <div class="mstage">${NJ(m.c)}</div>
       <article class="tcard${gcls}">
@@ -1406,8 +1470,84 @@ function openModal(m){
   overlay.classList.add("open");
   modalEl.querySelector(".mclose").onclick=closeModal;
   if(m.eid)loadDetails(m);
+  _mOrigin=originEl||null;_mClosing=false;
+  playCardEntrance();
 }
-function closeModal(){overlay.classList.remove("open");}
+// broadcast-style entrance, in 4 beats: (1) centre box appears, (2) colour bands push out,
+// (3) the black box fills in with the names, (4) the gradient border expands out.
+// Every override is reverted at the end (or on close) so the card ends in its exact CSS state.
+let _entSeq=0,_entCleanup=null;
+function _runEntCleanup(){if(_entCleanup){const f=_entCleanup;_entCleanup=null;f();}}
+function playCardEntrance(){
+  overlay.animate([{opacity:0},{opacity:1}],{duration:220,easing:"ease"});
+  const card=modalEl.querySelector(".tcard");
+  _runEntCleanup();
+  if(_prm.matches||!card)return;
+  const tok=++_entSeq;
+  const centre=card.querySelector(".t-centre");
+  const names=card.querySelectorAll(".t-name,.flag");
+  const centreContent=card.querySelectorAll(".t-time,.t-score,.t-grp");
+
+  // start hidden: no black body / border, only the centre box on show
+  card.style.background="transparent";
+  centre.style.position="relative";centre.style.zIndex="4";
+  const blocks=document.createElement("span");blocks.className="sweep-blocks";
+  card.insertBefore(blocks,card.firstChild);
+  _entCleanup=()=>{card.style.background="";card.style.borderWidth="";centre.style.position="";centre.style.zIndex="";if(blocks.parentNode)blocks.remove();};
+
+  // 1) centre box expands outward from a central line (gradual, so the line→box read is clear)
+  centre.animate([{transform:"scaleX(0)"},{transform:"scaleX(1.03)",offset:.82},{transform:"scaleX(1)"}],
+    {duration:560,easing:"cubic-bezier(.5,.05,.3,1)",fill:"backwards"});
+  centreContent.forEach(el=>el.animate([{opacity:0},{opacity:1}],{duration:400,delay:320,easing:"ease",fill:"backwards"}));
+  // 2) a sequence of solid colour blocks push out from behind the centre box, the last one black
+  const COLS=["#3fb24a","#3a5fd9","#b7cc3d","#e2531f","#8264bd","#000"];
+  COLS.forEach((c,i)=>{
+    const b=document.createElement("span");b.className="sweep-block";b.style.background=c;blocks.appendChild(b);
+    b.animate([{transform:"scaleX(0)"},{transform:"scaleX(1)"}],{duration:360,delay:480+i*104,easing:"cubic-bezier(.3,.9,.35,1)",fill:"both"});
+  });
+  // 3) the now-black block stack fades, revealing the card's black box + names
+  blocks.animate([{opacity:1},{opacity:0}],{duration:440,delay:1380,easing:"ease",fill:"both"});
+  names.forEach(el=>el.animate([{opacity:0},{opacity:1}],{duration:480,delay:1400,easing:"ease",fill:"backwards"}));
+  // 4) gradient border expands out
+  card.animate([{borderWidth:"0px"},{borderWidth:"5px"}],{duration:560,delay:1820,easing:"cubic-bezier(.4,.7,.3,1)",fill:"backwards"});
+  // header chrome + body ease in alongside
+  modalEl.querySelectorAll(".mstage,.mmeta,.sbs-btn,.mbody").forEach(el=>el.animate([{opacity:0},{opacity:1}],{duration:680,easing:"ease",fill:"backwards"}));
+
+  // discrete background swaps (complex backgrounds can't tween) + final cleanup, gated by token
+  setTimeout(()=>{if(_entSeq===tok)card.style.background="#000";},1340); // card's own black behind the black blocks, ready for the fade
+  setTimeout(()=>{if(_entSeq===tok)card.style.background="";},1820);     // restore real bg (black + conic border); border grows via WAAPI
+  setTimeout(()=>{if(_entSeq===tok)_runEntCleanup();},2520);
+}
+// origin-aware zoom: the match centre grows out of (and shrinks back into) the clicked card
+function _modalFrom(){
+  const mr=modalEl.getBoundingClientRect();
+  if(_mOrigin&&document.body.contains(_mOrigin)){
+    const cr=_mOrigin.getBoundingClientRect();
+    return {ox:cr.left+cr.width/2-mr.left,oy:cr.top+cr.height/2-mr.top,scale:.12};
+  }
+  return {ox:mr.width/2,oy:mr.height/2,scale:.86};
+}
+function playModalAnim(closing){
+  if(_prm.matches){if(closing){overlay.classList.remove("open");_mClosing=false;}return;}
+  const o=_modalFrom(),small=`scale(${o.scale})`;
+  modalEl.style.transformOrigin=`${o.ox}px ${o.oy}px`;
+  overlay.animate(closing?[{opacity:1},{opacity:0}]:[{opacity:0},{opacity:1}],
+    {duration:closing?230:200,easing:"ease",fill:closing?"forwards":"none"});
+  const a=modalEl.animate(
+    closing?[{transform:"scale(1)",opacity:1},{transform:small,opacity:0}]
+           :[{transform:small,opacity:0},{opacity:1,offset:.35},{transform:"scale(1)",opacity:1}],
+    {duration:closing?230:360,easing:closing?"cubic-bezier(.4,0,.6,.25)":"cubic-bezier(.2,.85,.25,1)"});
+  if(closing){
+    const done=()=>{if(!_mClosing)return;overlay.classList.remove("open");overlay.getAnimations().forEach(an=>an.cancel());modalEl.style.transformOrigin="";_mClosing=false;};
+    a.finished.then(done,done); // runs on finish OR cancel; the _mClosing check ignores a stale close if a new modal reopened
+  }
+}
+function closeModal(){
+  if(!overlay.classList.contains("open")||_mClosing)return;
+  _entSeq++;_runEntCleanup(); // abort any in-flight entrance and restore the card before zooming out
+  _mClosing=true;
+  playModalAnim(true);
+}
 overlay.addEventListener("click",e=>{if(e.target===overlay)closeModal()});
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
 
@@ -1446,13 +1586,13 @@ function renderDetails(j,m){
   const haveLineups=ros.length&&ros.some(s=>(s.roster||s.athletes||[]).length);
   if(haveLineups){
     out+='<div class="msec"><h4>Line-ups</h4><div class="lineups">';
-    ros.slice(0,2).forEach(side=>{out+=pitchHTML(side);});
+    ros.slice(0,2).forEach((side,i)=>{out+=pitchHTML(side,i);});
     out+="</div></div>";
   }
   if(!out)out='<div class="mempty">No event detail published for this match yet.</div>';
   return out;
 }
-function pitchHTML(side){
+function pitchHTML(side,i){
   const tname=side.team?(side.team.displayName||side.team.abbreviation):"";
   const players=side.roster||side.athletes||[];
   const nm=p=>{const a=p.athlete||p;return a.displayName||a.shortName||a.fullName||a.lastName||""};
@@ -1464,11 +1604,13 @@ function pitchHTML(side){
   starters=starters.slice().sort((a,b)=>(+a.formationPlace||99)-(+b.formationPlace||99));
   const subs=players.filter(p=>p.starter===false);
 
-  let html=`<div class="lcol"><h5>${withFlag(flagName(tname))}${formation?` <span class="form">${formation}</span>`:""}</h5><ul class="lineup-list">`;
-  starters.forEach(p=>{html+=`<li><span class="num">${jn(p)}</span><span class="pnm" data-pl="${normPlayer(nm(p))}">${nm(p)}</span></li>`;});
+  let html=`<div class="lcol${i?" r":""}"><h5>${formation?`<span class="form">${formation}</span>`:""}</h5><ul class="lineup-list">`;
+  starters.forEach(p=>{html+= i
+    ? `<li><span class="pnm" data-pl="${normPlayer(nm(p))}">${nm(p)}</span><span class="num">${jn(p)}</span></li>`
+    : `<li><span class="num">${jn(p)}</span><span class="pnm" data-pl="${normPlayer(nm(p))}">${nm(p)}</span></li>`;});
   html+="</ul>";
   if(subs.length){
-    html+='<div class="subs-line"><b>Subs:</b> '+subs.map(p=>`<span class="pnm" data-pl="${normPlayer(nm(p))}">${nm(p)}</span>`).filter(Boolean).join(", ")+'</div>';
+    html+='<div class="subs-line"><b>Subs</b>'+subs.filter(p=>nm(p)).map(p=>`<div class="subname"><span class="pnm" data-pl="${normPlayer(nm(p))}">${nm(p)}</span></div>`).join("")+'</div>';
   }
   html+="</div>";
   return html;
@@ -1478,7 +1620,7 @@ function pitchHTML(side){
 document.getElementById("schedule").addEventListener("click",e=>{
   const card=e.target.closest("[data-mi],[data-ko]");if(!card)return;
   const m=card.hasAttribute("data-mi")?M[+card.dataset.mi]:KOM[+card.dataset.ko];
-  if(m)openModal(m);
+  if(m)openModal(m,card);
 });
 
 // ---- player bio (club + age) from baked-in World Cup squad data ----
