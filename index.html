@@ -794,6 +794,7 @@ async function fetchLive(){
   }catch(err){LIVE.ok=false}
   LIVE.updated=new Date();
   liveStatus();render();
+  if(!_didFirstAnim){_didFirstAnim=true;animateTodayCards();} // build the today cards in on first launch (once live data has landed)
 }
 
 function liveStatus(){
@@ -829,6 +830,7 @@ function phase(h){
 const fmt12=h=>{let[H,Mn]=h.split(":").map(Number);const ap=H<12?"am":"pm";H=H%12||12;return H+":"+String(Mn).padStart(2,"0")+ap};
 
 let stageFilter="all",query="";
+let _todayAnims=[],_didFirstAnim=false; // Today's-Matches card build animations
 const main=document.getElementById("schedule");
 
 function visible(m){
@@ -1155,6 +1157,7 @@ function perthToday(){
   return pn.getUTCFullYear()+"-"+String(pn.getUTCMonth()+1).padStart(2,"0")+"-"+String(pn.getUTCDate()).padStart(2,"0");
 }
 function render(){
+  clearTodayAnims(); // the DOM is about to be rebuilt — drop any in-flight today-card builds
   // The All page lists knockout matches chronologically (day-by-day cards) instead of the bracket.
   // The Knockouts page keeps the bracket on desktop, but lists chronologically on a phone (portrait).
   const narrow=isNarrow();
@@ -1365,6 +1368,7 @@ document.getElementById("search").addEventListener("input",e=>{query=e.target.va
 document.querySelectorAll(".chip[data-stage]").forEach(b=>b.addEventListener("click",()=>{
   document.querySelectorAll(".chip[data-stage]").forEach(x=>x.classList.remove("active"));
   b.classList.add("active");stageFilter=b.dataset.stage;movePill();render();
+  if(stageFilter==="all")animateTodayCards(); // build the today cards in when returning to the All page
 }));
 // sliding active-pill indicator that animates between the filter chips
 const chipsWrap=document.querySelector(".chips");
@@ -1473,50 +1477,64 @@ function openModal(m,originEl){
   _mOrigin=originEl||null;_mClosing=false;
   playCardEntrance();
 }
-// broadcast-style entrance, in 4 beats: (1) centre box appears, (2) colour bands push out,
-// (3) the black box fills in with the names, (4) the gradient border expands out.
-// Every override is reverted at the end (or on close) so the card ends in its exact CSS state.
-let _entSeq=0,_entCleanup=null;
+// broadcast-style card build, in 4 beats: (1) centre box expands from a central line,
+// (2) colour blocks push out (the last one black), (3) the black box + names resolve,
+// (4) the gradient border expands out. Self-contained & reversible: returns a cleanup()
+// that restores the card to its exact CSS state. `base` offsets the whole build (for staggering).
+function animateCardBuild(card,base){
+  base=base||0;
+  const centre=card.querySelector(".t-centre");
+  if(!centre)return ()=>{};
+  const names=card.querySelectorAll(".t-name,.flag");
+  const centreContent=card.querySelectorAll(".t-time,.t-score,.t-grp");
+  const bw=getComputedStyle(card).borderTopWidth; // adapt the border grow to the card's own width (5px / 4px)
+  let alive=true;
+  card.style.background="transparent";
+  centre.style.position="relative";centre.style.zIndex="4";
+  const blocks=document.createElement("span");blocks.className="sweep-blocks";card.insertBefore(blocks,card.firstChild);
+  const cleanup=()=>{if(!alive)return;alive=false;card.style.background="";card.style.borderWidth="";centre.style.position="";centre.style.zIndex="";if(blocks.parentNode)blocks.remove();};
+  const D=d=>base+d;
+  // 1) centre box expands outward from a central line (gradual, so the line→box read is clear)
+  centre.animate([{transform:"scaleX(0)"},{transform:"scaleX(1.03)",offset:.82},{transform:"scaleX(1)"}],{duration:560,delay:D(0),easing:"cubic-bezier(.5,.05,.3,1)",fill:"backwards"});
+  centreContent.forEach(el=>el.animate([{opacity:0},{opacity:1}],{duration:400,delay:D(320),easing:"ease",fill:"backwards"}));
+  // 2) a sequence of solid colour blocks push out, the last one black
+  ["#3fb24a","#3a5fd9","#b7cc3d","#e2531f","#8264bd","#000"].forEach((c,i)=>{
+    const b=document.createElement("span");b.className="sweep-block";b.style.background=c;blocks.appendChild(b);
+    b.animate([{transform:"scaleX(0)"},{transform:"scaleX(1)"}],{duration:360,delay:D(480+i*104),easing:"cubic-bezier(.3,.9,.35,1)",fill:"both"});
+  });
+  // 3) the now-black stack fades, revealing the card's black box + names
+  blocks.animate([{opacity:1},{opacity:0}],{duration:440,delay:D(1380),easing:"ease",fill:"both"});
+  names.forEach(el=>el.animate([{opacity:0},{opacity:1}],{duration:480,delay:D(1400),easing:"ease",fill:"backwards"}));
+  // 4) gradient border expands out
+  card.animate([{borderWidth:"0px"},{borderWidth:bw}],{duration:560,delay:D(1820),easing:"cubic-bezier(.4,.7,.3,1)",fill:"backwards"});
+  // discrete background swaps (complex backgrounds can't tween) + cleanup
+  setTimeout(()=>{if(alive)card.style.background="#000";},D(1340)); // card's own black behind the black blocks, ready for the fade
+  setTimeout(()=>{if(alive)card.style.background="";},D(1820));     // restore real bg (black + conic border); border grows via WAAPI
+  setTimeout(cleanup,D(2520));
+  return cleanup;
+}
+let _entCleanup=null;
 function _runEntCleanup(){if(_entCleanup){const f=_entCleanup;_entCleanup=null;f();}}
 function playCardEntrance(){
   overlay.animate([{opacity:0},{opacity:1}],{duration:220,easing:"ease"});
   const card=modalEl.querySelector(".tcard");
   _runEntCleanup();
   if(_prm.matches||!card)return;
-  const tok=++_entSeq;
-  const centre=card.querySelector(".t-centre");
-  const names=card.querySelectorAll(".t-name,.flag");
-  const centreContent=card.querySelectorAll(".t-time,.t-score,.t-grp");
-
-  // start hidden: no black body / border, only the centre box on show
-  card.style.background="transparent";
-  centre.style.position="relative";centre.style.zIndex="4";
-  const blocks=document.createElement("span");blocks.className="sweep-blocks";
-  card.insertBefore(blocks,card.firstChild);
-  _entCleanup=()=>{card.style.background="";card.style.borderWidth="";centre.style.position="";centre.style.zIndex="";if(blocks.parentNode)blocks.remove();};
-
-  // 1) centre box expands outward from a central line (gradual, so the line→box read is clear)
-  centre.animate([{transform:"scaleX(0)"},{transform:"scaleX(1.03)",offset:.82},{transform:"scaleX(1)"}],
-    {duration:560,easing:"cubic-bezier(.5,.05,.3,1)",fill:"backwards"});
-  centreContent.forEach(el=>el.animate([{opacity:0},{opacity:1}],{duration:400,delay:320,easing:"ease",fill:"backwards"}));
-  // 2) a sequence of solid colour blocks push out from behind the centre box, the last one black
-  const COLS=["#3fb24a","#3a5fd9","#b7cc3d","#e2531f","#8264bd","#000"];
-  COLS.forEach((c,i)=>{
-    const b=document.createElement("span");b.className="sweep-block";b.style.background=c;blocks.appendChild(b);
-    b.animate([{transform:"scaleX(0)"},{transform:"scaleX(1)"}],{duration:360,delay:480+i*104,easing:"cubic-bezier(.3,.9,.35,1)",fill:"both"});
-  });
-  // 3) the now-black block stack fades, revealing the card's black box + names
-  blocks.animate([{opacity:1},{opacity:0}],{duration:440,delay:1380,easing:"ease",fill:"both"});
-  names.forEach(el=>el.animate([{opacity:0},{opacity:1}],{duration:480,delay:1400,easing:"ease",fill:"backwards"}));
-  // 4) gradient border expands out
-  card.animate([{borderWidth:"0px"},{borderWidth:"5px"}],{duration:560,delay:1820,easing:"cubic-bezier(.4,.7,.3,1)",fill:"backwards"});
-  // header chrome + body ease in alongside
-  modalEl.querySelectorAll(".mstage,.mmeta,.sbs-btn,.mbody").forEach(el=>el.animate([{opacity:0},{opacity:1}],{duration:680,easing:"ease",fill:"backwards"}));
-
-  // discrete background swaps (complex backgrounds can't tween) + final cleanup, gated by token
-  setTimeout(()=>{if(_entSeq===tok)card.style.background="#000";},1340); // card's own black behind the black blocks, ready for the fade
-  setTimeout(()=>{if(_entSeq===tok)card.style.background="";},1820);     // restore real bg (black + conic border); border grows via WAAPI
-  setTimeout(()=>{if(_entSeq===tok)_runEntCleanup();},2520);
+  _entCleanup=animateCardBuild(card); // the scoreboard card build
+  // the blurred stadium photo dissolves in behind the build rather than snapping on
+  const mhead=modalEl.querySelector(".mhead");
+  if(mhead)mhead.animate([{opacity:0},{opacity:1}],{duration:700,easing:"ease",pseudoElement:"::before"});
+  // header chrome fades; the lower section eases up smoothly
+  modalEl.querySelectorAll(".mstage,.mmeta,.sbs-btn").forEach(el=>el.animate([{opacity:0},{opacity:1}],{duration:680,easing:"ease",fill:"backwards"}));
+  const mbody=modalEl.querySelector(".mbody");
+  if(mbody)mbody.animate([{opacity:0,transform:"translateY(18px)"},{opacity:1,transform:"none"}],{duration:760,delay:240,easing:"cubic-bezier(.2,.7,.3,1)",fill:"backwards"});
+}
+// Today's Matches cards build in (first launch + whenever the All page is re-entered), with a small cascade
+function clearTodayAnims(){_todayAnims.forEach(c=>c());_todayAnims=[];}
+function animateTodayCards(){
+  clearTodayAnims();
+  if(_prm.matches)return;
+  [...document.querySelectorAll(".today-zone .tcard")].forEach((card,i)=>_todayAnims.push(animateCardBuild(card,i*90)));
 }
 // origin-aware zoom: the match centre grows out of (and shrinks back into) the clicked card
 function _modalFrom(){
@@ -1544,7 +1562,7 @@ function playModalAnim(closing){
 }
 function closeModal(){
   if(!overlay.classList.contains("open")||_mClosing)return;
-  _entSeq++;_runEntCleanup(); // abort any in-flight entrance and restore the card before zooming out
+  _runEntCleanup(); // abort any in-flight entrance and restore the card before zooming out
   _mClosing=true;
   playModalAnim(true);
 }
